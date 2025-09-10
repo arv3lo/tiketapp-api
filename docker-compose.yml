@@ -1,0 +1,28 @@
+version: "3.3"
+services:
+  # BACKEND
+  # app:
+  #   image: "oven/bun"
+  #   entrypoint: []
+  #   environment:
+  #     DB_URL: mongodb://mongodb/skool
+  #   command: "/bin/sh -c 'bun install && bun run --watch src/index.ts'"
+  #   ports:
+  #     - 5000:5000
+  #   volumes: [ "./:/home/bun/app" ]
+  #   depends_on: 
+  #     - "mongodb"
+  #     - "rabbitmq"
+
+  # DATABASE
+  mongodb:
+    image: mongo:8.0.5
+    ports:
+      - 27017:27017
+    container_name: ticketapp
+
+  # MESSAGE BROKER
+  
+networks:
+  default:
+    driver: bridge
