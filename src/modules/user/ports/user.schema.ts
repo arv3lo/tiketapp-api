@@ -1,5 +1,6 @@
 import { model, Schema, type InferSchemaType } from "mongoose";
 import z from "zod"
+import jwt from "jsonwebtoken"
 
 const userSchema = new Schema({
     fullname: String,
@@ -9,6 +10,16 @@ const userSchema = new Schema({
 }, {
     timestamps: true
 });
+
+userSchema.methods.generateAuthToken = function () {
+    const token = jwt.sign({
+        _id: this._id,
+        iat: Math.floor(Date.now() / 1000) - 30,
+        exp: Math.floor(Date.now() / 1000) + (60 * 360)
+    }, Bun.env.AUTH_TOKEN_SECRET || "");
+
+    return token;
+}
 
 // This is only for dev purpose
 userSchema.pre("insertMany", async function (next, docs) {
