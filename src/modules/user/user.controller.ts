@@ -1,63 +1,52 @@
 import { Router } from "express";
-
-import { UserService } from "./user.service";
-import { MongooseUserRepo } from "./adapters/mongoose.user-repo";
-import User from "./ports/user.schema";
-import { faker } from "@faker-js/faker";
 import _ from "lodash"
 
-const userService = new UserService(new MongooseUserRepo(User));
+import { isValidID } from "@/middlewares";
+import { UserService } from "@modules/user/user.service";
+import { MongooseUserRepo } from "@modules/user/adapters/mongoose.user-repo";
+import User from "@modules/user/ports/user.schema";
 
+const userService = new UserService(new MongooseUserRepo(User));
 const router = Router();
 
-router.get('/', async (req, res) => {
-    // const users = await userService.findUsers();
-    // if (!users) {
-    //     return res.status(404).json({ message: 'Users not found' });
-    // }
-    // res.json(users);
+// TODO: dynamic error messages
 
-    const newOne = new User(_.pick({
-            fullname: faker.person.fullName(),
-            email: faker.internet.email({ provider: "tiketapp.mg" }),
-            password: faker.internet.password({ length: 20, memorable: true }),
-        }, ['fullname', 'email', 'password']))
-        
-    await newOne.save()
-    res.json(newOne)
+router.get('/', async (req, res) => {
+    const users = await userService.findUsers();
+    // console.log('!req.userId', req.userId)
+    // console.log('!req.role', req.role)
+    if (!users) return res.status(404).json({ message: 'Users not found' });
+
+    res.json(users);
 });
 
-router.get('/:id', async (req, res) => {
+router.get('/:id', isValidID, async (req, res) => {
     const user = await userService.findUserById(req.params.id);
-    if (!user) {
-        return res.status(404).json({ message: 'User not found' });
-    }
+    if (!user) return res.status(404).json({ message: 'User not found' });
+
     res.json(user);
 });
 
 router.post('/', async (req, res) => {
     const user = req.body;
     const createdUser = await userService.createUser(user);
-    if (!createdUser) {
-        return res.status(404).json({ message: 'User not created' });
-    }
+    if (!createdUser) return res.status(404).json({ message: 'User not created' });
+
     res.json(createdUser);
 });
 
-router.put('/:id', async (req, res) => {
+router.put('/:id', isValidID, async (req, res) => {
     const user = req.body;
     const updatedUser = await userService.updateUser(req.params.id, user);
-    if (!updatedUser) {
-        return res.status(404).json({ message: 'User not updated' });
-    }
+    if (!updatedUser) return res.status(404).json({ message: 'User not updated' });
+
     res.json(updatedUser);
 });
 
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', isValidID, async (req, res) => {
     const deletedUser = await userService.deleteUser(req.params.id);
-    if (!deletedUser) {
-        return res.status(404).json({ message: 'User not deleted' });
-    }
+    if (!deletedUser) return res.status(404).json({ message: 'User not deleted' });
+
     res.json({ message: 'User deleted' });
 });
 
