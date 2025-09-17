@@ -2,9 +2,9 @@ import { Router } from "express";
 import _ from "lodash"
 
 import { isValidID } from "@/middlewares";
-import { UserService } from "@modules/user/user.service";
-import { MongooseUserRepo } from "@modules/user/adapters/mongoose.user-repo";
-import User from "@modules/user/ports/user.schema";
+import { UserService } from "@user/user.service";
+import { MongooseUserRepo } from "@user/adapters/mongoose.user-repo";
+import User from "@user/ports/user.schema";
 
 const userService = new UserService(new MongooseUserRepo(User));
 const router = Router();

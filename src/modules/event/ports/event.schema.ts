@@ -8,7 +8,7 @@ const eventSchema = new Schema({
     description: String,
     organizers: {
         // TODO: add a checker to ensure that the organizers are valid users
-        type: [String],
+        type: [Schema.Types.ObjectId],
         ref: "User",
         required: true
     },

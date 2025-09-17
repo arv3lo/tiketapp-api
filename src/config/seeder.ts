@@ -2,12 +2,17 @@ import { Router } from "express";
 import _ from "lodash"
 import { faker } from "@faker-js/faker";
 
-import { UserService } from "@/modules/user/user.service";
-import { MongooseUserRepo } from "@/modules/user/adapters/mongoose.user-repo";
-import User from "@/modules/user/ports/user.schema";
+import { UserService } from "@user/user.service";
+import { MongooseUserRepo } from "@user/adapters/mongoose.user-repo";
+import User from "@user/ports/user.schema";
+
+import { EventService } from "@event/event.service";
+import { MongooseEventRepo } from "@event/adapters/mongoose.event-repo";
+import Event from "@event/ports/event.schema";
 
 const router = Router()
 const userService = new UserService(new MongooseUserRepo(User));
+const eventService = new EventService(new MongooseEventRepo(Event));
 
 const createUsers = async (count: number) => {
     await User.deleteMany()
@@ -20,11 +25,30 @@ const createUsers = async (count: number) => {
         password: "pizzapizza" // faker.internet.password({ length: 20, memorable: true }),
     }))
 
-    await userService.bulkCreateUsers(users)
+    return await userService.bulkCreateUsers(users)
+}
+
+const createEvents = async (count: number) => {
+    await Event.deleteMany()
+    const organizers = await createUsers(count);
+
+    if (!organizers) return null;
+    const events = Array.from({ length: count }, (val, idx) => ({
+        name: faker.lorem.word(),
+        description: faker.lorem.sentence(),
+        location: faker.location.city(),
+        date: faker.date.anytime(),
+        organizers: organizers[idx]._id.toString(),
+        time: faker.date.anytime(),
+        status: 'draft',
+    }))
+
+    return await eventService.bulkCreateEvents(events)
 }
 
 router.get('/', async (req, res) => {
     await createUsers(5)
+    await createEvents(5)
     res.json({ msg: "Seed complete ...." })
 })
 

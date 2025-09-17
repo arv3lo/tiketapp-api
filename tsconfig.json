@@ -25,7 +25,9 @@
     "noPropertyAccessFromIndexSignature": false,
     "paths": {
       "@/*": ["./src/*"],
-      "@modules/*": ["./src/modules/*"],
+      "@auth/*": ["./src/modules/auth/*"],
+      "@user/*": ["./src/modules/user/*"],
+      "@event/*": ["./src/modules/event/*"],
     },
   },
   "include": ["src/**/*", "src/types/express.d.ts"]
