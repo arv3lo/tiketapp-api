@@ -13,8 +13,6 @@ const router = Router();
 
 router.get('/', async (req, res) => {
     const users = await userService.findUsers();
-    // console.log('!req.userId', req.userId)
-    // console.log('!req.role', req.role)
     if (!users) return res.status(404).json({ message: 'Users not found' });
 
     res.json(users);

@@ -1,15 +1,9 @@
 # ticket-api
 
-To install dependencies:
+To run this project
 
 ```bash
-bun install
+  docker compose up -d
+  
+  bun dev
 ```
-
-To run:
-
-```bash
-bun run index.ts
-```
-
-This project was created using `bun init` in bun v1.2.3. [Bun](https://bun.sh) is a fast all-in-one JavaScript runtime.
