@@ -17,7 +17,8 @@ export enum EventType {
 export enum UserRole {
     ADMIN = "admin",
     ORGANIZER = "organizer",
-    ATTENDEE = "attendee"
+    ATTENDEE = "attendee",
+    ARTIST = "artist"
 }
 
 

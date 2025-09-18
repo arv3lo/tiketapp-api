@@ -12,7 +12,7 @@ export const routes = (app: Express) => {
     app.use(bodyParser.urlencoded({ extended: true, limit: '50mb' }))
 
     app.use('/auth', authController)
-    app.use('/users', [authentication], userController)
+    app.use('/users', userController)
     app.use('/events', eventController)
     app.use('/seed', seeder)
 
