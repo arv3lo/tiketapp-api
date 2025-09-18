@@ -76,6 +76,7 @@ export default model('User', userSchema);
 export const userInput = z.object({
     fullname: z.string().min(3).max(100),
     email: z.email(),
+    role: z.enum(UserRole),
     password: z.string().min(6).max(100),
     isDeleted: z.boolean().default(false).optional(),
 });

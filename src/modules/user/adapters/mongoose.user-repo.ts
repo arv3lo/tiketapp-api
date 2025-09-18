@@ -11,16 +11,14 @@ export class MongooseUserRepo implements IUserRepository {
         return this.user.findById(id);
     }
     createUser(user: TUserInput): Promise<TUser | null> {
+        console.log('!!user', user)
         return this.user.create(user);
     }
     bulkCreateUsers(users: TUserInput[]): Promise<TUser[] | null> {
         return this.user.insertMany(users);
     }
-    updateUser(id: string, user: TUserInput): Promise<TUser | null> {
+    updateUser(id: string, user: Partial<TUserInput>): Promise<TUser | null> {
         return this.user.findByIdAndUpdate(id, user);
-    }
-    deleteUser(id: string): Promise<TUser | null> {
-        return this.user.findByIdAndDelete(id);
     }
 }
 

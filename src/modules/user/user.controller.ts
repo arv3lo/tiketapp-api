@@ -4,12 +4,13 @@ import _ from "lodash"
 import { isValidID } from "@/middlewares";
 import { UserService } from "@user/user.service";
 import { MongooseUserRepo } from "@user/adapters/mongoose.user-repo";
-import User from "@user/ports/user.schema";
+import User, { validateUser } from "@user/ports/user.schema";
 
-const userService = new UserService(new MongooseUserRepo(User));
 const router = Router();
+const userService = new UserService(new MongooseUserRepo(User));
 
 const filters = ["fullname", "email", "role"];
+const inputFields = ["fullname", "email", "password", "role", "isDeleted"];
 
 // TODO: dynamic error messages
 router.get('/', async (req, res) => {
@@ -28,7 +29,7 @@ router.get('/:id', isValidID, async (req, res) => {
 
 router.post('/', async (req, res) => {
     const user = req.body;
-    const createdUser = await userService.createUser(user);
+    const createdUser = await userService.createUser(validateUser(user));
     if (!createdUser) return res.status(404).json({ message: 'User not created' });
 
     res.json(createdUser);
@@ -36,7 +37,7 @@ router.post('/', async (req, res) => {
 
 router.put('/:id', isValidID, async (req, res) => {
     const user = req.body;
-    const updatedUser = await userService.updateUser(req.params.id, user);
+    const updatedUser = await userService.updateUser(req.params.id, validateUser(user));
     if (!updatedUser) return res.status(404).json({ message: 'User not updated' });
 
     res.json(updatedUser);

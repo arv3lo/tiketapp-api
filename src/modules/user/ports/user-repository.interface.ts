@@ -6,8 +6,7 @@ export interface IUserRepository {
   // for dev purposes only
   bulkCreateUsers(users: TUserInput[]): Promise<TUser[] | null>;
   createUser(user: TUserInput): Promise<TUser | null>;
-  updateUser(id: string, user: TUserInput): Promise<TUser | null>;
-  deleteUser(id: string): Promise<TUser | null>;
+  updateUser(id: string, user: Partial<TUserInput>): Promise<TUser | null>;
 }
 
 export interface IUserFilter {

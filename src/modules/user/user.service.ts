@@ -25,6 +25,6 @@ export class UserService {
     }
 
     async deleteUser(id: string): Promise<TUser | null> {
-        return this.userRepository.deleteUser(id);
+        return this.userRepository.updateUser(id, { isDeleted: true });
     }
 }
