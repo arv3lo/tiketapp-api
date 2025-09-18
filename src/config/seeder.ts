@@ -9,6 +9,7 @@ import User from "@user/ports/user.schema";
 import { EventService } from "@event/event.service";
 import { MongooseEventRepo } from "@event/adapters/mongoose.event-repo";
 import Event from "@event/ports/event.schema";
+import { EventStatus, EventType } from "@/common/enums";
 
 const router = Router()
 const userService = new UserService(new MongooseUserRepo(User));
@@ -18,9 +19,9 @@ const createUsers = async (count: number) => {
     await User.deleteMany()
     const users = Array.from({ length: count }, () => ({
         fullname: faker.person.fullName(),
-        email: faker.internet.email({ 
-            provider: "tiketapp.mg", 
-            allowSpecialCharacters: false 
+        email: faker.internet.email({
+            provider: "tiketapp.mg",
+            allowSpecialCharacters: false
         }).toLowerCase(),
         password: "pizzapizza" // faker.internet.password({ length: 20, memorable: true }),
     }))
@@ -39,8 +40,8 @@ const createEvents = async (count: number) => {
         location: faker.location.city(),
         date: faker.date.anytime(),
         organizers: organizers[idx]._id.toString(),
-        time: faker.date.anytime(),
-        status: 'draft',
+        status: EventStatus.DRAFT,
+        type: EventType.CONCERT
     }))
 
     return await eventService.bulkCreateEvents(events)

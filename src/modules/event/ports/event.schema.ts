@@ -1,10 +1,13 @@
+import { EventStatus, EventType } from "@/common/enums";
 import { model, Schema, type InferSchemaType } from "mongoose";
 import z from "zod"
+
+// FILTERS: name, description, organizers, status, date, location, artists
 
 const eventSchema = new Schema({
     name: String,
     date: Date,
-    time: String,
+    // time: String,
     description: String,
     organizers: {
         // TODO: add a checker to ensure that the organizers are valid users
@@ -23,10 +26,15 @@ const eventSchema = new Schema({
     //         required: true
     //     }
     // },
+    type: {
+        type: String,
+        enum: EventType,
+        default: EventType.CONCERT
+    },
     status: {
         type: String,
-        enum: ['draft', 'published', 'cancelled'],
-        default: 'draft'
+        enum: EventStatus,
+        default: EventStatus.DRAFT
     },
 }, {
     timestamps: true
@@ -39,10 +47,11 @@ export const eventInput = z.object({
     name: z.string().min(3).max(100),
     // location: z.string().min(3).max(100),
     date: z.date(),
-    time: z.string().min(3).max(100),
+    // time: z.string().min(3).max(100),
     description: z.string().min(3).max(100),
     organizers: z.array(z.string()).min(1),
     status: z.enum(['draft', 'published', 'cancelled']).default('draft'),
+    type: z.enum(EventType).default(EventType.CONCERT),
 });
 
 export type TEventInput = z.infer<typeof eventInput>

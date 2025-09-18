@@ -6,6 +6,7 @@ import Event from "./ports/event.schema";
 const eventService = new EventService(new MongooseEventRepo(Event));
 const router = Router()
 
+// TODO: handle query params, pagination, sorting, filtering, populating
 // get events by organizer, by attented, by artist, by location
 router.get('/', async (req, res) => {
     const events = await eventService.findEvents();
