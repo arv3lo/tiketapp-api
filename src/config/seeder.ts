@@ -9,7 +9,7 @@ import User from "@user/ports/user.schema";
 import { EventService } from "@event/event.service";
 import { MongooseEventRepo } from "@event/adapters/mongoose.event-repo";
 import Event from "@event/ports/event.schema";
-import { EventStatus, EventType } from "@/common/enums";
+import { EVENT_STATUS, EVENT_TYPE } from "@/common/enums";
 
 const router = Router()
 const userService = new UserService(new MongooseUserRepo(User));
@@ -40,8 +40,8 @@ const createEvents = async (count: number) => {
         location: faker.location.city(),
         date: faker.date.anytime(),
         organizers: organizers[idx]._id.toString(),
-        status: EventStatus.DRAFT,
-        type: EventType.CONCERT
+        status: EVENT_STATUS.DRAFT,
+        type: EVENT_TYPE.CONCERT
     }))
 
     return await eventService.bulkCreateEvents(events)

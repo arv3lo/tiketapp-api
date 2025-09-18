@@ -1,4 +1,4 @@
-import { EventStatus, EventType } from "@/common/enums";
+import { EVENT_STATUS, EVENT_TYPE } from "@/common/enums";
 import { model, Schema, type InferSchemaType } from "mongoose";
 import z from "zod"
 
@@ -28,13 +28,13 @@ const eventSchema = new Schema({
     // },
     type: {
         type: String,
-        enum: EventType,
-        default: EventType.CONCERT
+        enum: EVENT_TYPE,
+        default: EVENT_TYPE.CONCERT
     },
     status: {
         type: String,
-        enum: EventStatus,
-        default: EventStatus.DRAFT
+        enum: EVENT_STATUS,
+        default: EVENT_STATUS.DRAFT
     },
 }, {
     timestamps: true
@@ -50,8 +50,9 @@ export const eventInput = z.object({
     // time: z.string().min(3).max(100),
     description: z.string().min(3).max(100),
     organizers: z.array(z.string()).min(1),
-    status: z.enum(['draft', 'published', 'cancelled']).default('draft'),
-    type: z.enum(EventType).default(EventType.CONCERT),
+    status: z.enum(EVENT_STATUS).default(EVENT_STATUS.DRAFT),
+    type: z.enum(EVENT_TYPE).default(EVENT_TYPE.CONCERT),
 });
 
 export type TEventInput = z.infer<typeof eventInput>
+export const validateEvent = (event: TEventInput) => eventInput.parse(event)
