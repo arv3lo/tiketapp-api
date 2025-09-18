@@ -1,11 +1,11 @@
-import type { UserRepository } from "../ports/user-repository.interface";
+import type { IUserFilter, IUserRepository } from "../ports/user-repository.interface";
 import User, { type TUser, type TUserInput } from "../ports/user.schema";
 
-export class MongooseUserRepo implements UserRepository {
+export class MongooseUserRepo implements IUserRepository {
     constructor(private readonly user: typeof User) { }
 
-    findUsers(): Promise<TUser[]> {
-        return this.user.find();
+    findUsers(filters?: IUserFilter): Promise<TUser[]> {
+        return this.user.find(filters || {});
     }
     findUserById(id: string): Promise<TUser | null> {
         return this.user.findById(id);

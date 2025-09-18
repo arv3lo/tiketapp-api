@@ -1,11 +1,11 @@
 import type { TUser, TUserInput } from "./ports/user.schema";
-import type { UserRepository } from "./ports/user-repository.interface";
+import type { IUserFilter, IUserRepository } from "./ports/user-repository.interface";
 
 export class UserService {
-    constructor(private readonly userRepository: UserRepository) { }
+    constructor(private readonly userRepository: IUserRepository) { }
 
-    async findUsers(): Promise<TUser[]> {
-        return this.userRepository.findUsers();
+    async findUsers(filters?: IUserFilter): Promise<TUser[]> {
+        return this.userRepository.findUsers(filters);
     }
 
     async findUserById(id: string): Promise<TUser | null> {

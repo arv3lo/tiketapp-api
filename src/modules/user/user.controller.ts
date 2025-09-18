@@ -9,10 +9,11 @@ import User from "@user/ports/user.schema";
 const userService = new UserService(new MongooseUserRepo(User));
 const router = Router();
 
-// TODO: dynamic error messages
+const filters = ["fullname", "email", "role"];
 
+// TODO: dynamic error messages
 router.get('/', async (req, res) => {
-    const users = await userService.findUsers();
+    const users = await userService.findUsers({ ..._.pick(req.query, filters) });
     if (!users) return res.status(404).json({ message: 'Users not found' });
 
     res.json(users);
