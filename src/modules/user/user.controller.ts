@@ -13,7 +13,7 @@ const filters = ["fullname", "email", "role"];
 
 // TODO: dynamic error messages
 router.get('/', async (req, res) => {
-    const users = await userService.findUsers({ ..._.pick(req.query, filters) });
+    const users = await userService.findUsers(_.pick(req.query, filters));
     if (!users) return res.status(404).json({ message: 'Users not found' });
 
     res.json(users);

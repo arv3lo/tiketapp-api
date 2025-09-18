@@ -5,7 +5,7 @@ export class MongooseUserRepo implements IUserRepository {
     constructor(private readonly user: typeof User) { }
 
     findUsers(filters?: IUserFilter): Promise<TUser[]> {
-        return this.user.find(filters || {});
+        return this.user.find(formatFilter(filters || {}));
     }
     findUserById(id: string): Promise<TUser | null> {
         return this.user.findById(id);
@@ -23,3 +23,12 @@ export class MongooseUserRepo implements IUserRepository {
         return this.user.findByIdAndDelete(id);
     }
 }
+
+// this filter depends of what orm/odm is used 
+// that's why it's here and not in the controller
+// (it adapts the filter to the orm/odm, hence the adapter)
+const formatFilter = (filters: IUserFilter) => {
+    const fullnameFilter = filters.fullname ? { fullname: { $regex: filters.fullname, $options: "i" } } : {};
+    return { ...filters, ...fullnameFilter }
+}
+
