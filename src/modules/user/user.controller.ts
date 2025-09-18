@@ -2,9 +2,9 @@ import { Router } from "express";
 import _ from "lodash"
 
 import { isValidID } from "@/middlewares";
-import { UserService } from "@modules/user/user.service";
-import { MongooseUserRepo } from "@modules/user/adapters/mongoose.user-repo";
-import User from "@modules/user/ports/user.schema";
+import { UserService } from "@user/user.service";
+import { MongooseUserRepo } from "@user/adapters/mongoose.user-repo";
+import User from "@user/ports/user.schema";
 
 const userService = new UserService(new MongooseUserRepo(User));
 const router = Router();
@@ -13,8 +13,6 @@ const router = Router();
 
 router.get('/', async (req, res) => {
     const users = await userService.findUsers();
-    // console.log('!req.userId', req.userId)
-    // console.log('!req.role', req.role)
     if (!users) return res.status(404).json({ message: 'Users not found' });
 
     res.json(users);

@@ -2,6 +2,9 @@ import { model, Schema, type InferSchemaType } from "mongoose";
 import z from "zod"
 import jwt from "jsonwebtoken"
 
+// TODO: add roles
+// TODO: decide whether separate user and artist models
+// or keep it as one
 const userSchema = new Schema({
     fullname: String,
     email: String,
