@@ -16,9 +16,9 @@ export enum EVENT_TYPE {
 
 export enum USER_ROLE {
     ADMIN = "admin",
-    ORGANIZER = "organizer",
+    ORGANIZER = "organizer", // sponsors and organizers can occupy this role
     ATTENDEE = "attendee",
-    ARTIST = "artist"
+    ARTIST = "artist",
 }
 
 

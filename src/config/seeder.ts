@@ -40,6 +40,8 @@ const createEvents = async (count: number) => {
         location: faker.location.city(),
         date: faker.date.anytime(),
         organizers: organizers[idx]._id.toString(),
+        sponsors: organizers[idx]._id.toString(),
+        artists: organizers[idx]._id.toString(),
         status: EVENT_STATUS.DRAFT,
         type: EVENT_TYPE.CONCERT
     }))

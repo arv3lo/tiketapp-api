@@ -8,7 +8,7 @@ import Event, {validateEvent} from "./ports/event.schema";
 const eventService = new EventService(new MongooseEventRepo(Event));
 const router = Router()
 
-const eventFilters = ["name", "date", "organizers", "status", "type"]
+const eventFilters = ["name", "date", "organizers", "status", "type", "artists", "sponsors"]
 const eventInputFields = [...eventFilters, "description"]
 // TODO: handle query params, pagination, sorting, filtering, populating
 // get events by organizer, by attented, by artist, by location

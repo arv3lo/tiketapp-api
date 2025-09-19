@@ -11,7 +11,6 @@ export class MongooseUserRepo implements IUserRepository {
         return this.user.findById(id);
     }
     createUser(user: TUserInput): Promise<TUser | null> {
-        console.log('!!user', user)
         return this.user.create(user);
     }
     bulkCreateUsers(users: TUserInput[]): Promise<TUser[] | null> {

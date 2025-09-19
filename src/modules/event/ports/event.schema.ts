@@ -15,6 +15,16 @@ const eventSchema = new Schema({
         ref: "User",
         required: true
     },
+    artists: {
+        type: [Schema.Types.ObjectId],
+        ref: "User",
+        required: true
+    },
+    sponsors: {
+        type: [Schema.Types.ObjectId],
+        ref: "User",
+        required: true
+    },
     // location: {
     //     type: {
     //         type: String, 
@@ -49,9 +59,11 @@ export const eventInput = z.object({
     date: z.date(),
     // time: z.string().min(3).max(100),
     description: z.string().min(3).max(100),
-    organizers: z.array(z.string()).min(1),
     status: z.enum(EVENT_STATUS).default(EVENT_STATUS.DRAFT),
     type: z.enum(EVENT_TYPE).default(EVENT_TYPE.CONCERT),
+    organizers: z.array(z.string()).min(1),
+    artists: z.array(z.string()),
+    sponsors: z.array(z.string()),
 });
 
 export type TEventInput = z.infer<typeof eventInput>
