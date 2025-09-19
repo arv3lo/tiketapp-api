@@ -1,10 +1,18 @@
+import type { IPaginationFields } from "@/common/interfaces"
 import type { TEvent, TEventInput } from "./event.schema"
 
 export interface EventRepository {
-    findEvents(): Promise<TEvent[]>
+    findEvents(filters?: IEventFilter): Promise<TEvent[]>
     findEventById(id: string): Promise<TEvent | null>
     // for dev purposes only
-    bulkCreateEvents(events: TEventInput[]): Promise<TEvent[] | null>
+    bulkCreateEvents(events: TEventInput[]): void
     createEvent(event: TEventInput): Promise<TEvent | null>
     updateEvent(id: string, event: TEventInput): Promise<TEvent | null>
+}
+
+export interface IEventFilter extends IPaginationFields {
+    name?: string;
+    organizers?: string[];
+    status?: string;
+    type?: string;
 }

@@ -1,10 +1,10 @@
-export enum EventStatus {
+export enum EVENT_STATUS {
     DRAFT = "draft",
     PUBLISHED = "published",
     CANCELLED = "cancelled"
 }
 
-export enum EventType {
+export enum EVENT_TYPE {
     ANIMATION = "animation",
     MEETING = "meeting",
     WORKSHOP = "workshop",
@@ -14,11 +14,11 @@ export enum EventType {
     OTHER = "other"
 }
 
-export enum UserRole {
+export enum USER_ROLE {
     ADMIN = "admin",
-    ORGANIZER = "organizer",
+    ORGANIZER = "organizer", // sponsors and organizers can occupy this role
     ATTENDEE = "attendee",
-    ARTIST = "artist"
+    ARTIST = "artist",
 }
 
 

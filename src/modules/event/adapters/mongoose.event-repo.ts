@@ -1,14 +1,25 @@
-import type { EventRepository } from "../ports/event-repository.interface";
+import type { EventRepository, IEventFilter } from "../ports/event-repository.interface";
 import Event, { type TEvent, type TEventInput } from "../ports/event.schema";
+
+const populateFields = ['fullname', 'email', '_id']
 
 export class MongooseEventRepo implements EventRepository {
     constructor(private readonly event: typeof Event) { }
 
-    findEvents(): Promise<TEvent[]> {
-        return this.event.find();
+    findEvents(filters?: IEventFilter): Promise<TEvent[]> {
+        return this.event.find(formatFilter(filters || {}))
+            .skip(((filters?.page || 1) - 1) * (filters?.limit || 10))
+            .limit(filters?.limit || 10)
+            .sort({ [filters?.sort || 'createdAt']: filters?.order === "asc" ? 1 : -1 })
+            .populate('organizers', populateFields)
+            .populate('artists', populateFields)
+            .populate('sponsors', populateFields);
     }
     findEventById(id: string): Promise<TEvent | null> {
-        return this.event.findById(id);
+        return this.event.findById(id)
+            .populate('organizers', populateFields)
+            .populate('artists', populateFields)
+            .populate('sponsors', populateFields);
     }
     createEvent(event: TEventInput): Promise<TEvent | null> {
         return this.event.create(event);
@@ -19,4 +30,13 @@ export class MongooseEventRepo implements EventRepository {
     updateEvent(id: string, event: TEventInput): Promise<TEvent | null> {
         return this.event.findByIdAndUpdate(id, event);
     }
+}
+
+// only complex filters goes here
+const formatFilter = (filters: IEventFilter) => {
+    const nameFilter = filters.name ? { name: { $regex: filters.name, $options: "i" } } : {};
+    const organizersFilter = filters.organizers ? { organizers: { $in: filters.organizers } } : {};
+    const { limit, page, sort, order, ...rest } = filters
+    
+    return { ...rest, ...nameFilter, ...organizersFilter }
 }
