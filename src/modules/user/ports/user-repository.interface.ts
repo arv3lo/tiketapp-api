@@ -1,3 +1,4 @@
+import type { IPaginationFields } from '@/common/interfaces';
 import type { TUser, TUserInput } from './user.schema';
 
 export interface IUserRepository {
@@ -9,13 +10,9 @@ export interface IUserRepository {
   updateUser(id: string, user: Partial<TUserInput>): Promise<TUser | null>;
 }
 
-export interface IUserFilter {
-    fullname?: string;
-    email?: string;
-    role?: string;
-    page?: number;
-    limit?: number;
-    sort?: string;
-    order?: number; // 1 | -1
+export interface IUserFilter extends IPaginationFields {
+  fullname?: string;
+  email?: string;
+  role?: string;
 }
 

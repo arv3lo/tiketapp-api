@@ -13,7 +13,7 @@ const eventInputFields = [...eventFilters, "description"]
 // TODO: handle query params, pagination, sorting, filtering, populating
 // get events by organizer, by attented, by artist, by location
 router.get('/', async (req, res) => {
-    const events = await eventService.findEvents(_.pick(req.query, eventFilters));
+    const events = await eventService.findEvents(req.query);
     if (!events) return res.status(404).json({ message: 'Events not found' });
 
     res.json(events);

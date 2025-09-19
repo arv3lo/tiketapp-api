@@ -1,3 +1,4 @@
+import type { IPaginationFields } from "@/common/interfaces"
 import type { TEvent, TEventInput } from "./event.schema"
 
 export interface EventRepository {
@@ -9,10 +10,9 @@ export interface EventRepository {
     updateEvent(id: string, event: TEventInput): Promise<TEvent | null>
 }
 
-export interface IEventFilter {
+export interface IEventFilter extends IPaginationFields {
     name?: string;
     organizers?: string[];
     status?: string;
     type?: string;
 }
-    

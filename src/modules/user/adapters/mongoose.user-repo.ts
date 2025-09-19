@@ -5,11 +5,10 @@ export class MongooseUserRepo implements IUserRepository {
     constructor(private readonly user: typeof User) { }
 
     findUsers(filters?: IUserFilter): Promise<TUser[]> {
-        console.log('!!!', filters)
         return this.user.find(formatFilter(filters || {}))
             .skip(((filters?.page || 1) - 1) * (filters?.limit || 10))
             .limit(filters?.limit || 10)
-            // .sort({ [filters?.sort || 'createdAt']: filters?.order || 1 });
+            .sort({ [filters?.sort || 'createdAt']: filters?.order === "asc" ? 1 : -1 });
     }
     findUserById(id: string): Promise<TUser | null> {
         return this.user.findById(id);
@@ -31,6 +30,7 @@ export class MongooseUserRepo implements IUserRepository {
 const formatFilter = (filters: IUserFilter) => {
     const fullnameFilter = filters.fullname ? { fullname: { $regex: filters.fullname, $options: "i" } } : {};
     const { limit, page, sort, order, ...rest } = filters
+    
     return { ...rest, ...fullnameFilter, }
 }
 

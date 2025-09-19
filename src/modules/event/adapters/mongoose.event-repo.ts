@@ -8,6 +8,9 @@ export class MongooseEventRepo implements EventRepository {
 
     findEvents(filters?: IEventFilter): Promise<TEvent[]> {
         return this.event.find(formatFilter(filters || {}))
+            .skip(((filters?.page || 1) - 1) * (filters?.limit || 10))
+            .limit(filters?.limit || 10)
+            .sort({ [filters?.sort || 'createdAt']: filters?.order === "asc" ? 1 : -1 })
             .populate('organizers', populateFields)
             .populate('artists', populateFields)
             .populate('sponsors', populateFields);
@@ -33,6 +36,7 @@ export class MongooseEventRepo implements EventRepository {
 const formatFilter = (filters: IEventFilter) => {
     const nameFilter = filters.name ? { name: { $regex: filters.name, $options: "i" } } : {};
     const organizersFilter = filters.organizers ? { organizers: { $in: filters.organizers } } : {};
-
-    return { ...filters, ...nameFilter, ...organizersFilter }
+    const { limit, page, sort, order, ...rest } = filters
+    
+    return { ...rest, ...nameFilter, ...organizersFilter }
 }
