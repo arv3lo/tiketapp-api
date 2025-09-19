@@ -9,7 +9,7 @@ import User from "@user/ports/user.schema";
 import { EventService } from "@event/event.service";
 import { MongooseEventRepo } from "@event/adapters/mongoose.event-repo";
 import Event from "@event/ports/event.schema";
-import { EVENT_STATUS, EVENT_TYPE } from "@/common/enums";
+import { EVENT_STATUS, EVENT_TYPE, USER_ROLE } from "@/common/enums";
 
 const router = Router()
 const userService = new UserService(new MongooseUserRepo(User));
@@ -23,6 +23,7 @@ const createUsers = async (count: number) => {
             provider: "tiketapp.mg",
             allowSpecialCharacters: false
         }).toLowerCase(),
+        role: USER_ROLE.ATTENDEE,
         password: "pizzapizza" // faker.internet.password({ length: 20, memorable: true }),
     }))
 
@@ -50,8 +51,8 @@ const createEvents = async (count: number) => {
 }
 
 router.get('/', async (req, res) => {
-    await createUsers(5)
-    await createEvents(5)
+    await createUsers(25)
+    // await createEvents(5)
     res.json({ msg: "Seed complete ...." })
 })
 

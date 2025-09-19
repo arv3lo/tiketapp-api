@@ -1,14 +1,22 @@
 import type { EventRepository, IEventFilter } from "../ports/event-repository.interface";
 import Event, { type TEvent, type TEventInput } from "../ports/event.schema";
 
+const populateFields = ['fullname', 'email', '_id']
+
 export class MongooseEventRepo implements EventRepository {
     constructor(private readonly event: typeof Event) { }
 
     findEvents(filters?: IEventFilter): Promise<TEvent[]> {
-        return this.event.find(formatFilter(filters || {}));
+        return this.event.find(formatFilter(filters || {}))
+            .populate('organizers', populateFields)
+            .populate('artists', populateFields)
+            .populate('sponsors', populateFields);
     }
     findEventById(id: string): Promise<TEvent | null> {
-        return this.event.findById(id);
+        return this.event.findById(id)
+            .populate('organizers', populateFields)
+            .populate('artists', populateFields)
+            .populate('sponsors', populateFields);
     }
     createEvent(event: TEventInput): Promise<TEvent | null> {
         return this.event.create(event);

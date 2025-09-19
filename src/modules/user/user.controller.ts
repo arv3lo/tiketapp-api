@@ -16,7 +16,7 @@ const inputFields = [...filters, "createdAt", "updatedAt", "_id"];
 // we used pick to remove password here because omit is a bit slower 
 // and we met some issues using it
 router.get('/', async (req, res) => {
-    const users = await userService.findUsers(_.pick(req.query, filters));
+    const users = await userService.findUsers(req.query);
     if (!users) return res.status(404).json({ message: 'Users not found' });
     res.json(users.map(user => _.pick(user, inputFields)));
 });

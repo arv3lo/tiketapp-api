@@ -13,5 +13,9 @@ export interface IUserFilter {
     fullname?: string;
     email?: string;
     role?: string;
+    page?: number;
+    limit?: number;
+    sort?: string;
+    order?: number; // 1 | -1
 }
 
