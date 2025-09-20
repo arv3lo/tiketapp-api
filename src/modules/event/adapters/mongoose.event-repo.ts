@@ -28,7 +28,7 @@ export class MongooseEventRepo implements EventRepository {
         return this.event.insertMany(events);
     }
     updateEvent(id: string, event: TEventInput): Promise<TEvent | null> {
-        return this.event.findByIdAndUpdate(id, event);
+        return this.event.findByIdAndUpdate(id, event, { new: true });
     }
 }
 
@@ -37,6 +37,6 @@ const formatFilter = (filters: IEventFilter) => {
     const nameFilter = filters.name ? { name: { $regex: filters.name, $options: "i" } } : {};
     const organizersFilter = filters.organizers ? { organizers: { $in: filters.organizers } } : {};
     const { limit, page, sort, order, ...rest } = filters
-    
+
     return { ...rest, ...nameFilter, ...organizersFilter }
 }

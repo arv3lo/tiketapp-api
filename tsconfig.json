@@ -28,6 +28,8 @@
       "@auth/*": ["./src/modules/auth/*"],
       "@user/*": ["./src/modules/user/*"],
       "@event/*": ["./src/modules/event/*"],
+      "@setup/*": ["./src/modules/ticket/ticket-setup/setup/*"],
+      "@category/*": ["./src/modules/ticket/ticket-setup/category/*"],
     },
   },
   "include": ["src/**/*", "src/types/express.d.ts"]
