@@ -15,6 +15,7 @@ const router = Router()
 const userService = new UserService(new MongooseUserRepo(User));
 const eventService = new EventService(new MongooseEventRepo(Event));
 
+// TODO: create users with different roles
 const createUsers = async (count: number) => {
     await User.deleteMany()
     const users = Array.from({ length: count }, () => ({
@@ -30,6 +31,7 @@ const createUsers = async (count: number) => {
     return await userService.bulkCreateUsers(users)
 }
 
+// TODO: create events with different types, organizers, sponsors, artists
 const createEvents = async (count: number) => {
     await Event.deleteMany()
     const organizers = await createUsers(count);
@@ -52,7 +54,7 @@ const createEvents = async (count: number) => {
 
 router.get('/', async (req, res) => {
     await createUsers(25)
-    // await createEvents(5)
+    await createEvents(5)
     res.json({ msg: "Seed complete ...." })
 })
 
