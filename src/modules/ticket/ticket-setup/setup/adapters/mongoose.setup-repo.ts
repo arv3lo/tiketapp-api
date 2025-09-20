@@ -1,5 +1,5 @@
-import type { TicketSetupRepository } from "../ports/setup.repository.interface";
-import TicketSetup, { type TicketSetupInput, type TTicketSetup } from "../ports/setup.schema";
+import type { TicketSetupRepository } from "@setup/ports/setup.repository.interface";
+import TicketSetup, { type TicketSetupInput, type TTicketSetup } from "@setup/ports/setup.schema";
 
 const populatedOrganizerFields = ['fullname', '_id']
 const populatedCategoriesFields = ['name', '_id']

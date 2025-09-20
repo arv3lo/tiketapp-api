@@ -1,5 +1,5 @@
-import type { TicketSetupRepository } from "./ports/setup.repository.interface";
-import type { TTicketSetup, TicketSetupInput } from "./ports/setup.schema";
+import type { TicketSetupRepository } from "@setup/ports/setup.repository.interface";
+import type { TTicketSetup, TicketSetupInput } from "@setup/ports/setup.schema";
 
 export class SetupService {
     constructor(private readonly setupRepository: TicketSetupRepository) { }

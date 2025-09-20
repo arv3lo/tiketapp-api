@@ -1,4 +1,4 @@
-import type { TicketSetupInput, TTicketSetup } from "./setup.schema";
+import type { TicketSetupInput, TTicketSetup } from "@setup/ports/setup.schema";
 
 export interface TicketSetupRepository {
     findTicketSetupById(id: string): Promise<TTicketSetup | null>
