@@ -19,7 +19,7 @@ const TickerSetupSchema = new Schema({
 })
 
 export default model('TicketSetup', TickerSetupSchema);
-export type TicketSetup = InferSchemaType<typeof TickerSetupSchema>
+export type TTicketSetup = InferSchemaType<typeof TickerSetupSchema>
 
 export const ticketSetupInput = z.object({
     name: z.string().min(3).max(100),

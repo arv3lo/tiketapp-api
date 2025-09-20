@@ -20,7 +20,7 @@ export class MongooseUserRepo implements IUserRepository {
         return this.user.insertMany(users);
     }
     updateUser(id: string, user: Partial<TUserInput>): Promise<TUser | null> {
-        return this.user.findByIdAndUpdate(id, user);
+        return this.user.findByIdAndUpdate(id, user, { new: true });
     }
 }
 
@@ -30,7 +30,7 @@ export class MongooseUserRepo implements IUserRepository {
 const formatFilter = (filters: IUserFilter) => {
     const fullnameFilter = filters.fullname ? { fullname: { $regex: filters.fullname, $options: "i" } } : {};
     const { limit, page, sort, order, ...rest } = filters
-    
+
     return { ...rest, ...fullnameFilter, }
 }
 
