@@ -29,16 +29,16 @@ router.get('/:id', isValidID, async (req, res) => {
 });
 
 router.post('/', async (req, res) => {
-    const user = req.body;
-    const createdUser = await userService.createUser(validateUser(user));
+    const userInput = validateUser(req.body);
+    const createdUser = await userService.createUser(userInput);
     if (!createdUser) return res.status(404).json({ message: 'User not created' });
 
     res.json(_.pick(createdUser, inputFields));
 });
 
 router.put('/:id', isValidID, async (req, res) => {
-    const user = req.body;
-    const updatedUser = await userService.updateUser(req.params.id, validateUser(user));
+    const userInput = validateUser(req.body);
+    const updatedUser = await userService.updateUser(req.params.id, userInput);
     if (!updatedUser) return res.status(404).json({ message: 'User not updated' });
 
     res.json(_.pick(updatedUser, inputFields));

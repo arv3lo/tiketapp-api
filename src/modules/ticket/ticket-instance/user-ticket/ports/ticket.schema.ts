@@ -21,7 +21,7 @@ const TicketSchema = new Schema({
 }, { timestamps: true })
 
 export default model('Ticket', TicketSchema)
-export type Ticket = InferSchemaType<typeof TicketSchema>
+export type TTicket = InferSchemaType<typeof TicketSchema>
 
 export const ticketInput = z.object({
     ticketCategory: z.string(),
