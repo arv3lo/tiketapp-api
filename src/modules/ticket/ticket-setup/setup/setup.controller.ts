@@ -14,6 +14,7 @@ router.get('/:organizerID', async (req, res) => {
     const setup = await setupService.findTicketSetupByOrganizerId(req.params.organizerID)
     if (!setup) return res.status(404).json({ message: 'Setup not found' })
 
+        console.log('setup', setup)
     res.json(_.pick(setup, inputFields))
 })
 

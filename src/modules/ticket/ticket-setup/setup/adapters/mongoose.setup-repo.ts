@@ -13,8 +13,8 @@ export class MongooseTicketSetupRepo implements TicketSetupRepository {
             .populate('categories', populatedCategoriesFields);
     }
 
-    findTicketSetupByOrganizerId(organizerId: string): Promise<TTicketSetup[]> {
-        return this.ticketSetup.find({ organizer: organizerId })
+    findTicketSetupByOrganizerId(organizerId: string): Promise<TTicketSetup | null> {
+        return this.ticketSetup.findOne({ organizer: organizerId })
             .populate('organizer', populatedOrganizerFields)
             .populate('categories', populatedCategoriesFields);
     }

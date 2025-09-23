@@ -2,7 +2,7 @@ import type { TicketSetupInput, TTicketSetup } from "@setup/ports/setup.schema";
 
 export interface TicketSetupRepository {
     findTicketSetupById(id: string): Promise<TTicketSetup | null>
-    findTicketSetupByOrganizerId(organizerId: string): Promise<TTicketSetup[]>
+    findTicketSetupByOrganizerId(organizerId: string): Promise<TTicketSetup | null>
     createTicketSetup(ticketSetup: TicketSetupInput): Promise<TTicketSetup>
     updateTicketSetup(id: string, ticketSetup: TicketSetupInput): Promise<TTicketSetup | null>
     deleteTicketSetup(id: string): Promise<TTicketSetup | null>
