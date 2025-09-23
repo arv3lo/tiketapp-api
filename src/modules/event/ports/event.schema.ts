@@ -1,7 +1,7 @@
-import { EVENT_STATUS, EVENT_TYPE } from "@/common/enums";
 import { model, Schema, type InferSchemaType } from "mongoose";
 import z from "zod"
 
+import { EVENT_STATUS, EVENT_TYPE } from "@/common/enums";
 // FILTERS: name, description, organizers, status, date, location, artists
 
 const eventSchema = new Schema({

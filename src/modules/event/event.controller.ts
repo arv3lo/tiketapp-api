@@ -1,9 +1,9 @@
 import { Router } from "express";
 import _ from "lodash";
 
-import { EventService } from "./event.service";
-import { MongooseEventRepo } from "./adapters/mongoose.event-repo";
-import Event, {validateEvent} from "./ports/event.schema";
+import { EventService } from "@event/event.service";
+import { MongooseEventRepo } from "@event/adapters/mongoose.event-repo";
+import Event, {validateEvent} from "@event/ports/event.schema";
 
 const eventService = new EventService(new MongooseEventRepo(Event));
 const router = Router()

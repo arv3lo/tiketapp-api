@@ -1,5 +1,5 @@
-import type { TUser, TUserInput } from "./ports/user.schema";
-import type { IUserFilter, IUserRepository } from "./ports/user-repository.interface";
+import type { TUser, TUserInput } from "@user/ports/user.schema";
+import type { IUserFilter, IUserRepository } from "@user/ports/user-repository.interface";
 
 export class UserService {
     constructor(private readonly userRepository: IUserRepository) { }

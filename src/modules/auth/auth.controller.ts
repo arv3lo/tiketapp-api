@@ -1,4 +1,5 @@
 import { Router } from "express";
+
 import User from "@user/ports/user.schema";
 
 const router = Router()

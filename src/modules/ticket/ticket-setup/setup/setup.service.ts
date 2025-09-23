@@ -8,7 +8,7 @@ export class SetupService {
         return this.setupRepository.findTicketSetupById(id);
     }
 
-    async findTicketSetupByOrganizerId(organizerId: string): Promise<TTicketSetup[]> {
+    async findTicketSetupByOrganizerId(organizerId: string): Promise<TTicketSetup | null> {
         return this.setupRepository.findTicketSetupByOrganizerId(organizerId);
     }
 
