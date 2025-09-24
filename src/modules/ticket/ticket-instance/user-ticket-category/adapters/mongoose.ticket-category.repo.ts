@@ -17,6 +17,10 @@ export class MongooseTicketCategoryRepo implements ITicketCategoryRepository {
         return this.ticketCategory.create(category)
     }
 
+    async bulkCreateCategories(categories: TicketCategoryInput[]): Promise<TTicketCategory[]> {
+        return this.ticketCategory.insertMany(categories)
+    }
+
     async updateCategory(id: string, category: Partial<TicketCategoryInput>): Promise<TTicketCategory | null> {
         return this.ticketCategory.findByIdAndUpdate(id, category, { new: true })
     }

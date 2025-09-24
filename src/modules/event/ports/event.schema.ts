@@ -2,6 +2,7 @@ import { model, Schema, type InferSchemaType } from "mongoose";
 import z from "zod"
 
 import { EVENT_STATUS, EVENT_TYPE } from "@/common/enums";
+import type { TObjectId } from "@/common/types";
 // FILTERS: name, description, organizers, status, date, location, artists
 
 const eventSchema = new Schema({
@@ -20,11 +21,11 @@ const eventSchema = new Schema({
         ref: "User",
         required: true
     },
-    sponsors: {
-        type: [Schema.Types.ObjectId],
-        ref: "User",
-        required: true
-    },
+    // sponsors: {
+    //     type: [Schema.Types.ObjectId],
+    //     ref: "User",
+    //     required: true
+    // },
     // location: {
     //     type: {
     //         type: String, 
@@ -46,12 +47,13 @@ const eventSchema = new Schema({
         enum: EVENT_STATUS,
         default: EVENT_STATUS.DRAFT
     },
+    // ticketSetup: Number
 }, {
     timestamps: true
 });
 
 export default model('Event', eventSchema);
-export type TEvent = InferSchemaType<typeof eventSchema>
+export type TEvent = InferSchemaType<typeof eventSchema> & { _id: TObjectId }
 
 export const eventInput = z.object({
     name: z.string().min(3).max(100),
@@ -63,7 +65,9 @@ export const eventInput = z.object({
     type: z.enum(EVENT_TYPE).default(EVENT_TYPE.CONCERT),
     organizers: z.array(z.string()).min(1),
     artists: z.array(z.string()),
-    sponsors: z.array(z.string()),
+    // sponsors: z.array(z.string()),
+    // o: none, 1: existing setup, 2: new setup
+    // ticketSetup: z.number().gte(0).lte(2).default(0)
 });
 
 export type TEventInput = z.infer<typeof eventInput>

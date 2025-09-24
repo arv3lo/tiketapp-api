@@ -8,10 +8,11 @@ export class MongooseUserRepo implements IUserRepository {
         return this.user.find(formatFilter(filters || {}))
             .skip(((filters?.page || 1) - 1) * (filters?.limit || 10))
             .limit(filters?.limit || 10)
-            .sort({ [filters?.sort || 'createdAt']: filters?.order === "asc" ? 1 : -1 });
+            .sort({ [filters?.sort || 'createdAt']: filters?.order === "asc" ? 1 : -1 })
+            .lean()
     }
     findUserById(id: string): Promise<TUser | null> {
-        return this.user.findById(id);
+        return this.user.findById(id).lean()
     }
     createUser(user: TUserInput): Promise<TUser | null> {
         return this.user.create(user);

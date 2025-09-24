@@ -1,14 +1,15 @@
+import type { PopulatedTicketSetup } from "@/common/types";
 import type { TicketSetupRepository } from "@setup/ports/setup.repository.interface";
 import type { TTicketSetup, TicketSetupInput } from "@setup/ports/setup.schema";
 
 export class SetupService {
     constructor(private readonly setupRepository: TicketSetupRepository) { }
 
-    async findTicketSetupById(id: string): Promise<TTicketSetup | null> {
+    async findTicketSetupById(id: string): Promise<PopulatedTicketSetup | null> {
         return this.setupRepository.findTicketSetupById(id);
     }
 
-    async findTicketSetupByOrganizerId(organizerId: string): Promise<TTicketSetup | null> {
+    async findTicketSetupByOrganizerId(organizerId: string): Promise<PopulatedTicketSetup | null> {
         return this.setupRepository.findTicketSetupByOrganizerId(organizerId);
     }
 

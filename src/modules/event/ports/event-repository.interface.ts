@@ -5,7 +5,7 @@ export interface EventRepository {
     findEvents(filters?: IEventFilter): Promise<TEvent[]>
     findEventById(id: string): Promise<TEvent | null>
     // for dev purposes only
-    bulkCreateEvents(events: TEventInput[]): void
+    bulkCreateEvents(events: TEventInput[]): Promise<TEvent[] | null>
     createEvent(event: TEventInput): Promise<TEvent | null>
     updateEvent(id: string, event: TEventInput): Promise<TEvent | null>
 }

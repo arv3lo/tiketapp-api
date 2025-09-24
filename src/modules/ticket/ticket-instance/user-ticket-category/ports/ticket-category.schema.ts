@@ -19,8 +19,8 @@ export const ticketCategoryInput = z.object({
     name: z.string().min(3).max(100),
     description: z.string(),
     event: z.string(),
-    price: z.number(),
-    amountAvailable: z.number(),
+    price: z.number().optional(),
+    amountAvailable: z.number().optional(),
 })
 
 export type TicketCategoryInput = z.infer<typeof ticketCategoryInput>

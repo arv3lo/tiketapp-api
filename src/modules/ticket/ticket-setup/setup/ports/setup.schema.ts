@@ -23,7 +23,7 @@ export type TTicketSetup = InferSchemaType<typeof TickerSetupSchema>
 
 export const ticketSetupInput = z.object({
     name: z.string().min(3).max(100),
-    description: z.string(),
+    description: z.string().optional(),
     organizer: z.string(),
     categories: z.array(z.string())
 })

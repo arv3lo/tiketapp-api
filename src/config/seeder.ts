@@ -24,7 +24,7 @@ const createUsers = async (count: number, role?: string) => {
             provider: "tiketapp.mg",
             allowSpecialCharacters: false
         }).toLowerCase(),
-        role: role || USER_ROLE.ORGANIZER,
+        role: (role || USER_ROLE.ORGANIZER) as USER_ROLE,
         password: "pizzapizza" // faker.internet.password({ length: 20, memorable: true }),
     }))
 
@@ -42,8 +42,8 @@ const createEvents = async (count: number) => {
         description: faker.lorem.sentence(),
         location: faker.location.city(),
         date: faker.date.anytime(),
-        organizers: organizers.map((user) => user._id.toString()),
-        artists: artists.map((user) => user._id.toString()),
+        organizers: organizers.map((user) => user._id),
+        artists: artists.map((user) => user._id),
         status: EVENT_STATUS.DRAFT,
         type: EVENT_TYPE.CONCERT
     }))
@@ -68,7 +68,7 @@ const createTicketSetup = async () => {
         await TicketSetup.create({
             name: faker.lorem.word(),
             description: faker.lorem.sentence(),
-            organizer: organizer._id.toString(),
+            organizer: organizer._id,
             categories: ticketCategories,
         })
     })
@@ -84,10 +84,10 @@ const resetAll = async () => {
 router.get('/', async (req, res) => {
     await resetAll()
 
-    await createUsers(10, USER_ROLE.ARTIST);
-    await createUsers(5, USER_ROLE.ORGANIZER);
+    await createUsers(5, USER_ROLE.ARTIST);
+    await createUsers(2, USER_ROLE.ORGANIZER);
 
-    await createEvents(5)
+    await createEvents(2)
     await createTicketSetupCategory(["General", "VIP", "Backstage", "FanZone"])
     await createTicketSetup()
 

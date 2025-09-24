@@ -16,6 +16,10 @@ export class TicketCategoryService {
         return this.ticketCategoryRepository.createCategory(category)
     }
 
+    async bulkCreateCategories(categories: TicketCategoryInput[]): Promise<TTicketCategory[]> {
+        return this.ticketCategoryRepository.bulkCreateCategories(categories)
+    }
+
     async updateCategory(id: string, category: Partial<TicketCategoryInput>): Promise<TTicketCategory | null> {
         return this.ticketCategoryRepository.updateCategory(id, category)
     }
