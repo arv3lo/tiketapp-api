@@ -13,13 +13,13 @@ export class MongooseEventRepo implements EventRepository {
             .sort({ [filters?.sort || 'createdAt']: filters?.order === "asc" ? 1 : -1 })
             .populate('organizers', populateFields)
             .populate('artists', populateFields)
-            .populate('sponsors', populateFields);
+            // .populate('sponsors', populateFields);
     }
     findEventById(id: string): Promise<TEvent | null> {
         return this.event.findById(id)
             .populate('organizers', populateFields)
             .populate('artists', populateFields)
-            .populate('sponsors', populateFields);
+            // .populate('sponsors', populateFields);
     }
     createEvent(event: TEventInput): Promise<TEvent | null> {
         return this.event.create(event);

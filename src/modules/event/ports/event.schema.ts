@@ -58,16 +58,16 @@ export type TEvent = InferSchemaType<typeof eventSchema> & { _id: TObjectId }
 export const eventInput = z.object({
     name: z.string().min(3).max(100),
     // location: z.string().min(3).max(100),
-    date: z.date(),
+    date: z.date().optional(),
     // time: z.string().min(3).max(100),
     description: z.string().min(3).max(100),
     status: z.enum(EVENT_STATUS).default(EVENT_STATUS.DRAFT),
     type: z.enum(EVENT_TYPE).default(EVENT_TYPE.CONCERT),
     organizers: z.array(z.string()).min(1),
-    artists: z.array(z.string()),
+    artists: z.array(z.string()).optional(),
     // sponsors: z.array(z.string()),
     // o: none, 1: existing setup, 2: new setup
-    // ticketSetup: z.number().gte(0).lte(2).default(0)
+    ticketSetup: z.string().optional()
 });
 
 export type TEventInput = z.infer<typeof eventInput>
