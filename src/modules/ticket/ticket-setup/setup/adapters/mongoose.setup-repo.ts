@@ -1,5 +1,8 @@
+import type { PopulatedTicketSetup } from "@/common/types";
+import type { TUser } from "@/modules/user/ports/user.schema";
 import type { TicketSetupRepository } from "@setup/ports/setup.repository.interface";
 import TicketSetup, { type TicketSetupInput, type TTicketSetup } from "@setup/ports/setup.schema";
+import type { TCategory } from "../../category/ports/category.schema";
 
 const populatedOrganizerFields = ['fullname', '_id']
 const populatedCategoriesFields = ['name', '_id']
@@ -7,16 +10,18 @@ const populatedCategoriesFields = ['name', '_id']
 export class MongooseTicketSetupRepo implements TicketSetupRepository {
     constructor(private readonly ticketSetup: typeof TicketSetup) { }
 
-    findTicketSetupById(id: string): Promise<TTicketSetup | null> {
+    findTicketSetupById(id: string): Promise<PopulatedTicketSetup | null> {
         return this.ticketSetup.findById(id)
-            .populate('organizer', populatedOrganizerFields)
-            .populate('categories', populatedCategoriesFields);
+            .populate<{ organizer: TUser }>('organizer', populatedOrganizerFields)
+            .populate<{ categories: TCategory[] }>('categories', populatedCategoriesFields)
+            .lean();
     }
 
-    findTicketSetupByOrganizerId(organizerId: string): Promise<TTicketSetup[]> {
-        return this.ticketSetup.find({ organizer: organizerId })
-            .populate('organizer', populatedOrganizerFields)
-            .populate('categories', populatedCategoriesFields);
+    findTicketSetupByOrganizerId(organizerId: string): Promise<PopulatedTicketSetup | null> {
+        return this.ticketSetup.findOne({ organizer: organizerId })
+            .populate<{ organizer: TUser }>('organizer', populatedOrganizerFields)
+            .populate<{ categories: TCategory[] }>('categories', populatedCategoriesFields)
+            .lean();
     }
 
     createTicketSetup(ticketSetup: TicketSetupInput): Promise<TTicketSetup> {

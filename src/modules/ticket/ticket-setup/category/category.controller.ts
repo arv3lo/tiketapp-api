@@ -9,13 +9,24 @@ const router = Router()
 const categoryService = new CategoryService(new MongooseCategoryRepo(Category))
 
 // TODO: be careful with these AI generated field recommandations
-const inputFields = ['name', 'description', '_id']
+const inputFields = ['name', 'description', '_id', 'creator']
 
-router.get('/:setupID', async (req, res) => {
-    const category = await categoryService.findCategoryBySetupId(req.params.setupID)
-    if (!category) return res.status(404).json({ message: 'Category not found' })
+// in a future improved version, 
+// we will add a get categories by it's creator 
+// (only users & admins can create a category)
 
-    res.json(_.pick(category, inputFields))
+// router.get('/:userID', async (req, res) => {
+//     const category = await categoryService.findCategoryBySetupId(req.params.setupID)
+//     if (!category) return res.status(404).json({ message: 'Category not found' })
+
+//     res.json(_.pick(category, inputFields))
+// })
+
+router.get('/', async (req, res) => {
+    const categories = await categoryService.findCategories()
+    if (!categories) return res.status(404).json({ message: 'Categories not found' })
+
+    res.json(_.pick(categories, inputFields))
 })
 
 router.post('/', async (req, res) => {

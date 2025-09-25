@@ -5,7 +5,7 @@ const TickerSetupSchema = new Schema({
     name: String,
     description: String,
     organizer: {
-        type: [Schema.Types.ObjectId],
+        type: Schema.Types.ObjectId,
         ref: 'User',
         required: true
     },
@@ -23,9 +23,9 @@ export type TTicketSetup = InferSchemaType<typeof TickerSetupSchema>
 
 export const ticketSetupInput = z.object({
     name: z.string().min(3).max(100),
-    description: z.string(),
-    organizer: z.array(z.string()).min(1),
-    categories: z.array(z.string()).min(1)
+    description: z.string().optional(),
+    organizer: z.string(),
+    categories: z.array(z.string())
 })
 
 export type TicketSetupInput = z.infer<typeof ticketSetupInput>

@@ -4,13 +4,17 @@ import Category, { type TCategory, type TCategoryInput } from "@category/ports/c
 export class MongooseCategoryRepo implements CategoryRepository {
     constructor(private readonly category: typeof Category) { }
 
-    findCategoryById(id: string): Promise<TCategory | null> {
-        return this.category.findById(id)
+    findCategories(): Promise<TCategory[]> {
+        return this.category.find()
     }
 
-    findCategoryBySetupId(setupId: string): Promise<TCategory[]> {
-        return this.category.find({ setup: setupId })
-    }
+    // findCategoryById(id: string): Promise<TCategory | null> {
+    //     return this.category.findById(id)
+    // }
+
+    // findCategoryBySetupId(setupId: string): Promise<TCategory[]> {
+    //     return this.category.find({ setup: setupId })
+    // }
 
     createCategory(category: TCategoryInput): Promise<TCategory> {
         return this.category.create(category)

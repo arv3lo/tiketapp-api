@@ -1,5 +1,5 @@
-import type { EventRepository, IEventFilter } from "./ports/event-repository.interface";
-import type { TEvent, TEventInput } from "./ports/event.schema";
+import type { EventRepository, IEventFilter } from "@event/ports/event-repository.interface";
+import type { TEvent, TEventInput } from "@event/ports/event.schema";
 
 export class EventService {
     constructor(private readonly eventRepository: EventRepository) { }

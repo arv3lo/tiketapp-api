@@ -30,6 +30,8 @@
       "@event/*": ["./src/modules/event/*"],
       "@setup/*": ["./src/modules/ticket/ticket-setup/setup/*"],
       "@category/*": ["./src/modules/ticket/ticket-setup/category/*"],
+      "@user-ticket/*": ["./src/modules/ticket/ticket-instance/user-ticket/*"],
+      "@user-ticket-category/*": ["./src/modules/ticket/ticket-instance/user-ticket-category/*"],
     },
   },
   "include": ["src/**/*", "src/types/express.d.ts"]
