@@ -2,7 +2,8 @@ import { model, Schema, type InferSchemaType } from "mongoose";
 import z from "zod";
 
 import { TICKET_STATUS } from "@/common/enums";
-
+// TICKETS are created only when a user buys them
+// edited when user pays, cancels or transfer them to another users/*
 const TicketSchema = new Schema({
     ticketCategory: {
         type: Schema.Types.ObjectId,
@@ -26,8 +27,8 @@ export type TTicket = InferSchemaType<typeof TicketSchema>
 export const ticketInput = z.object({
     ticketCategory: z.string(),
     user: z.string(),
-    status: z.enum(TICKET_STATUS),
-    amount: z.number().min(1),
+    status: z.enum(TICKET_STATUS).optional().default(TICKET_STATUS.PENDING),
+    amount: z.number().min(1).optional().default(1),
 })
 
 export type TicketInput = z.infer<typeof ticketInput>

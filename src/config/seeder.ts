@@ -12,6 +12,8 @@ import Event from "@event/ports/event.schema";
 import Category from "@category/ports/category.schema";
 import TicketSetup from "@setup/ports/setup.schema";
 
+import TicketCategory from "@user-ticket-category/ports/ticket-category.schema";
+
 const router = Router()
 const userService = new UserService(new MongooseUserRepo(User));
 const eventService = new EventService(new MongooseEventRepo(Event));
@@ -74,22 +76,43 @@ const createTicketSetup = async () => {
     })
 }
 
+const createAvailableTickets = async () => {
+    const ticketCategories = await Category.find()
+    const events = await Event.find()
+
+    ticketCategories.forEach(async (ticketCategory) => {
+        events.forEach(async (event) => {
+            await TicketCategory.create({
+                name: ticketCategory.name,
+                description: ticketCategory.description,
+                event: event._id,
+                price: 3000,
+                availableAmount: 250,
+            })
+        })
+    })
+}
+
 const resetAll = async () => {
     await User.deleteMany()
     await Event.deleteMany()
     await Category.deleteMany()
     await TicketSetup.deleteMany()
+    await TicketCategory.deleteMany()
 }
 
 router.get('/', async (req, res) => {
     await resetAll()
 
-    await createUsers(5, USER_ROLE.ARTIST);
+    await createUsers(5, USER_ROLE.ATTENDEE);
+    await createUsers(3, USER_ROLE.ARTIST);
     await createUsers(2, USER_ROLE.ORGANIZER);
 
     await createEvents(2)
     await createTicketSetupCategory(["General", "VIP", "Backstage", "FanZone"])
     await createTicketSetup()
+
+    await createAvailableTickets()
 
     res.json({ msg: "Seed complete ...." })
 })
