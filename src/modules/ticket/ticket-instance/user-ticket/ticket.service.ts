@@ -8,6 +8,7 @@ export class TicketService {
         return this.ticketRepository.findTicketById(id)
     }
 
+    // TODO: this one should be sold ticket count for an event
     async findTicketByEventId(eventId: string): Promise<TTicket[]> {
         return this.ticketRepository.findTicketByEventId(eventId)
     }

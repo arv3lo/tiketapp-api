@@ -1,5 +1,6 @@
 import { model, Schema, type InferSchemaType } from "mongoose";
 import z from "zod";
+import { required } from "zod/mini";
 
 const TicketCategorySchema = new Schema({
     name: String,
@@ -9,7 +10,7 @@ const TicketCategorySchema = new Schema({
         ref: 'Event'
     },
     price: Number,
-    amountAvailable: Number,
+    availableAmount: { type: Number, default: 0 },
 }, { timestamps: true })
 
 export default model('TicketCategory', TicketCategorySchema)
@@ -20,7 +21,7 @@ export const ticketCategoryInput = z.object({
     description: z.string(),
     event: z.string(),
     price: z.number().optional(),
-    amountAvailable: z.number().optional(),
+    availableAmount: z.number().optional().default(0),
 })
 
 export type TicketCategoryInput = z.infer<typeof ticketCategoryInput>
