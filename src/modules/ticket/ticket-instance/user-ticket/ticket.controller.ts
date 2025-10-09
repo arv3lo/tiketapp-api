@@ -41,7 +41,8 @@ router.post('/', async (req, res) => {
     const ticket = await ticketService.createTicket(ticketInput)
     if (!ticket) return res.status(404).json({ message: 'Ticket not created' })
 
-    // for updating tickets availableAmount, we could use change streams and a replica set
+    // for updating tickets availableAmount, 
+    // we could use change streams and a replica set on database level
     // but for now, let's use an application level logic
     if (currentTicketCategory)
         await ticketCategoryService.updateCategory(ticketInput.ticketCategory, { availableAmount: currentTicketCategory.availableAmount - ticketInput.amount })
