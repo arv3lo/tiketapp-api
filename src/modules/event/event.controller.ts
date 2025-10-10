@@ -65,7 +65,7 @@ const handleEventTicketSetups = async (eventID: string, setupID: string) => {
     ))
 
     await ticketCategoryService.bulkCreateCategories(
-        currentCategories.map(category => ({ ...category, event: eventID }))
+        currentCategories.map(category => ({ ...category, event: eventID, availableAmount: 0 }))
     );
 
 }
