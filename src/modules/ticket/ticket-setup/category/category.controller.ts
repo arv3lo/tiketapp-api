@@ -2,8 +2,8 @@ import { Router } from "express"
 import _ from "lodash"
 
 import { CategoryService } from "@category/category.service"
-import { MongooseCategoryRepo } from "@category/adapters/mongoose.category-repo"
-import Category, { validateCategoryInput } from "@category/ports/category.schema"
+import { MongooseCategoryRepo } from "@category/adapters/mongodb/category-repo"
+import Category, { validateCategoryInput } from "@category/adapters/mongodb/category.schema"
 
 const router = Router()
 const categoryService = new CategoryService(new MongooseCategoryRepo(Category))

@@ -1,5 +1,5 @@
 import type { ITicketFilter, ITicketRepository } from "@user-ticket/ports/ticket.repository.interface";
-import type { TTicket, TicketInput } from "@user-ticket/ports/ticket.schema";
+import type { TTicket, TicketInput } from "@user-ticket/adapters/mongodb/ticket.schema";
 
 export class TicketService {
     constructor(private readonly ticketRepository: ITicketRepository) { }

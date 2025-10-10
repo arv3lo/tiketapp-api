@@ -1,5 +1,5 @@
 import type { IPaginationFields } from "@/common/interfaces";
-import type { TicketInput, TTicket } from "@user-ticket/ports/ticket.schema";
+import type { TicketInput, TTicket } from "@user-ticket/adapters/mongodb/ticket.schema";
 
 export interface ITicketRepository {
     findTickets(filters?: ITicketFilter): Promise<TTicket[]>

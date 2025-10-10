@@ -1,5 +1,5 @@
 import type { CategoryRepository } from "@category/ports/category.repository.interface";
-import type { TCategory, TCategoryInput } from "@category/ports/category.schema";
+import type { TCategory, TCategoryInput } from "@category/adapters/mongodb/category.schema";
 
 export class CategoryService {
     constructor(private readonly categoryRepository: CategoryRepository) { }

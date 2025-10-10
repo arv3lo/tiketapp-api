@@ -1,5 +1,5 @@
 import type { EventRepository, IEventFilter } from "@event/ports/event-repository.interface";
-import Event, { type TEvent, type TEventInput } from "@event/ports/event.schema";
+import Event, { type TEvent, type TEventInput } from "@event/adapters/mongodb/event.schema";
 
 const populateFields = ['fullname', 'email', '_id']
 

@@ -1,8 +1,8 @@
 import { Router } from "express";
 
 import { TicketCategoryService } from "@user-ticket-category/ticket-category.service";
-import { MongooseTicketCategoryRepo } from "@user-ticket-category/adapters/mongoose.ticket-category.repo";
-import TicketCategory, { validateTicketCategoryInput } from "@user-ticket-category/ports/ticket-category.schema";
+import { MongooseTicketCategoryRepo } from "@user-ticket-category/adapters/mongodb/ticket-category.repo";
+import TicketCategory, { validateTicketCategoryInput } from "@user-ticket-category/adapters/mongodb/ticket-category.schema";
 
 const router = Router()
 const ticketCategoryService = new TicketCategoryService(new MongooseTicketCategoryRepo(TicketCategory))

@@ -1,4 +1,4 @@
-import type { TUser, TUserInput } from "@user/ports/user.schema";
+import type { TUser, TUserInput } from "@user/adapters/mongodb/user.schema";
 import type { IUserFilter, IUserRepository } from "@user/ports/user-repository.interface";
 
 export class UserService {

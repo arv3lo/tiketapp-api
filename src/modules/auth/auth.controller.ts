@@ -1,6 +1,6 @@
 import { Router } from "express";
 
-import User from "@user/ports/user.schema";
+import User from "@user/adapters/mongodb/user.schema";
 
 const router = Router()
 

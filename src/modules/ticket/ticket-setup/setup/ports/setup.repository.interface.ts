@@ -1,5 +1,5 @@
 import type { PopulatedTicketSetup } from "@/common/types";
-import type { TicketSetupInput, TTicketSetup } from "@setup/ports/setup.schema";
+import type { TicketSetupInput, TTicketSetup } from "@setup/adapters/mongodb/setup.schema";
 
 export interface TicketSetupRepository {
     findTicketSetupById(id: string): Promise<PopulatedTicketSetup | null>

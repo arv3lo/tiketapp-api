@@ -1,6 +1,6 @@
-import type { TTicketSetup } from "@/modules/ticket/ticket-setup/setup/ports/setup.schema";
-import type { TUser } from "@/modules/user/ports/user.schema";
-import type { TCategory } from "@/modules/ticket/ticket-setup/category/ports/category.schema";
+import type { TTicketSetup } from "@setup/adapters/mongodb/setup.schema";
+import type { TUser } from "@user/adapters/mongodb/user.schema";
+import type { TCategory } from "@category/adapters/mongodb/category.schema";
 import { z } from "zod";
 import mongoose, { Types } from "mongoose";
 

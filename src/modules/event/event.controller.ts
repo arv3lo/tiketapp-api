@@ -2,16 +2,16 @@ import { Router } from "express";
 import _ from "lodash";
 
 import { EventService } from "@event/event.service";
-import { MongooseEventRepo } from "@event/adapters/mongoose.event-repo";
-import Event, { validateEvent } from "@event/ports/event.schema";
+import { MongooseEventRepo } from "@event/adapters/mongodb/event-repo";
+import Event, { validateEvent } from "@event/adapters/mongodb/event.schema";
 
 import { SetupService } from "@setup/setup.service";
-import { MongooseTicketSetupRepo } from "@setup/adapters/mongoose.setup-repo";
-import Setup from "@setup/ports/setup.schema";
+import { MongooseTicketSetupRepo } from "@setup/adapters/mongodb/setup-repo";
+import Setup from "@setup/adapters/mongodb/setup.schema";
 
 import { TicketCategoryService } from "@user-ticket-category/ticket-category.service";
-import { MongooseTicketCategoryRepo } from "@user-ticket-category/adapters/mongoose.ticket-category.repo";
-import TicketCategory from "@user-ticket-category/ports/ticket-category.schema";
+import { MongooseTicketCategoryRepo } from "@user-ticket-category/adapters/mongodb/ticket-category.repo";
+import TicketCategory from "@user-ticket-category/adapters/mongodb/ticket-category.schema";
 
 const eventService = new EventService(new MongooseEventRepo(Event));
 const setupService = new SetupService(new MongooseTicketSetupRepo(Setup));

@@ -4,15 +4,15 @@ import { faker } from "@faker-js/faker";
 
 import { EVENT_STATUS, EVENT_TYPE, USER_ROLE } from "@/common/enums";
 import { UserService } from "@user/user.service";
-import { MongooseUserRepo } from "@user/adapters/mongoose.user-repo";
-import User, { type TUserInput } from "@user/ports/user.schema";
+import { MongooseUserRepo } from "@user/adapters/mongodb/user-repo";
+import User, { type TUserInput } from "@user/adapters/mongodb/user.schema";
 import { EventService } from "@event/event.service";
-import { MongooseEventRepo } from "@event/adapters/mongoose.event-repo";
-import Event from "@event/ports/event.schema";
-import Category from "@category/ports/category.schema";
-import TicketSetup from "@setup/ports/setup.schema";
+import { MongooseEventRepo } from "@event/adapters/mongodb/event-repo";
+import Event from "@event/adapters/mongodb/event.schema";
+import Category from "@category/adapters/mongodb/category.schema";
+import TicketSetup from "@setup/adapters/mongodb/setup.schema";
 
-import TicketCategory from "@user-ticket-category/ports/ticket-category.schema";
+import TicketCategory from "@user-ticket-category/adapters/mongodb/ticket-category.schema";
 
 const router = Router()
 const userService = new UserService(new MongooseUserRepo(User));
