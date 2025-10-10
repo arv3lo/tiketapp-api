@@ -12,10 +12,9 @@ const router = Router()
 const ticketService = new TicketService(new MongooseTicketRepo(Ticket))
 const ticketCategoryService = new TicketCategoryService(new MongooseTicketCategoryRepo(TicketCategory))
 
-// get tickets by eventID, userID, status, dates, etc.
+// get tickets by categoryID, userID, status, dates, etc.
 router.get('/', async (req, res) => {
-    // TODO: check the following line
-    const tickets = await ticketService.findTicketByEventId(req.query.eventId as string)
+    const tickets = await ticketService.findTickets(req.query)
     if (!tickets) return res.status(404).json({ message: 'Tickets not found' })
 
     res.json(tickets)
