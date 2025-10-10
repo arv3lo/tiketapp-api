@@ -11,5 +11,9 @@ export function authentication(req: Request, res: Response, next: NextFunction) 
         next();
     } catch (ex) {
         res.status(400).send('Invalid token.');
+        // return new Response(JSON.stringify({ message: "Invalid token" }), {
+        //     status: 400,
+        //     headers: { "Content-Type": "application/json" }
+        // })
     }
 }

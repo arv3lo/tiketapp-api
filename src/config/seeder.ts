@@ -5,7 +5,7 @@ import { faker } from "@faker-js/faker";
 import { EVENT_STATUS, EVENT_TYPE, USER_ROLE } from "@/common/enums";
 import { UserService } from "@user/user.service";
 import { MongooseUserRepo } from "@user/adapters/mongoose.user-repo";
-import User from "@user/ports/user.schema";
+import User, { type TUserInput } from "@user/ports/user.schema";
 import { EventService } from "@event/event.service";
 import { MongooseEventRepo } from "@event/adapters/mongoose.event-repo";
 import Event from "@event/ports/event.schema";
@@ -18,9 +18,8 @@ const router = Router()
 const userService = new UserService(new MongooseUserRepo(User));
 const eventService = new EventService(new MongooseEventRepo(Event));
 
-// TODO: create users with different roles
-const createUsers = async (count: number, role?: string) => {
-    const users = Array.from({ length: count }, () => ({
+export const generateUsers = (count: number, role?: USER_ROLE): TUserInput[] => {
+    return Array.from({ length: count }, () => ({
         fullname: faker.person.fullName(),
         email: faker.internet.email({
             provider: "tiketapp.mg",
@@ -29,7 +28,11 @@ const createUsers = async (count: number, role?: string) => {
         role: (role || USER_ROLE.ORGANIZER) as USER_ROLE,
         password: "pizzapizza" // faker.internet.password({ length: 20, memorable: true }),
     }))
+}
 
+// TODO: create users with different roles
+const createUsers = async (count: number, role?: USER_ROLE) => {
+    const users = generateUsers(count, role)
     return await userService.bulkCreateUsers(users)
 }
 

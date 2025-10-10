@@ -17,7 +17,7 @@ const inputFields = [...filters, "createdAt", "updatedAt", "_id"];
 // and we met some issues using it
 router.get('/', async (req, res) => {
     const users = await userService.findUsers(req.query);
-    if (!users) return res.status(404).json({ message: 'Users not found' });
+    if (!users || users.length === 0) return res.status(404).json({ message: 'Users not found' });
     res.json(users.map(user => _.pick(user, inputFields)));
 });
 
@@ -29,6 +29,7 @@ router.get('/:id', isValidID, async (req, res) => {
 });
 
 router.post('/', async (req, res) => {
+    // TODO: try catch the following method, it returns 500 when an error occurs
     const userInput = validateUser(req.body);
     const createdUser = await userService.createUser(userInput);
     if (!createdUser) return res.status(404).json({ message: 'User not created' });

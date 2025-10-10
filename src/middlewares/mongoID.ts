@@ -3,6 +3,6 @@ import mongoose from "mongoose";
 
 export function isValidID(req: Request, res: Response, next: NextFunction) {
     if (!mongoose.Types.ObjectId.isValid(req.params.id))
-        return res.status(404).send('Invalid mongoDB ID');
+        return res.status(400).send('Invalid mongoDB ID');
     next();
 }
