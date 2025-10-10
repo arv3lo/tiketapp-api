@@ -29,6 +29,7 @@ router.get('/:id', isValidID, async (req, res) => {
 });
 
 router.post('/', async (req, res) => {
+    // TODO: try catch the following method, it returns 500 when an error occurs
     const userInput = validateUser(req.body);
     const createdUser = await userService.createUser(userInput);
     if (!createdUser) return res.status(404).json({ message: 'User not created' });
