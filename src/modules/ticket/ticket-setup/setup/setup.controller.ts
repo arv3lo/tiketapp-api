@@ -2,8 +2,8 @@ import { Router } from "express"
 import _ from "lodash"
 
 import { SetupService } from "@setup/setup.service"
-import { MongooseTicketSetupRepo } from "@setup/adapters/mongoose.setup-repo"
-import TicketSetup, { validateTicketSetupInput } from "@setup/ports/setup.schema"
+import { MongooseTicketSetupRepo } from "@setup/adapters/mongodb/setup-repo"
+import TicketSetup, { validateTicketSetupInput } from "@setup/adapters/mongodb/setup.schema"
 
 const router = Router()
 const setupService = new SetupService(new MongooseTicketSetupRepo(TicketSetup))

@@ -1,5 +1,5 @@
 import type { IPaginationFields } from "@/common/interfaces"
-import type { TEvent, TEventInput } from "./event.schema"
+import type { TEvent, TEventInput } from "../adapters/mongodb/event.schema"
 
 export interface EventRepository {
     findEvents(filters?: IEventFilter): Promise<TEvent[]>

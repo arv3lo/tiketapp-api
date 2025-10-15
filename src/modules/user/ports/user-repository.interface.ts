@@ -1,5 +1,5 @@
 import type { IPaginationFields } from '@/common/interfaces';
-import type { TUser, TUserInput } from '@user/ports/user.schema';
+import type { TUser, TUserInput } from '@user/adapters/mongodb/user.schema';
 
 export interface IUserRepository {
   findUsers(filters?: IUserFilter): Promise<TUser[]>;

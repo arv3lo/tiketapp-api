@@ -1,4 +1,4 @@
-import type { TTicketCategory, TicketCategoryInput } from "@user-ticket-category/ports/ticket-category.schema";
+import type { TTicketCategory, TicketCategoryInput } from "@user-ticket-category/adapters/mongodb/ticket-category.schema";
 
 export interface ITicketCategoryRepository {
     findCategoryById(id: string): Promise<TTicketCategory | null>

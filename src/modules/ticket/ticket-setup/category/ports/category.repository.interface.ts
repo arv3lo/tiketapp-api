@@ -1,4 +1,4 @@
-import type { TCategoryInput, TCategory } from "@category/ports/category.schema";
+import type { TCategoryInput, TCategory } from "@category/adapters/mongodb/category.schema";
 
 export interface CategoryRepository {
     findCategories(): Promise<TCategory[]>

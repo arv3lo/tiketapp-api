@@ -3,8 +3,8 @@ import _ from "lodash"
 
 import { isValidID } from "@/middlewares";
 import { UserService } from "@user/user.service";
-import { MongooseUserRepo } from "@user/adapters/mongoose.user-repo";
-import User, { validateUser } from "@user/ports/user.schema";
+import { MongooseUserRepo } from "@user/adapters/mongodb/user-repo";
+import User, { validateUser } from "@user/adapters/mongodb/user.schema";
 
 const router = Router();
 const userService = new UserService(new MongooseUserRepo(User));
