@@ -29,6 +29,13 @@ export enum TICKET_STATUS {
     EXPIRED = "expired"
 }
 
+export enum PAYMENT_STATUS {
+    PENDING = "pending",
+    DONE = "done",
+    CANCELLED = "cancelled",
+    REFUNDED = "refunded",
+}
+
 export enum TICKET_ACTION {
     PAYMENT = "payment",
     CANCELATION = "cancelation",

@@ -1,5 +1,5 @@
-import type { ITicketFilter, ITicketRepository } from "@user-ticket/ports/ticket.repository.interface";
-import Ticket, { type TTicket, type TicketInput } from "@user-ticket/adapters/mongodb/ticket.schema";
+import type { ITicketFilter, ITicketRepository, TicketInput } from "@user-ticket/ports/ticket.repository.interface";
+import Ticket, { type TTicket } from "@user-ticket/adapters/mongodb/ticket.schema";
 
 export class MongooseTicketRepo implements ITicketRepository {
     constructor(private readonly ticket: typeof Ticket) { }
