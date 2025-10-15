@@ -2,11 +2,13 @@ import { Router } from "express";
 
 import { TicketService } from "@user-ticket/ticket.service";
 import { MongooseTicketRepo } from "@user-ticket/adapters/mongodb/ticket.repo";
-import Ticket, { validateTicketInput } from "@user-ticket/adapters/mongodb/ticket.schema";
+import Ticket from "@user-ticket/adapters/mongodb/ticket.schema";
+import { validateTicketInput } from "@user-ticket/ports/ticket.repository.interface";
 
 import { TicketCategoryService } from "@user-ticket-category/ticket-category.service";
 import { MongooseTicketCategoryRepo } from "@user-ticket-category/adapters/mongodb/ticket-category.repo";
 import TicketCategory from "@user-ticket-category/adapters/mongodb/ticket-category.schema";
+import { TICKET_ACTION, TICKET_STATUS } from "@/common/enums";
 
 const router = Router()
 const ticketService = new TicketService(new MongooseTicketRepo(Ticket))
@@ -17,20 +19,17 @@ router.get('/', async (req, res) => {
     const tickets = await ticketService.findTickets(req.query)
     if (!tickets) return res.status(404).json({ message: 'Tickets not found' })
 
-    res.json(tickets)
+    res.status(200).json(tickets)
 })
 
 router.get('/:id', async (req, res) => {
     const ticket = await ticketService.findTicketById(req.params.id)
     if (!ticket) return res.status(404).json({ message: 'Ticket not found' })
 
-    res.json(ticket)
+    res.status(200).json(ticket)
 })
 
 router.post('/', async (req, res) => {
-    // first, check ticket availability via ticket-category.service
-    // if available, create ticket
-    // if not available, return error
     const ticketInput = validateTicketInput(req.body)
     const currentTicketCategory = await ticketCategoryService.findCategoryById(ticketInput.ticketCategory)
 
@@ -46,17 +45,37 @@ router.post('/', async (req, res) => {
     if (currentTicketCategory)
         await ticketCategoryService.updateCategory(ticketInput.ticketCategory, { availableAmount: currentTicketCategory.availableAmount - ticketInput.amount })
 
-    res.json(ticket)
+    res.status(200).json(ticket)
 })
 
-// payments, cancellation, transfer user2user
 router.put('/:id', async (req, res) => {
     const ticketInput = validateTicketInput(req.body)
-    const ticket = await ticketService.updateTicket(req.params.id, ticketInput)
+    
+    let ticket = undefined
+    switch (ticketInput.action) {
+        case TICKET_ACTION.PAYMENT:
+            // send payment transaction to payment.service
+            // if payment successful, update ticket status, 
+            ticket = await ticketService.updateTicket(req.params.id, { status: TICKET_STATUS.PAID })
+            break;
+        case TICKET_ACTION.CANCELATION:
+            // launch a refund process if ticket refund date still not passed
+            // if refund successful, update ticket status, 
+            // update available ticket count
+            ticket = await ticketService.updateTicket(req.params.id, { status: TICKET_STATUS.CANCELLED })
+            break;
+        case TICKET_ACTION.TRANSFER:
+            // TRANSFER 2 USER == update ticket user, 
+            // trigger notification for the new user
+            ticket = await ticketService.updateTicket(req.params.id, { user: ticketInput.user })
+            break;
+    }
+    // ALL THAT should be stored in a history model
     if (!ticket) return res.status(404).json({ message: 'Ticket not updated' })
 
-    res.json(ticket)
+    res.status(200).json(ticket)
 })
+
 
 export default router;
 

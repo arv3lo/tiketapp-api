@@ -1,5 +1,5 @@
 import { model, Schema, type InferSchemaType } from "mongoose";
-import z from "zod";
+
 
 import { TICKET_STATUS } from "@/common/enums";
 // TICKETS are created only when a user buys them
@@ -24,12 +24,4 @@ const TicketSchema = new Schema({
 export default model('Ticket', TicketSchema)
 export type TTicket = InferSchemaType<typeof TicketSchema>
 
-export const ticketInput = z.object({
-    ticketCategory: z.string(),
-    user: z.string(),
-    status: z.enum(TICKET_STATUS).optional().default(TICKET_STATUS.PENDING),
-    amount: z.number().min(1).optional().default(1),
-})
 
-export type TicketInput = z.infer<typeof ticketInput>
-export const validateTicketInput = (input: TicketInput) => ticketInput.parse(input)

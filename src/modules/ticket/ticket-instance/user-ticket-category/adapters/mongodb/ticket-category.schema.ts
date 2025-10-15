@@ -1,6 +1,5 @@
 import { model, Schema, type InferSchemaType } from "mongoose";
 import z from "zod";
-import { required } from "zod/mini";
 
 const TicketCategorySchema = new Schema({
     name: String,

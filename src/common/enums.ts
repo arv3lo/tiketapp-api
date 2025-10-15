@@ -24,6 +24,13 @@ export enum USER_ROLE {
 export enum TICKET_STATUS {
     PENDING = "pending",
     PAID = "paid",
+    CANCELLED = "cancelled",
     REFUNDED = "refunded",
     EXPIRED = "expired"
+}
+
+export enum TICKET_ACTION {
+    PAYMENT = "payment",
+    CANCELATION = "cancelation",
+    TRANSFER = "transfer"
 }
