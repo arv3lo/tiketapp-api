@@ -1,5 +1,5 @@
-import type { ITicketFilter, ITicketRepository } from "@user-ticket/ports/ticket.repository.interface";
-import type { TTicket, TicketInput } from "@user-ticket/adapters/mongodb/ticket.schema";
+import type { ITicketFilter, ITicketRepository, TicketInput } from "@user-ticket/ports/ticket.repository.interface";
+import type { TTicket } from "@user-ticket/adapters/mongodb/ticket.schema";
 
 export class TicketService {
     constructor(private readonly ticketRepository: ITicketRepository) { }
@@ -12,7 +12,7 @@ export class TicketService {
         return this.ticketRepository.findTicketById(id)
     }
 
-    // TODO: this one should be sold ticket count for an event
+    // TODO: this one should also return sold ticket count for an event
     async findTicketByEventId(eventId: string): Promise<TTicket[]> {
         return this.ticketRepository.findTicketByEventId(eventId)
     }
