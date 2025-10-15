@@ -2,6 +2,9 @@ import type { PaymentPort } from "@payment/port/payment.interface";
 import Payment, { type TTransaction } from "@payment/adapters/mongodb/payment.schema";
 
 export class MongoosePaymentRepo implements PaymentPort {
+    //TODO: when the real payment service is ready, this will be replaced by a real payment service
+    // connect to the real payment service API here (stripe, mangopay, ...)
+    // ...
     private balances = new Map<string, number>();
 
     constructor(private readonly payment: typeof Payment) { }
