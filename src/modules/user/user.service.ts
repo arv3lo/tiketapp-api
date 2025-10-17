@@ -1,5 +1,5 @@
-import type { TUser, TUserInput } from "@user/adapters/mongodb/user.schema";
-import type { IUserFilter, IUserRepository } from "@/modules/user/ports/user.port";
+import type { TUser } from "@user/adapters/mongodb/user.schema";
+import type { IUserFilter, IUserRepository, TUserInput } from "@/modules/user/ports/user.port";
 
 export class UserService {
     constructor(private readonly userRepository: IUserRepository) { }
@@ -20,7 +20,7 @@ export class UserService {
         return this.userRepository.createUser(user);
     }
 
-    async updateUser(id: string, user: TUserInput): Promise<TUser | null> {
+    async updateUser(id: string, user: Partial<TUserInput>): Promise<TUser | null> {
         return this.userRepository.updateUser(id, user);
     }
 

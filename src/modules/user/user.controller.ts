@@ -5,7 +5,7 @@ import { isValidID } from "@/middlewares";
 import { UserService } from "@user/user.service";
 import { MongooseUserRepo } from "@user/adapters/mongodb/user-repo";
 import User from "@user/adapters/mongodb/user.schema";
-import { validateUser } from "@user/ports/user.port";
+import { validateUserInput } from "@user/ports/user.port";
 
 const router = Router();
 const userService = new UserService(new MongooseUserRepo(User));
@@ -31,7 +31,7 @@ router.get('/:id', isValidID, async (req, res) => {
 
 router.post('/', async (req, res) => {
     // TODO: try catch the following method, it returns 500 when an error occurs
-    const userInput = validateUser(req.body);
+    const userInput = validateUserInput(req.body);
     const createdUser = await userService.createUser(userInput);
     if (!createdUser) return res.status(404).json({ message: 'User not created' });
 
@@ -39,7 +39,7 @@ router.post('/', async (req, res) => {
 });
 
 router.put('/:id', isValidID, async (req, res) => {
-    const userInput = validateUser(req.body);
+    const userInput = validateUserInput(req.body);
     const updatedUser = await userService.updateUser(req.params.id, userInput);
     if (!updatedUser) return res.status(404).json({ message: 'User not updated' });
 

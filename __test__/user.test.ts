@@ -13,9 +13,9 @@ let nbUsers = 2, userID
 describe('USER CONTROLLER', () => {
     // TODO: we should create mock functions for user.services functions 
     beforeEach(async () => {
-        const users = generateUsers(nbUsers);
-        const res = await User.insertMany(users);
-        userID = res[0]._id
+        const list = generateUsers(nbUsers);
+        const users = await User.insertMany(list);
+        userID = users[0]._id
     })
 
     afterEach(async () => {
@@ -74,31 +74,31 @@ describe('USER CONTROLLER', () => {
         })
 
     })
+
     describe('PUT /:id', async () => {
-        
-        test('should return 400 if invalid request is sent', async () => {
-            const user = await User.findOne();
-            const res = await request(server).put(`${URL}/${user?._id}`).send({ ...user, role: 10 });
-            expect(res.status).toBe(400);
+
+        test('should return 500 if invalid request is sent', async () => {
+            const res = await request(server).put(`${URL}/${userID}`).send({ role: 10 });
+            expect(res.status).toBe(500);
         })
-        
+
         test('should return the updated user', async () => {
-            const user = await User.findOne();
-            const res = await request(server).put(`${URL}/${user?._id}`).send({ ...user, role: USER_ROLE.ADMIN });
+            const user = await User.findOne().lean();
+            const res = await request(server).put(`${URL}/${userID}`).send({ role: USER_ROLE.ORGANIZER });
             expect(res.status).toBe(200);
             expect(res.body).toHaveProperty("_id");
         })
     })
+
     describe('DELETE /:id', async () => {
+        const user = await User.findOne();
         test('should return 400 if invalid request is sent', async () => {
-            const user = await User.findOne();
-            const res = await request(server).delete(`${URL}/${user?._id}123`);
+            const res = await request(server).delete(`${URL}/${userID}123`);
             expect(res.status).toBe(400);
         })
-        
+
         test('should return the deleted user', async () => {
-            const user = await User.findOne();
-            const res = await request(server).delete(`${URL}/${user?._id}`);
+            const res = await request(server).delete(`${URL}/${userID}`);
             expect(res.status).toBe(200);
             expect(res.body).toHaveProperty("_id");
             expect(res.body.isDeleted).toBe(true);

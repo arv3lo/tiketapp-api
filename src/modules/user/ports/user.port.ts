@@ -20,15 +20,15 @@ export interface IUserFilter extends IPaginationFields {
 }
 
 export const userInput = z.object({
-    fullname: z.string().min(3).max(100),
-    email: z.email(),
-    role: z.enum(USER_ROLE, { error: "Must be a string" }),
-    password: z.string("Must be between 6 and 100 alphanumeric characters").min(6).max(100),
+    fullname: z.string().min(3).max(100).optional(),
+    email: z.email().optional(),
+    role: z.enum(USER_ROLE, { error: "Must be a string" }).optional(),
+    password: z.string("Must be between 6 and 100 alphanumeric characters").min(6).max(100).optional(),
     isDeleted: z.boolean().default(false).optional(),
 });
 
 export type TUserInput = z.infer<typeof userInput>
 
-export const validateUser = (user: TUserInput) => userInput.parse(user);
+export const validateUserInput = (user: TUserInput) => userInput.parse(user);
 
 

@@ -6,15 +6,16 @@ import { USER_ROLE } from "@/common/enums";
 // TODO: decide whether separate user and artist models
 // or keep it as one
 const userSchema = new Schema({
-    fullname: String,
-    email: String,
-    password: String,
+    fullname: { type: String, required: true },
+    email: { type: String, required: true },
+    password: { type: String, required: true },
     role: {
         type: String,
         enum: USER_ROLE,
-        default: USER_ROLE.ATTENDEE
+        default: USER_ROLE.ATTENDEE,
+        required: true
     },
-    isDeleted: Boolean,
+    isDeleted: { type: Boolean, default: false },
 }, {
     timestamps: true
 });
