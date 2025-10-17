@@ -62,9 +62,9 @@ describe('USER CONTROLLER', () => {
             role: USER_ROLE.ADMIN,
             password: faker.internet.password({ length: 20, memorable: true }),
         }
-        test('should return 500 if invalid request is sent', async () => {
+        test('should return 400 if invalid request is sent', async () => {
             const res = await request(server).post(URL).send({ ...validUser, role: 10 });
-            expect(res.status).toBe(500);
+            expect(res.status).toBe(400);
         })
 
         test('should return the newly created user', async () => {
@@ -76,14 +76,12 @@ describe('USER CONTROLLER', () => {
     })
 
     describe('PUT /:id', async () => {
-
-        test('should return 500 if invalid request is sent', async () => {
+        test('should return 400 if invalid request is sent', async () => {
             const res = await request(server).put(`${URL}/${userID}`).send({ role: 10 });
-            expect(res.status).toBe(500);
+            expect(res.status).toBe(400);
         })
 
         test('should return the updated user', async () => {
-            const user = await User.findOne().lean();
             const res = await request(server).put(`${URL}/${userID}`).send({ role: USER_ROLE.ORGANIZER });
             expect(res.status).toBe(200);
             expect(res.body).toHaveProperty("_id");
@@ -91,7 +89,6 @@ describe('USER CONTROLLER', () => {
     })
 
     describe('DELETE /:id', async () => {
-        const user = await User.findOne();
         test('should return 400 if invalid request is sent', async () => {
             const res = await request(server).delete(`${URL}/${userID}123`);
             expect(res.status).toBe(400);

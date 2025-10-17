@@ -30,20 +30,27 @@ router.get('/:id', isValidID, async (req, res) => {
 });
 
 router.post('/', async (req, res) => {
-    // TODO: try catch the following method, it returns 500 when an error occurs
-    const userInput = validateUserInput(req.body);
-    const createdUser = await userService.createUser(userInput);
-    if (!createdUser) return res.status(404).json({ message: 'User not created' });
+    try {
+        const userInput = validateUserInput(req.body);
+        const createdUser = await userService.createUser(userInput);
+        if (!createdUser) return res.status(404).json({ message: 'User not created' });
 
-    res.json(_.pick(createdUser, inputFields));
+        res.json(_.pick(createdUser, inputFields));
+    } catch (error) {
+        res.status(400).json({ message: "Invalid data types detected" });
+    }
 });
 
 router.put('/:id', isValidID, async (req, res) => {
-    const userInput = validateUserInput(req.body);
-    const updatedUser = await userService.updateUser(req.params.id, userInput);
-    if (!updatedUser) return res.status(404).json({ message: 'User not updated' });
+    try {
+        const userInput = validateUserInput(req.body);
+        const updatedUser = await userService.updateUser(req.params.id, userInput);
+        if (!updatedUser) return res.status(404).json({ message: 'User not updated' });
 
-    res.json(_.pick(updatedUser, inputFields));
+        res.json(_.pick(updatedUser, inputFields));
+    } catch (error) {
+        res.status(400).json({ message: "Invalid data types detected" });
+    }
 });
 
 router.delete('/:id', isValidID, async (req, res) => {
