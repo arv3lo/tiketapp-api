@@ -46,7 +46,7 @@ const createEvents = async (count: number) => {
         name: faker.lorem.word(),
         description: faker.lorem.sentence(),
         location: faker.location.city(),
-        date: faker.date.anytime(),
+        startDate: faker.date.soon({ days: 7 }),
         organizers: organizers.map((user) => user._id),
         artists: artists.map((user) => user._id),
         status: EVENT_STATUS.DRAFT,

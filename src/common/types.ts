@@ -17,3 +17,12 @@ export type PopulatedTicketSetup = Omit<TTicketSetup, 'organizer' | 'categories'
 ).transform((val: any) => new mongoose.Types.ObjectId(`${val}`))
 
 export type TObjectId = z.infer<typeof ObjectIdSchema>
+
+export type MongoChangeStreamPipeline = Array<{
+    $match?: {
+        operationType?: string;
+        'fullDocument.email'?: string;
+        [key: string]: any;
+    };
+    [key: string]: any;
+}>;

@@ -7,7 +7,8 @@ import type { TObjectId } from "@/common/types";
 
 const eventSchema = new Schema({
     name: String,
-    date: Date,
+    startDate: { type: Date, required: true },
+    endDate: { type: Date, required: false },
     // time: String,
     description: String,
     organizers: {
@@ -58,8 +59,8 @@ export type TEvent = InferSchemaType<typeof eventSchema> & { _id: TObjectId }
 export const eventInput = z.object({
     name: z.string().min(3).max(100),
     // location: z.string().min(3).max(100),
-    date: z.date().optional(),
-    // time: z.string().min(3).max(100),
+    startDate: z.date(),
+    endDate: z.date().optional(),
     description: z.string().min(3).max(100),
     status: z.enum(EVENT_STATUS).default(EVENT_STATUS.DRAFT),
     type: z.enum(EVENT_TYPE).default(EVENT_TYPE.CONCERT),

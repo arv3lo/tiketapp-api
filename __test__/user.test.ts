@@ -3,7 +3,7 @@ import { faker } from "@faker-js/faker";
 import request from "supertest"
 
 import { generateUsers } from "../src/config/seeder";
-import User from "../src/modules/user/ports/user.schema";
+import User from "../src/modules/user/adapters/mongodb/user.schema";
 import server from "../src/index";
 import { USER_ROLE } from "../src/common/enums";
 

@@ -40,7 +40,10 @@ router.post('/', async (req, res) => {
     if (!ticket) return res.status(404).json({ message: 'Ticket not created' })
 
     // for updating tickets availableAmount, 
-    // we could use change streams and a replica set on database level
+    // we could use change streams on database level
+    // - change streams using eventEmitter
+    // - change streams using hasNext function
+    // - triggers on mongoDB Atlas
     // but for now, let's use an application level logic
     if (currentTicketCategory)
         await ticketCategoryService.updateCategory(ticketInput.ticketCategory, { availableAmount: currentTicketCategory.availableAmount - ticketInput.amount })
@@ -65,6 +68,13 @@ router.put('/:id', async (req, res) => {
             ticket = await ticketService.updateTicket(req.params.id, { status: TICKET_STATUS.CANCELLED })
             break;
         case TICKET_ACTION.TRANSFER:
+            // only paid ticket can be transfered
+            // if we assume that ticket transfer is not a frequently used feature
+            // so we don't need to implement a specific endpoint for it
+            // let's just find the ticket first and check if it's already paid or not
+            ticket = await ticketService.findTicketById(req.params.id)
+            if (!ticket) return res.status(404).json({ message: 'Ticket not found' })
+            if (ticket.status !== TICKET_STATUS.PAID) return res.status(400).json({ message: 'Ticket must be paid to be transfered' })
             // TRANSFER 2 USER == update ticket user, 
             // trigger notification for the new user
             ticket = await ticketService.updateTicket(req.params.id, { user: ticketInput.user })
