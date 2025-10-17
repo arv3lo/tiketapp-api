@@ -41,3 +41,12 @@ export enum TICKET_ACTION {
     CANCELATION = "cancelation",
     TRANSFER = "transfer"
 }
+
+export enum ERROR_MESSAGE {
+    INVALID_INPUT = "Invalid input",
+    INVALID_ID = "Invalid id",
+    NOT_FOUND = "Not found",
+    NOT_CREATED = "Not created",
+    NOT_UPDATED = "Not updated",
+    NOT_DELETED = "Not deleted",
+}

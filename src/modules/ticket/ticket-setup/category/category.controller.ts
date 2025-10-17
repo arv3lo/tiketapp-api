@@ -5,6 +5,7 @@ import { CategoryService } from "@category/category.service"
 import { MongooseCategoryRepo } from "@category/adapters/mongodb/category-repo"
 import Category from "@category/adapters/mongodb/category.schema"
 import { validateCategoryInput } from "@category/ports/category.port"
+import { ERROR_MESSAGE } from "@/common/enums"
 
 const router = Router()
 const categoryService = new CategoryService(new MongooseCategoryRepo(Category))
@@ -25,23 +26,27 @@ const inputFields = ['name', 'description', '_id', 'creator']
 
 router.get('/', async (req, res) => {
     const categories = await categoryService.findCategories()
-    if (!categories) return res.status(404).json({ message: 'Categories not found' })
+    if (!categories) return res.status(404).json({ message: ERROR_MESSAGE.NOT_FOUND })
 
-    res.json(_.pick(categories, inputFields))
+    res.status(200).json(_.pick(categories, inputFields))
 })
 
 router.post('/', async (req, res) => {
-    const category = await categoryService.createCategory(validateCategoryInput(req.body))
-    if (!category) return res.status(404).json({ message: 'Category not created' })
-
-    res.json(_.pick(category, inputFields))
+    try {
+        const category = await categoryService.createCategory(validateCategoryInput(req.body))
+        if (!category) return res.status(404).json({ message: ERROR_MESSAGE.NOT_CREATED })
+    
+        res.status(200).json(_.pick(category, inputFields))
+    } catch (error) {
+        res.status(400).json({ message: ERROR_MESSAGE.NOT_CREATED })
+    }
 })
 
 router.delete('/:id', async (req, res) => {
     const category = await categoryService.deleteCategory(req.params.id)
-    if (!category) return res.status(404).json({ message: 'Category not deleted' })
+    if (!category) return res.status(404).json({ message: ERROR_MESSAGE.NOT_DELETED })
 
-    res.json(_.pick(category, inputFields))
+    res.status(200).json(_.pick(category, inputFields))
 })
 
 export default router
