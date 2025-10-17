@@ -1,5 +1,4 @@
 import { model, Schema, type InferSchemaType } from "mongoose";
-import z from "zod"
 
 import { EVENT_STATUS, EVENT_TYPE } from "@/common/enums";
 import type { TObjectId } from "@/common/types";
@@ -56,20 +55,3 @@ const eventSchema = new Schema({
 export default model('Event', eventSchema);
 export type TEvent = InferSchemaType<typeof eventSchema> & { _id: TObjectId }
 
-export const eventInput = z.object({
-    name: z.string().min(3).max(100),
-    // location: z.string().min(3).max(100),
-    startDate: z.date(),
-    endDate: z.date().optional(),
-    description: z.string().min(3).max(100),
-    status: z.enum(EVENT_STATUS).default(EVENT_STATUS.DRAFT),
-    type: z.enum(EVENT_TYPE).default(EVENT_TYPE.CONCERT),
-    organizers: z.array(z.string()).min(1),
-    artists: z.array(z.string()).optional(),
-    // sponsors: z.array(z.string()),
-    // o: none, 1: existing setup, 2: new setup
-    ticketSetup: z.string().optional()
-});
-
-export type TEventInput = z.infer<typeof eventInput>
-export const validateEvent = (event: TEventInput) => eventInput.parse(event)

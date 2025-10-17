@@ -1,4 +1,4 @@
-import type { ITicketCategoryRepository } from "@user-ticket-category/ports/ticket-category.repository.interface";
+import type { ITicketCategoryRepository } from "@/modules/ticket/ticket-instance/user-ticket-category/ports/ticket-category.port";
 import TicketCategory, { type TTicketCategory, type TicketCategoryInput } from "@user-ticket-category/adapters/mongodb/ticket-category.schema";
 
 export class MongooseTicketCategoryRepo implements ITicketCategoryRepository {

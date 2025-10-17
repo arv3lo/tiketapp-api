@@ -3,8 +3,9 @@ import _ from "lodash";
 
 import { EventService } from "@event/event.service";
 import { MongooseEventRepo } from "@event/adapters/mongodb/event-repo";
-import Event, { validateEvent } from "@event/adapters/mongodb/event.schema";
-
+import Event from "@event/adapters/mongodb/event.schema";
+import { validateEvent } from '@event/ports/event.port'
+ 
 import { SetupService } from "@setup/setup.service";
 import { MongooseTicketSetupRepo } from "@setup/adapters/mongodb/setup-repo";
 import Setup from "@setup/adapters/mongodb/setup.schema";

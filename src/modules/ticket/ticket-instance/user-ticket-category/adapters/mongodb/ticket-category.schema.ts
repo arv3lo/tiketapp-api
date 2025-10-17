@@ -1,5 +1,4 @@
 import { model, Schema, type InferSchemaType } from "mongoose";
-import z from "zod";
 
 // here we chose to let available amount as it is even when the event is over
 // so that we can track the number of tickets unsold
@@ -29,19 +28,7 @@ const TicketCategorySchema = new Schema({
 export default model('TicketCategory', TicketCategorySchema)
 export type TTicketCategory = InferSchemaType<typeof TicketCategorySchema>
 
-export const ticketCategoryInput = z.object({
-    name: z.string().min(3).max(100),
-    description: z.string(),
-    event: z.string(),
-    price: z.number().optional(),
-    availableAmount: z.number().optional().default(0),
-    isAvailable: z.boolean().optional().default(true),
-    releaseDate: z.date().optional().default(undefined),
-    refund: z.boolean().optional().default(false)
-})
 
-export type TicketCategoryInput = z.infer<typeof ticketCategoryInput>
-export const validateTicketCategoryInput = (input: TicketCategoryInput) => ticketCategoryInput.parse(input)
 
 
 

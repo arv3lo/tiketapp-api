@@ -10,7 +10,7 @@ import { USER_ROLE } from "../src/common/enums";
 const URL = "/users"
 let nbUsers = 2, userID
 
-describe('User controller', () => {
+describe('USER CONTROLLER', () => {
     // TODO: we should create mock functions for user.services functions 
     beforeEach(async () => {
         const users = generateUsers(nbUsers);
@@ -73,19 +73,38 @@ describe('User controller', () => {
             expect(res.body).toHaveProperty("_id");
         })
 
+    })
+    describe('PUT /:id', async () => {
+        
+        test('should return 400 if invalid request is sent', async () => {
+            const user = await User.findOne();
+            const res = await request(server).put(`${URL}/${user?._id}`).send({ ...user, role: 10 });
+            expect(res.status).toBe(400);
+        })
+        
+        test('should return the updated user', async () => {
+            const user = await User.findOne();
+            const res = await request(server).put(`${URL}/${user?._id}`).send({ ...user, role: USER_ROLE.ADMIN });
+            expect(res.status).toBe(200);
+            expect(res.body).toHaveProperty("_id");
+        })
+    })
+    describe('DELETE /:id', async () => {
+        test('should return 400 if invalid request is sent', async () => {
+            const user = await User.findOne();
+            const res = await request(server).delete(`${URL}/${user?._id}123`);
+            expect(res.status).toBe(400);
+        })
+        
+        test('should return the deleted user', async () => {
+            const user = await User.findOne();
+            const res = await request(server).delete(`${URL}/${user?._id}`);
+            expect(res.status).toBe(200);
+            expect(res.body).toHaveProperty("_id");
+            expect(res.body.isDeleted).toBe(true);
+        })
+    })
 
-})
 
-    // describe('PUT /:id', () => {
-    //     test('should return 400 if invalid request is sent', () => {
-    //         // ...
-    //     })
-    // })
-
-    // describe('DELETE /:id', () => {
-    //     test('should return 400 if invalid request is sent', () => {
-    //         // ...
-    //     })
-    // })
 })
 

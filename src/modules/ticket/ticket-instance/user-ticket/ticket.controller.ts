@@ -3,7 +3,7 @@ import { Router } from "express";
 import { TicketService } from "@user-ticket/ticket.service";
 import { MongooseTicketRepo } from "@user-ticket/adapters/mongodb/ticket.repo";
 import Ticket from "@user-ticket/adapters/mongodb/ticket.schema";
-import { validateTicketInput } from "@user-ticket/ports/ticket.repository.interface";
+import { validateTicketInput } from "@/modules/ticket/ticket-instance/user-ticket/ports/ticket.port";
 
 import { TicketCategoryService } from "@user-ticket-category/ticket-category.service";
 import { MongooseTicketCategoryRepo } from "@user-ticket-category/adapters/mongodb/ticket-category.repo";

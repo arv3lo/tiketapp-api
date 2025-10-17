@@ -3,7 +3,8 @@ import _ from "lodash"
 
 import { CategoryService } from "@category/category.service"
 import { MongooseCategoryRepo } from "@category/adapters/mongodb/category-repo"
-import Category, { validateCategoryInput } from "@category/adapters/mongodb/category.schema"
+import Category from "@category/adapters/mongodb/category.schema"
+import { validateCategoryInput } from "@category/ports/category.port"
 
 const router = Router()
 const categoryService = new CategoryService(new MongooseCategoryRepo(Category))

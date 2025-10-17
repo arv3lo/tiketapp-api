@@ -1,9 +1,7 @@
 import { model, Schema, type InferSchemaType } from "mongoose";
-import z from "zod"
 import jwt from "jsonwebtoken"
 
 import { USER_ROLE } from "@/common/enums";
-
 // TODO: add roles
 // TODO: decide whether separate user and artist models
 // or keep it as one
@@ -73,15 +71,5 @@ export type TUser = InferSchemaType<typeof userSchema>
 
 export default model('User', userSchema);
 
-export const userInput = z.object({
-    fullname: z.string().min(3).max(100),
-    email: z.email(),
-    role: z.enum(USER_ROLE),
-    password: z.string().min(6).max(100),
-    isDeleted: z.boolean().default(false).optional(),
-});
 
-export type TUserInput = z.infer<typeof userInput>
-
-export const validateUser = (user: TUserInput) => userInput.parse(user);
 

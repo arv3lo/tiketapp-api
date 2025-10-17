@@ -4,13 +4,14 @@ import _ from "lodash"
 import { isValidID } from "@/middlewares";
 import { UserService } from "@user/user.service";
 import { MongooseUserRepo } from "@user/adapters/mongodb/user-repo";
-import User, { validateUser } from "@user/adapters/mongodb/user.schema";
+import User from "@user/adapters/mongodb/user.schema";
+import { validateUser } from "@user/ports/user.port";
 
 const router = Router();
 const userService = new UserService(new MongooseUserRepo(User));
 
 const filters = ["fullname", "email", "role"];
-const inputFields = [...filters, "createdAt", "updatedAt", "_id"];
+const inputFields = [...filters, "createdAt", "updatedAt", "_id", "isDeleted"];
 
 // TODO: dynamic error messages
 // we used pick to remove password here because omit is a bit slower 
@@ -24,7 +25,7 @@ router.get('/', async (req, res) => {
 router.get('/:id', isValidID, async (req, res) => {
     const user = await userService.findUserById(req.params.id);
     if (!user) return res.status(404).json({ message: 'User not found' });
-    
+
     res.json(_.pick(user, inputFields));
 });
 

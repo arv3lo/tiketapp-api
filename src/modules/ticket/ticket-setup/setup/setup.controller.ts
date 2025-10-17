@@ -3,7 +3,8 @@ import _ from "lodash"
 
 import { SetupService } from "@setup/setup.service"
 import { MongooseTicketSetupRepo } from "@setup/adapters/mongodb/setup-repo"
-import TicketSetup, { validateTicketSetupInput } from "@setup/adapters/mongodb/setup.schema"
+import TicketSetup from "@setup/adapters/mongodb/setup.schema"
+import { validateTicketSetupInput } from "@setup/ports/setup.port"
 
 const router = Router()
 const setupService = new SetupService(new MongooseTicketSetupRepo(TicketSetup))

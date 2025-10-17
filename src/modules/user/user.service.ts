@@ -1,5 +1,5 @@
 import type { TUser, TUserInput } from "@user/adapters/mongodb/user.schema";
-import type { IUserFilter, IUserRepository } from "@user/ports/user-repository.interface";
+import type { IUserFilter, IUserRepository } from "@/modules/user/ports/user.port";
 
 export class UserService {
     constructor(private readonly userRepository: IUserRepository) { }

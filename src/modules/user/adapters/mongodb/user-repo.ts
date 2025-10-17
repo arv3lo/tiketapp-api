@@ -1,4 +1,4 @@
-import type { IUserFilter, IUserRepository } from "@user/ports/user-repository.interface";
+import type { IUserFilter, IUserRepository } from "@/modules/user/ports/user.port";
 import User, { type TUser, type TUserInput } from "@user/adapters/mongodb/user.schema";
 
 export class MongooseUserRepo implements IUserRepository {

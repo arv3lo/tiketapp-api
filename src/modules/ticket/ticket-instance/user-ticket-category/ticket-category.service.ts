@@ -1,4 +1,4 @@
-import type { ITicketCategoryRepository } from "@user-ticket-category/ports/ticket-category.repository.interface";
+import type { ITicketCategoryRepository } from "@/modules/ticket/ticket-instance/user-ticket-category/ports/ticket-category.port";
 import type { TicketCategoryInput, TTicketCategory } from "@user-ticket-category/adapters/mongodb/ticket-category.schema";
 
 export class TicketCategoryService {
