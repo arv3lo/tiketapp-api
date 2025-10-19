@@ -1,5 +1,5 @@
-import type { IUserFilter, IUserRepository } from "@user/ports/user-repository.interface";
-import User, { type TUser, type TUserInput } from "@user/adapters/mongodb/user.schema";
+import type { IUserFilter, IUserRepository, TUserInput } from "@/modules/user/ports/user.port";
+import User, { type TUser } from "@user/adapters/mongodb/user.schema";
 
 export class MongooseUserRepo implements IUserRepository {
     constructor(private readonly user: typeof User) { }

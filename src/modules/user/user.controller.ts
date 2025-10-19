@@ -4,13 +4,14 @@ import _ from "lodash"
 import { isValidID } from "@/middlewares";
 import { UserService } from "@user/user.service";
 import { MongooseUserRepo } from "@user/adapters/mongodb/user-repo";
-import User, { validateUser } from "@user/adapters/mongodb/user.schema";
+import User from "@user/adapters/mongodb/user.schema";
+import { validateUserInput } from "@user/ports/user.port";
 
 const router = Router();
 const userService = new UserService(new MongooseUserRepo(User));
 
 const filters = ["fullname", "email", "role"];
-const inputFields = [...filters, "createdAt", "updatedAt", "_id"];
+const inputFields = [...filters, "createdAt", "updatedAt", "_id", "isDeleted"];
 
 // TODO: dynamic error messages
 // we used pick to remove password here because omit is a bit slower 
@@ -24,25 +25,32 @@ router.get('/', async (req, res) => {
 router.get('/:id', isValidID, async (req, res) => {
     const user = await userService.findUserById(req.params.id);
     if (!user) return res.status(404).json({ message: 'User not found' });
-    
+
     res.json(_.pick(user, inputFields));
 });
 
 router.post('/', async (req, res) => {
-    // TODO: try catch the following method, it returns 500 when an error occurs
-    const userInput = validateUser(req.body);
-    const createdUser = await userService.createUser(userInput);
-    if (!createdUser) return res.status(404).json({ message: 'User not created' });
+    try {
+        const userInput = validateUserInput(req.body);
+        const createdUser = await userService.createUser(userInput);
+        if (!createdUser) return res.status(404).json({ message: 'User not created' });
 
-    res.json(_.pick(createdUser, inputFields));
+        res.json(_.pick(createdUser, inputFields));
+    } catch (error) {
+        res.status(400).json({ message: "Invalid data types detected" });
+    }
 });
 
 router.put('/:id', isValidID, async (req, res) => {
-    const userInput = validateUser(req.body);
-    const updatedUser = await userService.updateUser(req.params.id, userInput);
-    if (!updatedUser) return res.status(404).json({ message: 'User not updated' });
+    try {
+        const userInput = validateUserInput(req.body);
+        const updatedUser = await userService.updateUser(req.params.id, userInput);
+        if (!updatedUser) return res.status(404).json({ message: 'User not updated' });
 
-    res.json(_.pick(updatedUser, inputFields));
+        res.json(_.pick(updatedUser, inputFields));
+    } catch (error) {
+        res.status(400).json({ message: "Invalid data types detected" });
+    }
 });
 
 router.delete('/:id', isValidID, async (req, res) => {

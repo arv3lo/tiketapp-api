@@ -5,7 +5,8 @@ import { faker } from "@faker-js/faker";
 import { EVENT_STATUS, EVENT_TYPE, USER_ROLE } from "@/common/enums";
 import { UserService } from "@user/user.service";
 import { MongooseUserRepo } from "@user/adapters/mongodb/user-repo";
-import User, { type TUserInput } from "@user/adapters/mongodb/user.schema";
+import type { TUserInput } from "@user/ports/user.port";
+import User from "@user/adapters/mongodb/user.schema";
 import { EventService } from "@event/event.service";
 import { MongooseEventRepo } from "@event/adapters/mongodb/event-repo";
 import Event from "@event/adapters/mongodb/event.schema";
@@ -46,7 +47,7 @@ const createEvents = async (count: number) => {
         name: faker.lorem.word(),
         description: faker.lorem.sentence(),
         location: faker.location.city(),
-        date: faker.date.anytime(),
+        startDate: faker.date.soon({ days: 7 }),
         organizers: organizers.map((user) => user._id),
         artists: artists.map((user) => user._id),
         status: EVENT_STATUS.DRAFT,

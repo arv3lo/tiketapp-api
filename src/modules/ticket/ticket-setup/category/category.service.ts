@@ -1,4 +1,4 @@
-import type { CategoryRepository } from "@category/ports/category.repository.interface";
+import type { CategoryRepository } from "@/modules/ticket/ticket-setup/category/ports/category.port";
 import type { TCategory, TCategoryInput } from "@category/adapters/mongodb/category.schema";
 
 export class CategoryService {

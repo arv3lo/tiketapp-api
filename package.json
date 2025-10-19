@@ -26,6 +26,7 @@
   },
   "scripts": {
     "dev": "bun --watch run src/index.ts",
-    "seed": "bun run src/config/seeder.ts"
+    "seed": "bun run src/config/seeder.ts",
+    "build": "bun build src/index.ts --outdir ./build --minify"
   }
 }

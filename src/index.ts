@@ -13,4 +13,6 @@ const server = app.listen(PORT, () => {
     console.log(`Server running on http://localhost:${PORT}`);
 });
 
+// main().catch(error => console.error("===MAIN=== ", error))
+
 export default server
