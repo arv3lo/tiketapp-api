@@ -4,23 +4,27 @@ import User, { type TUser } from "@user/adapters/mongodb/user.schema";
 export class MongooseUserRepo implements IUserRepository {
     constructor(private readonly user: typeof User) { }
 
-    findUsers(filters?: IUserFilter): Promise<TUser[]> {
+    async findUsers(filters?: IUserFilter): Promise<TUser[]> {
         return this.user.find(formatFilter(filters || {}))
             .skip(((filters?.page || 1) - 1) * (filters?.limit || 10))
             .limit(filters?.limit || 10)
             .sort({ [filters?.sort || 'createdAt']: filters?.order === "asc" ? 1 : -1 })
             .lean()
     }
-    findUserById(id: string): Promise<TUser | null> {
+    async findUserById(id: string): Promise<TUser | null> {
         return this.user.findById(id).lean()
     }
-    createUser(user: TUserInput): Promise<TUser | null> {
+    
+    async createUser(user: TUserInput): Promise<TUser | null> {
         return this.user.create(user);
     }
-    bulkCreateUsers(users: TUserInput[]): Promise<TUser[] | null> {
-        return this.user.insertMany(users);
+    
+    async bulkCreateUsers(users: TUserInput[]): Promise<TUser[] | null> {
+        const createdUsers = await this.user.insertMany(users);
+        return createdUsers.map(doc => doc.toObject() as unknown as TUser);
     }
-    updateUser(id: string, user: Partial<TUserInput>): Promise<TUser | null> {
+
+    async updateUser(id: string, user: Partial<TUserInput>): Promise<TUser | null> {
         return this.user.findByIdAndUpdate(id, user, { new: true });
     }
 }

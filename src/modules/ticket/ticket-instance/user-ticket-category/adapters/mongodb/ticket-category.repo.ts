@@ -1,5 +1,5 @@
-import type { ITicketCategoryRepository } from "@/modules/ticket/ticket-instance/user-ticket-category/ports/ticket-category.port";
-import TicketCategory, { type TTicketCategory, type TicketCategoryInput } from "@user-ticket-category/adapters/mongodb/ticket-category.schema";
+import type { ITicketCategoryRepository, TicketCategoryInput } from "@/modules/ticket/ticket-instance/user-ticket-category/ports/ticket-category.port";
+import TicketCategory, { type TTicketCategory } from "@user-ticket-category/adapters/mongodb/ticket-category.schema";
 
 export class MongooseTicketCategoryRepo implements ITicketCategoryRepository {
 
@@ -18,7 +18,8 @@ export class MongooseTicketCategoryRepo implements ITicketCategoryRepository {
     }
 
     async bulkCreateCategories(categories: TicketCategoryInput[]): Promise<TTicketCategory[]> {
-        return this.ticketCategory.insertMany(categories)
+        const createdCategories = await this.ticketCategory.insertMany(categories)
+        return createdCategories.map(doc => doc.toObject() as unknown as TTicketCategory)
     }
 
     async updateCategory(id: string, category: Partial<TicketCategoryInput>): Promise<TTicketCategory | null> {

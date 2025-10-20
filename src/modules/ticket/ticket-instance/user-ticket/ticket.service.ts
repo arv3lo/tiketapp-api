@@ -29,6 +29,10 @@ export class TicketService {
         return this.ticketRepository.updateTicket(id, ticket)
     }
 
+    async bulkUpdateTickets(ids: string[], payload: Partial<TicketInput>): Promise<TTicket[]> {
+        return this.ticketRepository.bulkUpdateTickets(ids, payload)
+    }
+
     async deleteTicket(id: string): Promise<TTicket | null> {
         return this.ticketRepository.deleteTicket(id)
     }

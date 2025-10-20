@@ -1,5 +1,5 @@
-import type { EventRepository, IEventFilter } from "@/modules/event/ports/event.port";
-import Event, { type TEvent, type TEventInput } from "@event/adapters/mongodb/event.schema";
+import type { EventRepository, IEventFilter, TEventInput } from "@/modules/event/ports/event.port";
+import Event, { type TEvent } from "@event/adapters/mongodb/event.schema";
 
 const populateFields = ['fullname', 'email', '_id']
 
@@ -24,8 +24,9 @@ export class MongooseEventRepo implements EventRepository {
     createEvent(event: TEventInput): Promise<TEvent | null> {
         return this.event.create(event);
     }
-    bulkCreateEvents(events: TEventInput[]): Promise<TEvent[] | null> {
-        return this.event.insertMany(events);
+    async bulkCreateEvents(events: TEventInput[]): Promise<TEvent[] | null> {
+        const createdEvents = await this.event.insertMany(events);
+        return createdEvents.map(doc => doc.toObject() as unknown as TEvent);
     }
     updateEvent(id: string, event: TEventInput): Promise<TEvent | null> {
         return this.event.findByIdAndUpdate(id, event, { new: true });

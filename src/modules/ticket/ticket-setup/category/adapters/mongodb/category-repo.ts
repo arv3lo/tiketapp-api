@@ -1,5 +1,5 @@
-import type { CategoryRepository } from "@/modules/ticket/ticket-setup/category/ports/category.port";
-import Category, { type TCategory, type TCategoryInput } from "@category/adapters/mongodb/category.schema";
+import type { CategoryRepository, TCategoryInput } from "@/modules/ticket/ticket-setup/category/ports/category.port";
+import Category, { type TCategory } from "@category/adapters/mongodb/category.schema";
 
 export class MongooseCategoryRepo implements CategoryRepository {
     constructor(private readonly category: typeof Category) { }

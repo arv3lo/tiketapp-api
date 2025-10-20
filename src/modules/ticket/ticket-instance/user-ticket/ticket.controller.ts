@@ -3,7 +3,7 @@ import { Router } from "express";
 import { TicketService } from "@user-ticket/ticket.service";
 import { MongooseTicketRepo } from "@user-ticket/adapters/mongodb/ticket.repo";
 import Ticket from "@user-ticket/adapters/mongodb/ticket.schema";
-import { validateTicketInput } from "@/modules/ticket/ticket-instance/user-ticket/ports/ticket.port";
+import { validateTicketInput, validateTicketUpdateInput } from "@/modules/ticket/ticket-instance/user-ticket/ports/ticket.port";
 import { TicketCategoryService } from "@user-ticket-category/ticket-category.service";
 import { MongooseTicketCategoryRepo } from "@user-ticket-category/adapters/mongodb/ticket-category.repo";
 import TicketCategory from "@user-ticket-category/adapters/mongodb/ticket-category.schema";
@@ -61,40 +61,51 @@ router.post('/', async (req, res) => {
     }
 })
 
-router.put('/:id', async (req, res) => {
+router.put('/', async (req, res) => {
     try {
-        const ticketInput = validateTicketInput(req.body)
+        const ticketInput = validateTicketUpdateInput(req.body)
 
-        let ticket = undefined
+        let tickets = []
         switch (ticketInput.action) {
             case TICKET_ACTION.PAYMENT:
                 // send payment transaction to payment.service
-                // if payment successful, update ticket status, 
-                ticket = await ticketService.updateTicket(req.params.id, { status: TICKET_STATUS.PAID })
+                // if payment successful, update ticket status,
+                tickets = await ticketService.bulkUpdateTickets(
+                    ticketInput.ticketIDs,
+                    { status: TICKET_STATUS.PAID }
+                )
                 break;
             case TICKET_ACTION.CANCELATION:
                 // launch a refund process if ticket refund date still not passed
                 // if refund successful, update ticket status, 
                 // update available ticket count
-                ticket = await ticketService.updateTicket(req.params.id, { status: TICKET_STATUS.CANCELLED })
+                tickets = await ticketService.bulkUpdateTickets(
+                    ticketInput.ticketIDs,
+                    { status: TICKET_STATUS.CANCELLED }
+                )
                 break;
             case TICKET_ACTION.TRANSFER:
                 // only paid ticket can be transfered
                 // if we assume that ticket transfer is not a frequently used feature
                 // so we don't need to implement a specific endpoint for it
                 // let's just find the ticket first and check if it's already paid or not
-                ticket = await ticketService.findTicketById(req.params.id)
-                if (!ticket) return res.status(404).json({ message: ERROR_MESSAGE.NOT_FOUND })
-                if (ticket.status !== TICKET_STATUS.PAID) return res.status(400).json({ message: 'Ticket must be paid to be transfered' }) // specific error message
+                ticketInput.ticketIDs.forEach(async (ticketID) => {
+                    const currentTicket = await ticketService.findTicketById(ticketID)
+                    if (!currentTicket) return res.status(404).json({ message: ERROR_MESSAGE.NOT_FOUND })
+                    if (currentTicket.status !== TICKET_STATUS.PAID) return res.status(400).json({ message: 'Ticket must be paid to be transfered' }) // specific error message
+                })
                 // TRANSFER 2 USER == update ticket user, 
                 // trigger notification for the new user
-                ticket = await ticketService.updateTicket(req.params.id, { user: ticketInput.user })
+                tickets = await ticketService.bulkUpdateTickets(
+                    ticketInput.ticketIDs,
+                    { user: ticketInput.user }
+                )
                 break;
         }
         // ALL THAT should be stored in a history model
-        if (!ticket) return res.status(404).json({ message: ERROR_MESSAGE.NOT_UPDATED })
+        if (!tickets) return res.status(404).json({ message: ERROR_MESSAGE.NOT_UPDATED })
 
-        res.status(200).json(ticket)
+        res.status(200).json(tickets)
     } catch (error) {
         res.status(400).json({ message: ERROR_MESSAGE.INVALID_INPUT })
     }
