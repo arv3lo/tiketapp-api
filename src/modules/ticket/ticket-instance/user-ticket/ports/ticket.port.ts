@@ -22,6 +22,7 @@ export interface ITicketFilter extends IPaginationFields {
     ticketCategory?: string;
     user?: string;
     status?: string;
+    _id: string | string[]
     // TODO: add creation dates later
     // ...
 }

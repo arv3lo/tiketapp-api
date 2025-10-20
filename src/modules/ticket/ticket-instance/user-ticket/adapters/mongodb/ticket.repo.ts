@@ -5,7 +5,7 @@ export class MongooseTicketRepo implements ITicketRepository {
     constructor(private readonly ticket: typeof Ticket) { }
 
     async findTickets(filters?: ITicketFilter): Promise<TTicket[]> {
-        return this.ticket.find(formatFilters(filters || {}))
+        return this.ticket.find(filters ? formatFilters(filters || {}) : {})
             .populate({
                 path: 'ticketCategory',
                 select: 'name event',
@@ -70,6 +70,6 @@ export class MongooseTicketRepo implements ITicketRepository {
 
 const formatFilters = (filters: ITicketFilter) => {
     // in case we need paginations, we put these filters here
-    const { limit, page, sort, order, ...rest } = filters
-    return { ...rest }
+    const { limit, page, sort, order, _id, ...rest } = filters
+    return { _id: { $in: _id }, ...rest }
 }
