@@ -21,6 +21,10 @@ export class TicketService {
         return this.ticketRepository.createTicket(ticket)
     }
 
+    async bulkCreateTickets(tickets: TicketInput[]): Promise<TTicket[]> {
+        return this.ticketRepository.bulkCreateTickets(tickets)
+    }
+
     async updateTicket(id: string, ticket: Partial<TicketInput>): Promise<TTicket | null> {
         return this.ticketRepository.updateTicket(id, ticket)
     }

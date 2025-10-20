@@ -27,6 +27,10 @@ export class MongooseTicketRepo implements ITicketRepository {
         return this.ticket.create(ticket)
     }
 
+    async bulkCreateTickets(tickets: TicketInput[]): Promise<TTicket[]> {
+        return this.ticket.insertMany(tickets)
+    }
+
     async updateTicket(id: string, ticket: Partial<TicketInput>): Promise<TTicket | null> {
         return this.ticket.findByIdAndUpdate(id, ticket, { new: true })
     }

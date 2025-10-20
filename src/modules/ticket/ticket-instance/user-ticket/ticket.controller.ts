@@ -36,7 +36,14 @@ router.post('/', async (req, res) => {
         if (currentTicketCategory && currentTicketCategory.availableAmount < ticketInput.amount)
             return res.status(400).json({ message: ERROR_MESSAGE.NOT_FOUND }); // ticket amount unavailable
 
-        const ticket = await ticketService.createTicket(ticketInput)
+        let ticket = undefined
+        if (ticketInput.amount > 1) {
+            ticket = await ticketService.bulkCreateTickets(
+                Array.from({ length: ticketInput.amount }, () => ticketInput)
+            )
+        } else {
+            ticket = await ticketService.createTicket(ticketInput)
+        }
         if (!ticket) return res.status(404).json({ message: ERROR_MESSAGE.NOT_CREATED })
 
         // for updating tickets availableAmount, 
@@ -57,7 +64,7 @@ router.post('/', async (req, res) => {
 router.put('/:id', async (req, res) => {
     try {
         const ticketInput = validateTicketInput(req.body)
-    
+
         let ticket = undefined
         switch (ticketInput.action) {
             case TICKET_ACTION.PAYMENT:
@@ -86,13 +93,12 @@ router.put('/:id', async (req, res) => {
         }
         // ALL THAT should be stored in a history model
         if (!ticket) return res.status(404).json({ message: ERROR_MESSAGE.NOT_UPDATED })
-    
+
         res.status(200).json(ticket)
     } catch (error) {
         res.status(400).json({ message: ERROR_MESSAGE.INVALID_INPUT })
     }
 })
-
 
 export default router;
 
