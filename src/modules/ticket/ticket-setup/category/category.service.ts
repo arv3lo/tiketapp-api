@@ -1,5 +1,5 @@
-import type { CategoryRepository } from "@/modules/ticket/ticket-setup/category/ports/category.port";
-import type { TCategory, TCategoryInput } from "@category/adapters/mongodb/category.schema";
+import type { CategoryRepository, TCategoryInput } from "@category/ports/category.port";
+import type { TCategory } from "@category/adapters/mongodb/category.schema";
 
 export class CategoryService {
     constructor(private readonly categoryRepository: CategoryRepository) { }

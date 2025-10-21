@@ -2,62 +2,69 @@ import { Router } from "express";
 import _ from "lodash"
 
 import { isValidID } from "@/middlewares";
-import { UserService } from "@user/user.service";
-import { MongooseUserRepo } from "@user/adapters/mongodb/user-repo";
-import User from "@user/adapters/mongodb/user.schema";
+import { ERROR_MESSAGE } from "@/common/enums";
 import { validateUserInput } from "@user/ports/user.port";
+import { getUsers, getUser } from "@user/ports/use-cases/get-users";
+import { createUser } from "@user/ports/use-cases/create-user";
+import { deleteUser, updateUser } from "@user/ports/use-cases/update-user";
 
 const router = Router();
-const userService = new UserService(new MongooseUserRepo(User));
 
-const filters = ["fullname", "email", "role"];
-const inputFields = [...filters, "createdAt", "updatedAt", "_id", "isDeleted"];
-
-// TODO: dynamic error messages
-// we used pick to remove password here because omit is a bit slower 
-// and we met some issues using it
 router.get('/', async (req, res) => {
-    const users = await userService.findUsers(req.query);
-    if (!users || users.length === 0) return res.status(404).json({ message: 'Users not found' });
-    res.json(users.map(user => _.pick(user, inputFields)));
+    try {
+        const users = await getUsers(req.query);
+        
+        res.status(200).json(users);
+    } catch (error) {
+        const errorMessage = error instanceof Error ? error.message : ERROR_MESSAGE.UNKNOWN_ERROR
+        res.status(400).json({ message: errorMessage });
+    }
 });
 
 router.get('/:id', isValidID, async (req, res) => {
-    const user = await userService.findUserById(req.params.id);
-    if (!user) return res.status(404).json({ message: 'User not found' });
+    try {
+        const user = await getUser(req.params.id);
 
-    res.json(_.pick(user, inputFields));
+        res.status(200).json(user);
+    } catch (error) {
+        const errorMessage = error instanceof Error ? error.message : ERROR_MESSAGE.UNKNOWN_ERROR
+        res.status(400).json({ message: errorMessage });
+    }
 });
 
 router.post('/', async (req, res) => {
     try {
         const userInput = validateUserInput(req.body);
-        const createdUser = await userService.createUser(userInput);
-        if (!createdUser) return res.status(404).json({ message: 'User not created' });
+        const createdUser = await createUser(userInput);
 
-        res.json(_.pick(createdUser, inputFields));
+        res.status(200).json(createdUser);
     } catch (error) {
-        res.status(400).json({ message: "Invalid data types detected" });
+        const errorMessage = error instanceof Error ? error.message : ERROR_MESSAGE.UNKNOWN_ERROR
+        res.status(400).json({ message: errorMessage });
     }
 });
 
 router.put('/:id', isValidID, async (req, res) => {
     try {
         const userInput = validateUserInput(req.body);
-        const updatedUser = await userService.updateUser(req.params.id, userInput);
-        if (!updatedUser) return res.status(404).json({ message: 'User not updated' });
+        const updatedUser = await updateUser(req.params.id, userInput);
 
-        res.json(_.pick(updatedUser, inputFields));
+        res.status(200).json(updatedUser);
     } catch (error) {
-        res.status(400).json({ message: "Invalid data types detected" });
+        const errorMessage = error instanceof Error ? error.message : ERROR_MESSAGE.UNKNOWN_ERROR
+        res.status(400).json({ message: errorMessage });
     }
 });
 
 router.delete('/:id', isValidID, async (req, res) => {
-    const deletedUser = await userService.deleteUser(req.params.id);
-    if (!deletedUser) return res.status(404).json({ message: 'User not deleted' });
+    try {
+        const deletedUser = await deleteUser(req.params.id);
 
-    res.json(_.pick(deletedUser, inputFields));
+        res.status(200).json(deletedUser);
+    } catch (error) {
+        const errorMessage = error instanceof Error ? error.message : ERROR_MESSAGE.UNKNOWN_ERROR
+        res.status(400).json({ message: errorMessage });
+    }
 });
 
 export default router;

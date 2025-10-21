@@ -18,7 +18,6 @@ const TicketSchema = new Schema({
         enum: TICKET_STATUS,
         default: TICKET_STATUS.PENDING
     },
-    amount: Number,
 }, { timestamps: true })
 
 export default model('Ticket', TicketSchema)

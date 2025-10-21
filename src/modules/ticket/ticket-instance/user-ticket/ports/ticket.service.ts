@@ -1,4 +1,4 @@
-import type { ITicketFilter, ITicketRepository, TicketInput } from "@/modules/ticket/ticket-instance/user-ticket/ports/ticket.port";
+import type { ITicketFilter, ITicketRepository, TicketInput } from "@user-ticket/ports/ticket.port";
 import type { TTicket } from "@user-ticket/adapters/mongodb/ticket.schema";
 
 export class TicketService {
@@ -21,8 +21,16 @@ export class TicketService {
         return this.ticketRepository.createTicket(ticket)
     }
 
+    async bulkCreateTickets(tickets: TicketInput[]): Promise<TTicket[]> {
+        return this.ticketRepository.bulkCreateTickets(tickets)
+    }
+
     async updateTicket(id: string, ticket: Partial<TicketInput>): Promise<TTicket | null> {
         return this.ticketRepository.updateTicket(id, ticket)
+    }
+
+    async bulkUpdateTickets(ids: string[], payload: Partial<TicketInput>): Promise<TTicket[]> {
+        return this.ticketRepository.bulkUpdateTickets(ids, payload)
     }
 
     async deleteTicket(id: string): Promise<TTicket | null> {

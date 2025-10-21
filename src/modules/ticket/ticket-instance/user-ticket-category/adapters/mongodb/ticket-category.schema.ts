@@ -22,7 +22,8 @@ const TicketCategorySchema = new Schema({
     // when release date is due, tickets are available for purchase
     // TODO: send notification to users that subscribed to the event, the organizer and the artists
     releaseDate: { type: Date, default: undefined },
-    refund: { type: Boolean, default: false }
+    refund: { type: Boolean, default: false },
+    isDeleted: { type: Boolean, default: false }
 }, { timestamps: true })
 
 export default model('TicketCategory', TicketCategorySchema)

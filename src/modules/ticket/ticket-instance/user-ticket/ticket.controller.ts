@@ -1,18 +1,17 @@
 import { Router } from "express";
 
-import { TicketService } from "@user-ticket/ticket.service";
+import { ERROR_MESSAGE } from "@/common/enums";
+import { TicketService } from "@user-ticket/ports/ticket.service";
 import { MongooseTicketRepo } from "@user-ticket/adapters/mongodb/ticket.repo";
 import Ticket from "@user-ticket/adapters/mongodb/ticket.schema";
-import { validateTicketInput } from "@/modules/ticket/ticket-instance/user-ticket/ports/ticket.port";
-import { TicketCategoryService } from "@user-ticket-category/ticket-category.service";
-import { MongooseTicketCategoryRepo } from "@user-ticket-category/adapters/mongodb/ticket-category.repo";
-import TicketCategory from "@user-ticket-category/adapters/mongodb/ticket-category.schema";
-import { ERROR_MESSAGE, TICKET_ACTION, TICKET_STATUS } from "@/common/enums";
+import { validateTicketInput, validateTicketUpdateInput } from "@user-ticket/ports/ticket.port";
+import { createTicket } from "@user-ticket/ports/use-cases/create-ticket";
+import { updateTicket } from "@user-ticket/ports/use-cases/update-ticket";
 
 const router = Router()
 const ticketService = new TicketService(new MongooseTicketRepo(Ticket))
-const ticketCategoryService = new TicketCategoryService(new MongooseTicketCategoryRepo(TicketCategory))
 
+// TODO: check and remove these underlined errors
 // get tickets by categoryID, userID, status, dates, etc.
 router.get('/', async (req, res) => {
     const tickets = await ticketService.findTickets(req.query)
@@ -31,68 +30,26 @@ router.get('/:id', async (req, res) => {
 router.post('/', async (req, res) => {
     try {
         const ticketInput = validateTicketInput(req.body)
-        const currentTicketCategory = await ticketCategoryService.findCategoryById(ticketInput.ticketCategory)
-
-        if (currentTicketCategory && currentTicketCategory.availableAmount < ticketInput.amount)
-            return res.status(400).json({ message: ERROR_MESSAGE.NOT_FOUND }); // ticket amount unavailable
-
-        const ticket = await ticketService.createTicket(ticketInput)
-        if (!ticket) return res.status(404).json({ message: ERROR_MESSAGE.NOT_CREATED })
-
-        // for updating tickets availableAmount, 
-        // we could use change streams on database level
-        // - change streams using eventEmitter
-        // - change streams using hasNext function
-        // - triggers on mongoDB Atlas
-        // but for now, let's use an application level logic
-        if (currentTicketCategory)
-            await ticketCategoryService.updateCategory(ticketInput.ticketCategory, { availableAmount: currentTicketCategory.availableAmount - ticketInput.amount })
+        const ticket = await createTicket(ticketInput)
 
         res.status(200).json(ticket)
     } catch (error) {
-        res.status(400).json({ message: ERROR_MESSAGE.INVALID_INPUT })
+        const errorMessage = error instanceof Error ? error.message : ERROR_MESSAGE.UNKNOWN_ERROR
+        res.status(400).json({ message: errorMessage })
     }
 })
 
-router.put('/:id', async (req, res) => {
+router.put('/', async (req, res) => {
     try {
-        const ticketInput = validateTicketInput(req.body)
-    
-        let ticket = undefined
-        switch (ticketInput.action) {
-            case TICKET_ACTION.PAYMENT:
-                // send payment transaction to payment.service
-                // if payment successful, update ticket status, 
-                ticket = await ticketService.updateTicket(req.params.id, { status: TICKET_STATUS.PAID })
-                break;
-            case TICKET_ACTION.CANCELATION:
-                // launch a refund process if ticket refund date still not passed
-                // if refund successful, update ticket status, 
-                // update available ticket count
-                ticket = await ticketService.updateTicket(req.params.id, { status: TICKET_STATUS.CANCELLED })
-                break;
-            case TICKET_ACTION.TRANSFER:
-                // only paid ticket can be transfered
-                // if we assume that ticket transfer is not a frequently used feature
-                // so we don't need to implement a specific endpoint for it
-                // let's just find the ticket first and check if it's already paid or not
-                ticket = await ticketService.findTicketById(req.params.id)
-                if (!ticket) return res.status(404).json({ message: ERROR_MESSAGE.NOT_FOUND })
-                if (ticket.status !== TICKET_STATUS.PAID) return res.status(400).json({ message: 'Ticket must be paid to be transfered' }) // specific error message
-                // TRANSFER 2 USER == update ticket user, 
-                // trigger notification for the new user
-                ticket = await ticketService.updateTicket(req.params.id, { user: ticketInput.user })
-                break;
-        }
-        // ALL THAT should be stored in a history model
-        if (!ticket) return res.status(404).json({ message: ERROR_MESSAGE.NOT_UPDATED })
-    
-        res.status(200).json(ticket)
+        const ticketInput = validateTicketUpdateInput(req.body)
+        const tickets = await updateTicket(ticketInput)
+
+        res.status(200).json(tickets)
     } catch (error) {
-        res.status(400).json({ message: ERROR_MESSAGE.INVALID_INPUT })
+        const errorMessage = error instanceof Error ? error.message : ERROR_MESSAGE.UNKNOWN_ERROR
+        res.status(400).json({ message: errorMessage })
     }
 })
-
 
 export default router;
 

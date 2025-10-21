@@ -49,4 +49,5 @@ export enum ERROR_MESSAGE {
     NOT_CREATED = "Not created",
     NOT_UPDATED = "Not updated",
     NOT_DELETED = "Not deleted",
+    UNKNOWN_ERROR = "Unknown error occurred"
 }
