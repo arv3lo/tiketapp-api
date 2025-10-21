@@ -1,33 +1,34 @@
 import { Router } from "express";
 import _ from "lodash";
 
-import { EventService } from "@event/event.service";
-import { MongooseEventRepo } from "@event/adapters/mongodb/event-repo";
-import Event from "@event/adapters/mongodb/event.schema";
 import { validateEvent } from '@event/ports/event.port'
 import { ERROR_MESSAGE } from "@/common/enums";
 import { createEvent } from "@event/ports/use-cases/create-event";
 import { updateEvent } from "@event/ports/use-cases/update-event";
+import { getEvent, getEvents } from "./ports/use-cases/get-event";
 
-const eventService = new EventService(new MongooseEventRepo(Event));
 const router = Router()
 
-// const eventFilters = ["name", "date", "organizers", "status", "type", "artists", "sponsors"]
-// const eventInputFields = [...eventFilters, "description"]
-// TODO: handle query params, pagination, sorting, filtering, populating
-// get events by organizer, by attented, by artist, by location
 router.get('/', async (req, res) => {
-    const events = await eventService.findEvents(req.query);
-    if (!events) return res.status(404).json({ message: ERROR_MESSAGE.NOT_FOUND });
+    try {
+        const events = await getEvents(req.query);
 
-    res.json(events);
+        res.json(events);
+    } catch (error) {
+        const errorMessage = error instanceof Error ? error.message : ERROR_MESSAGE.UNKNOWN_ERROR
+        res.status(400).json({ message: errorMessage });
+    }
 })
 
 router.get('/:id', async (req, res) => {
-    const event = await eventService.findEventById(req.params.id);
-    if (!event) return res.status(404).json({ message: ERROR_MESSAGE.NOT_FOUND });
+    try {
+        const event = await getEvent(req.params.id);
 
-    res.json(event);
+        res.json(event);
+    } catch (error) {
+        const errorMessage = error instanceof Error ? error.message : ERROR_MESSAGE.UNKNOWN_ERROR
+        res.status(400).json({ message: errorMessage });
+    }
 })
 
 router.post('/', async (req, res) => {

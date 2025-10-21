@@ -2,7 +2,7 @@ import { Router } from "express";
 import _ from "lodash"
 
 import { isValidID } from "@/middlewares";
-import { UserService } from "@user/user.service";
+import { UserService } from "@/modules/user/ports/user.service";
 import { MongooseUserRepo } from "@user/adapters/mongodb/user-repo";
 import User from "@user/adapters/mongodb/user.schema";
 import { validateUserInput } from "@user/ports/user.port";

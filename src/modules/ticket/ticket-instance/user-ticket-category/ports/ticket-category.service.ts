@@ -1,5 +1,5 @@
-import type { ITicketCategoryRepository } from "@/modules/ticket/ticket-instance/user-ticket-category/ports/ticket-category.port";
-import type { TicketCategoryInput, TTicketCategory } from "@user-ticket-category/adapters/mongodb/ticket-category.schema";
+import type { ITicketCategoryRepository, TicketCategoryInput } from "@user-ticket-category/ports/ticket-category.port";
+import type { TTicketCategory } from "@user-ticket-category/adapters/mongodb/ticket-category.schema";
 
 export class TicketCategoryService {
     constructor(private readonly ticketCategoryRepository: ITicketCategoryRepository) { }

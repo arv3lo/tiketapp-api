@@ -1,4 +1,4 @@
-import type { PaymentPort } from "@payment/port/payment.interface";
+import type { PaymentPort } from "@/modules/payment/port/payment.port";
 import Payment, { type TTransaction } from "@payment/adapters/mongodb/payment.schema";
 
 export class MongoosePaymentRepo implements PaymentPort {

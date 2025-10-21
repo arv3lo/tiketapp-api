@@ -1,7 +1,7 @@
-import { TicketService } from "@user-ticket/ticket.service";
+import { TicketService } from "@/modules/ticket/ticket-instance/user-ticket/ports/ticket.service";
 import { MongooseTicketRepo } from "@user-ticket/adapters/mongodb/ticket.repo";
 import Ticket, { type TTicket } from "@user-ticket/adapters/mongodb/ticket.schema";
-import { TicketCategoryService } from "@user-ticket-category/ticket-category.service";
+import { TicketCategoryService } from "@/modules/ticket/ticket-instance/user-ticket-category/ports/ticket-category.service";
 import { MongooseTicketCategoryRepo } from "@user-ticket-category/adapters/mongodb/ticket-category.repo";
 import TicketCategory from "@user-ticket-category/adapters/mongodb/ticket-category.schema";
 import type { TicketInput } from "@user-ticket/ports/ticket.port";

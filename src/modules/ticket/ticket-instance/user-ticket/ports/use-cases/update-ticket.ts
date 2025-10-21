@@ -1,4 +1,4 @@
-import { TicketService } from "@user-ticket/ticket.service";
+import { TicketService } from "@/modules/ticket/ticket-instance/user-ticket/ports/ticket.service";
 import { MongooseTicketRepo } from "@user-ticket/adapters/mongodb/ticket.repo";
 import Ticket from "@user-ticket/adapters/mongodb/ticket.schema";
 import type { TicketUpdateInput } from "../ticket.port";

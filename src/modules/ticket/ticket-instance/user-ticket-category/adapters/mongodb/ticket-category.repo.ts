@@ -27,6 +27,6 @@ export class MongooseTicketCategoryRepo implements ITicketCategoryRepository {
     }
 
     async deleteCategory(id: string): Promise<TTicketCategory | null> {
-        return this.ticketCategory.findByIdAndDelete(id)
+        return this.ticketCategory.findByIdAndUpdate(id, { isDeleted: true }, { new: true })
     }
 }

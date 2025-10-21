@@ -3,11 +3,11 @@ import _ from "lodash"
 import { faker } from "@faker-js/faker";
 
 import { EVENT_STATUS, EVENT_TYPE, USER_ROLE } from "@/common/enums";
-import { UserService } from "@user/user.service";
+import { UserService } from "@/modules/user/ports/user.service";
 import { MongooseUserRepo } from "@user/adapters/mongodb/user-repo";
 import type { TUserInput } from "@user/ports/user.port";
 import User from "@user/adapters/mongodb/user.schema";
-import { EventService } from "@event/event.service";
+import { EventService } from "@/modules/event/ports/event.service";
 import { MongooseEventRepo } from "@event/adapters/mongodb/event-repo";
 import Event from "@event/adapters/mongodb/event.schema";
 import Category from "@category/adapters/mongodb/category.schema";
