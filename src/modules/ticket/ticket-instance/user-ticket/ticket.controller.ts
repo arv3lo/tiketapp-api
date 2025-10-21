@@ -8,10 +8,10 @@ import { validateTicketInput, validateTicketUpdateInput } from "@user-ticket/por
 import { createTicket } from "@user-ticket/ports/use-cases/create-ticket";
 import { updateTicket } from "@user-ticket/ports/use-cases/update-ticket";
 
-
 const router = Router()
 const ticketService = new TicketService(new MongooseTicketRepo(Ticket))
 
+// TODO: check and remove these underlined errors
 // get tickets by categoryID, userID, status, dates, etc.
 router.get('/', async (req, res) => {
     const tickets = await ticketService.findTickets(req.query)
@@ -34,7 +34,8 @@ router.post('/', async (req, res) => {
 
         res.status(200).json(ticket)
     } catch (error) {
-        res.status(400).json({ message: error.message })
+        const errorMessage = error instanceof Error ? error.message : ERROR_MESSAGE.UNKNOWN_ERROR
+        res.status(400).json({ message: errorMessage })
     }
 })
 
@@ -45,7 +46,8 @@ router.put('/', async (req, res) => {
 
         res.status(200).json(tickets)
     } catch (error) {
-        res.status(400).json({ message: error.message })
+        const errorMessage = error instanceof Error ? error.message : ERROR_MESSAGE.UNKNOWN_ERROR
+        res.status(400).json({ message: errorMessage })
     }
 })
 
