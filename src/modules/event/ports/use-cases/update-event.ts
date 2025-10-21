@@ -1,6 +1,6 @@
 import { ERROR_MESSAGE } from "@/common/enums";
 
-import { EventService } from "@/modules/event/ports/event.service";
+import { EventService } from "@event/ports/event.service";
 import { MongooseEventRepo } from "@event/adapters/mongodb/event-repo";
 import Event, { type TEvent } from "@event/adapters/mongodb/event.schema";
 import type { TEventInput } from "@event/ports/event.port";

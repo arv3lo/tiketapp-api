@@ -1,6 +1,6 @@
 import type { PopulatedTicketSetup } from "@/common/types";
 import type { TUser } from "@user/adapters/mongodb/user.schema";
-import type { TicketSetupRepository, TicketSetupInput } from "@/modules/ticket/ticket-setup/setup/ports/setup.port";
+import type { TicketSetupRepository, TicketSetupInput } from "@setup/ports/setup.port";
 import TicketSetup, { type TTicketSetup } from "@setup/adapters/mongodb/setup.schema";
 import type { TCategory } from "@category/adapters/mongodb/category.schema";
 

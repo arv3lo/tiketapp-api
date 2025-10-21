@@ -1,5 +1,5 @@
-import type { EventRepository, IEventFilter } from "@/modules/event/ports/event.port";
-import type { TEvent, TEventInput } from "@event/adapters/mongodb/event.schema";
+import type { EventRepository, IEventFilter, TEventInput } from "@event/ports/event.port";
+import type { TEvent } from "@event/adapters/mongodb/event.schema";
 
 export class EventService {
     constructor(private readonly eventRepository: EventRepository) { }

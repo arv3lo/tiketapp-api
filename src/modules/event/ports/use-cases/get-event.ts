@@ -1,4 +1,4 @@
-import { EventService } from "@/modules/event/ports/event.service";
+import { EventService } from "@event/ports/event.service";
 import { MongooseEventRepo } from "@event/adapters/mongodb/event-repo";
 import Event from "@event/adapters/mongodb/event.schema";
 import { ERROR_MESSAGE } from "@/common/enums";

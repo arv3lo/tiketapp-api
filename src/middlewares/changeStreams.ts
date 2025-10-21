@@ -1,6 +1,6 @@
 import type { ChangeStream } from 'mongodb';
 
-import User from '@/modules/user/adapters/mongodb/user.schema';
+import User from '@user/adapters/mongodb/user.schema';
 import type { MongoChangeStreamPipeline } from '@/common/types';
 
 export function closeChangeStream(timeInMs = 60000, changeStream: ChangeStream) {

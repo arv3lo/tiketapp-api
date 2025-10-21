@@ -1,6 +1,6 @@
 import { ERROR_MESSAGE } from "@/common/enums";
 
-import { EventService } from "@/modules/event/ports/event.service";
+import { EventService } from "@event/ports/event.service";
 import { MongooseEventRepo } from "@event/adapters/mongodb/event-repo";
 import Event, { type TEvent } from "@event/adapters/mongodb/event.schema";
 import type { TEventInput } from "@event/ports/event.port";
@@ -9,7 +9,7 @@ import { SetupService } from "@setup/setup.service";
 import { MongooseTicketSetupRepo } from "@setup/adapters/mongodb/setup-repo";
 import Setup from "@setup/adapters/mongodb/setup.schema";
 
-import { TicketCategoryService } from "@/modules/ticket/ticket-instance/user-ticket-category/ports/ticket-category.service";
+import { TicketCategoryService } from "@user-ticket-category/ports/ticket-category.service";
 import { MongooseTicketCategoryRepo } from "@user-ticket-category/adapters/mongodb/ticket-category.repo";
 import TicketCategory from "@user-ticket-category/adapters/mongodb/ticket-category.schema";
 

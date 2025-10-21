@@ -1,4 +1,4 @@
-import type { ITicketFilter, ITicketRepository, TicketInput } from "@/modules/ticket/ticket-instance/user-ticket/ports/ticket.port";
+import type { ITicketFilter, ITicketRepository, TicketInput } from "@user-ticket/ports/ticket.port";
 import Ticket, { type TTicket } from "@user-ticket/adapters/mongodb/ticket.schema";
 
 export class MongooseTicketRepo implements ITicketRepository {

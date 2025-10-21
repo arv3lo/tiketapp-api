@@ -1,5 +1,5 @@
 import type { TTransaction } from "@payment/adapters/mongodb/payment.schema";
-import type { PaymentPort } from "@/modules/payment/port/payment.port";
+import type { PaymentPort } from "@payment/port/payment.port";
 
 export class PaymentService {
     constructor(private readonly paymentRepository: PaymentPort) { }

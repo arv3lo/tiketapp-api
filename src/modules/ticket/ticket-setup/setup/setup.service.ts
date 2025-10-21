@@ -1,6 +1,6 @@
 import type { PopulatedTicketSetup } from "@/common/types";
-import type { TicketSetupRepository } from "@/modules/ticket/ticket-setup/setup/ports/setup.port";
-import type { TTicketSetup, TicketSetupInput } from "@setup/adapters/mongodb/setup.schema";
+import type { TicketSetupRepository, TicketSetupInput } from "@setup/ports/setup.port";
+import type { TTicketSetup } from "@setup/adapters/mongodb/setup.schema";
 
 export class SetupService {
     constructor(private readonly setupRepository: TicketSetupRepository) { }

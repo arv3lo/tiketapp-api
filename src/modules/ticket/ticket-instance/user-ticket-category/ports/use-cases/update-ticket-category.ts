@@ -1,4 +1,4 @@
-import { TicketCategoryService } from "@/modules/ticket/ticket-instance/user-ticket-category/ports/ticket-category.service";
+import { TicketCategoryService } from "@user-ticket-category/ports/ticket-category.service";
 import { MongooseTicketCategoryRepo } from "@user-ticket-category/adapters/mongodb/ticket-category.repo";
 import TicketCategory, {type TTicketCategory} from "@user-ticket-category/adapters/mongodb/ticket-category.schema";
 import { ERROR_MESSAGE } from "@/common/enums";
