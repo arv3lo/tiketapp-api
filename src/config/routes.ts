@@ -9,7 +9,8 @@ import ticketSetupCategoryController from '@category/category.controller'
 import userTicketController from '@user-ticket/ticket.controller'
 import userTicketCategoryController from '@user-ticket-category/ticket-category.controller'
 import { authentication, globalError } from '@/middlewares'
-import seeder from './seeder'
+import seeder from '@/config/seeder'
+import client from '@/config/prometheus'
 
 export const routes = (app: Express) => {
     app.use(bodyParser.json({ limit: '50mb' }))
@@ -25,4 +26,9 @@ export const routes = (app: Express) => {
     app.use('/seed', seeder)
 
     app.use(globalError)
+
+    app.get('/metrics', async (req, res) => {
+        res.set('Content-Type', client.register.contentType);
+        res.end(await client.register.metrics());
+    })
 }
