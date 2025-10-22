@@ -51,3 +51,10 @@ export enum ERROR_MESSAGE {
     NOT_DELETED = "Not deleted",
     UNKNOWN_ERROR = "Unknown error occurred"
 }
+
+export enum AUTH_ERROR_MESSAGE {
+    NO_TOKEN = "No token provided",
+    INVALID_TOKEN = "Invalid token",
+    UNAUTHORIZED = "Unauthorized access",
+    FORBIDDEN = "Forbidden access"
+}

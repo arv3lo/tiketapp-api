@@ -23,6 +23,7 @@ const userSchema = new Schema({
 userSchema.methods.generateAuthToken = function () {
     const token = jwt.sign({
         _id: this._id,
+        role: this.role,
         iat: Math.floor(Date.now() / 1000) - 30,
         exp: Math.floor(Date.now() / 1000) + (60 * 360)
     }, Bun.env.AUTH_TOKEN_SECRET || "");
