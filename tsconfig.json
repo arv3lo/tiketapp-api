@@ -34,6 +34,7 @@
       "@user-ticket/*": ["./src/modules/ticket/ticket-instance/user-ticket/*"],
       "@user-ticket-category/*": ["./src/modules/ticket/ticket-instance/user-ticket-category/*"],
       "@payment/*": ["./src/modules/payment/*"],
+      "@history/*": ["./src/modules/history/*"],
     },
   },
   "include": ["src/**/*", "src/types/express.d.ts"]

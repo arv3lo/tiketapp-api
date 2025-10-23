@@ -9,7 +9,7 @@ export function authentication(req: Request, res: Response, next: NextFunction) 
     if (!token) return res.status(401).send(AUTH_ERROR_MESSAGE.NO_TOKEN);
     try {
         const decoded = jwt.verify(token, Bun.env.AUTH_TOKEN_SECRET || "");
-        if (decoded && decoded._id && isMongooseValidID(decoded._id as string)) {
+        if (typeof decoded !== 'string' && '_id' in decoded && isMongooseValidID(decoded._id)) {
             req.user = {
                 id: decoded._id,
                 role: decoded.role

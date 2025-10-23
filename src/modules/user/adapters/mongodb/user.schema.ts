@@ -1,7 +1,9 @@
 import { model, Schema, type InferSchemaType } from "mongoose";
 import jwt from "jsonwebtoken"
 
+import History from "@/modules/history/adapters/mongodb/history.schema";
 import { USER_ROLE } from "@/common/enums";
+import type { THistoryData } from "@/common/types";
 // TODO: add roles
 // TODO: decide whether separate user and artist models
 // or keep it as one
@@ -29,6 +31,15 @@ userSchema.methods.generateAuthToken = function () {
     }, Bun.env.AUTH_TOKEN_SECRET || "");
 
     return token;
+}
+
+userSchema.methods.generateHistory = async function (data: THistoryData) {
+    const newHistory = await History.create({
+        ...data,
+        user: this._id,
+    })
+
+    return newHistory;
 }
 
 // This is only for dev purpose
