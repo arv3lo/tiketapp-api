@@ -1,4 +1,5 @@
 import { Router } from "express";
+import { Types } from "mongoose";
 
 import User from "@user/adapters/mongodb/user.schema";
 import { HISTORY_TYPE, HISTORY_OBJECT, ERROR_MESSAGE } from "@/common/enums";
@@ -25,7 +26,7 @@ router.post('/login', async (req, res) => {
     await user.generateHistory({
         type: HISTORY_TYPE.AUTH_LOGIN,
         description: 'Connexion',
-        obj: user._id,
+        obj: user._id as unknown as Types.ObjectId,
         model: HISTORY_OBJECT.USER
     })
 

@@ -1,7 +1,7 @@
-import { model, Schema, type InferSchemaType } from "mongoose";
+import { model, Schema, type InferSchemaType, type Document, type Model } from "mongoose";
 import jwt from "jsonwebtoken"
 
-import History from "@/modules/history/adapters/mongodb/history.schema";
+import History, { type THistory } from "@/modules/history/adapters/mongodb/history.schema";
 import { USER_ROLE } from "@/common/enums";
 import type { THistoryData } from "@/common/types";
 // TODO: add roles
@@ -33,13 +33,13 @@ userSchema.methods.generateAuthToken = function () {
     return token;
 }
 
-userSchema.methods.generateHistory = async function (data: THistoryData) {
+userSchema.methods.generateHistory = async function (data: THistoryData): Promise<string> {
     const newHistory = await History.create({
         ...data,
         user: this._id,
     })
 
-    return newHistory;
+    return `${newHistory._id}`;
 }
 
 // This is only for dev purpose
@@ -80,9 +80,22 @@ userSchema.pre('save', async function (next) {
     next();
 })
 
-export type TUser = InferSchemaType<typeof userSchema>
+// Define the interface for the User document
+interface IUserMethods {
+  generateAuthToken(): string;
+  generateHistory(data: THistoryData): Promise<string>;
+}
 
-export default model('User', userSchema);
+// Create a type that combines the base user type with the methods
+type TUser = InferSchemaType<typeof userSchema> & IUserMethods & Document;
+
+// Create a type for the User model
+type UserModel = Model<TUser, {}, IUserMethods>;
+
+// Create and export the model
+const User = model<TUser, UserModel>('User', userSchema);
+
+export { type TUser, User as default };
 
 
 

@@ -2,10 +2,10 @@ import type { NextFunction, Request, Response } from "express";
 import { AUTH_ERROR_MESSAGE } from "@/common/enums";
 
 
-export const authorize = (userRole: string) => {
+export const authorize = (authorizedRoles: string[]) => {
     return (req: Request, res: Response, next: NextFunction) => {
         try {
-            if (req.user && req.user.role === userRole) {
+            if (req.user && authorizedRoles.includes(req.user.role)) {
                 next();
             } else throw new Error(AUTH_ERROR_MESSAGE.UNAUTHORIZED);
         } catch (ex) {

@@ -12,6 +12,8 @@ import userTicketCategoryController from '@user-ticket-category/ticket-category.
 import { authentication, globalError } from '@/middlewares'
 import seeder from './seeder'
 
+// TODO: just add [authentication] to every route that needs to be protected
+// and have access to the current user
 export const routes = (app: Express) => {
     // app.use(pinoHttp())
     app.use(bodyParser.json({ limit: '50mb' }))
