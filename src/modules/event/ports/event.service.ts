@@ -1,11 +1,11 @@
-import type { EventRepository } from "./ports/event-repository.interface";
-import type { TEvent, TEventInput } from "./ports/event.schema";
+import type { EventRepository, IEventFilter, TEventInput } from "@event/ports/event.port";
+import type { TEvent } from "@event/adapters/mongodb/event.schema";
 
 export class EventService {
     constructor(private readonly eventRepository: EventRepository) { }
 
-    async findEvents(): Promise<TEvent[]> {
-        return this.eventRepository.findEvents();
+    async findEvents(filters?: IEventFilter): Promise<TEvent[]> {
+        return this.eventRepository.findEvents(filters);
     }
 
     async findEventById(id: string): Promise<TEvent | null> {

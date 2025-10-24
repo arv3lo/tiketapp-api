@@ -1,11 +1,11 @@
-import type { TUser, TUserInput } from "./ports/user.schema";
-import type { UserRepository } from "./ports/user-repository.interface";
+import type { TUser } from "@user/adapters/mongodb/user.schema";
+import type { IUserFilter, IUserRepository, TUserInput } from "@user/ports/user.port";
 
 export class UserService {
-    constructor(private readonly userRepository: UserRepository) { }
+    constructor(private readonly userRepository: IUserRepository) { }
 
-    async findUsers(): Promise<TUser[]> {
-        return this.userRepository.findUsers();
+    async findUsers(filters?: IUserFilter): Promise<TUser[]> {
+        return this.userRepository.findUsers(filters);
     }
 
     async findUserById(id: string): Promise<TUser | null> {
@@ -20,11 +20,11 @@ export class UserService {
         return this.userRepository.createUser(user);
     }
 
-    async updateUser(id: string, user: TUserInput): Promise<TUser | null> {
+    async updateUser(id: string, user: Partial<TUserInput>): Promise<TUser | null> {
         return this.userRepository.updateUser(id, user);
     }
 
     async deleteUser(id: string): Promise<TUser | null> {
-        return this.userRepository.deleteUser(id);
+        return this.userRepository.updateUser(id, { isDeleted: true });
     }
 }

@@ -9,6 +9,10 @@ const app = Express();
 initDB()
 routes(app)
 
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
     console.log(`Server running on http://localhost:${PORT}`);
 });
+
+// main().catch(error => console.error("===MAIN=== ", error))
+
+export default server

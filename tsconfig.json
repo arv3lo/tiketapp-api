@@ -18,6 +18,7 @@
     "strict": true,
     "skipLibCheck": true,
     "noFallthroughCasesInSwitch": true,
+    "outDir": "build",
 
     // Some stricter flags (disabled by default)
     "noUnusedLocals": false,
@@ -28,6 +29,12 @@
       "@auth/*": ["./src/modules/auth/*"],
       "@user/*": ["./src/modules/user/*"],
       "@event/*": ["./src/modules/event/*"],
+      "@setup/*": ["./src/modules/ticket/ticket-setup/setup/*"],
+      "@category/*": ["./src/modules/ticket/ticket-setup/category/*"],
+      "@user-ticket/*": ["./src/modules/ticket/ticket-instance/user-ticket/*"],
+      "@user-ticket-category/*": ["./src/modules/ticket/ticket-instance/user-ticket-category/*"],
+      "@payment/*": ["./src/modules/payment/*"],
+      "@history/*": ["./src/modules/history/*"],
     },
   },
   "include": ["src/**/*", "src/types/express.d.ts"]

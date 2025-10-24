@@ -1,41 +1,58 @@
 import { Router } from "express";
-import { EventService } from "./event.service";
-import { MongooseEventRepo } from "./adapters/mongoose.event-repo";
-import Event from "./ports/event.schema";
+import _ from "lodash";
 
-const eventService = new EventService(new MongooseEventRepo(Event));
+import { validateEvent } from '@event/ports/event.port'
+import { ERROR_MESSAGE } from "@/common/enums";
+import { createEvent } from "@event/ports/use-cases/create-event";
+import { updateEvent } from "@event/ports/use-cases/update-event";
+import { getEvent, getEvents } from "./ports/use-cases/get-event";
+
 const router = Router()
 
-// TODO: handle query params, pagination, sorting, filtering, populating
-// get events by organizer, by attented, by artist, by location
 router.get('/', async (req, res) => {
-    const events = await eventService.findEvents();
-    if (!events) return res.status(404).json({ message: 'Events not found' });
+    try {
+        const events = await getEvents(req.query);
 
-    res.json(events);
+        res.json(events);
+    } catch (error) {
+        const errorMessage = error instanceof Error ? error.message : ERROR_MESSAGE.UNKNOWN_ERROR
+        res.status(400).json({ message: errorMessage });
+    }
 })
 
 router.get('/:id', async (req, res) => {
-    const event = await eventService.findEventById(req.params.id);
-    if (!event) return res.status(404).json({ message: 'Event not found' });
+    try {
+        const event = await getEvent(req.params.id);
 
-    res.json(event);
+        res.json(event);
+    } catch (error) {
+        const errorMessage = error instanceof Error ? error.message : ERROR_MESSAGE.UNKNOWN_ERROR
+        res.status(400).json({ message: errorMessage });
+    }
 })
 
 router.post('/', async (req, res) => {
-    const event = req.body;
-    const createdEvent = await eventService.createEvent(event);
-    if (!createdEvent) return res.status(404).json({ message: 'Event not created' });
+    try {
+        const eventInput = validateEvent(req.body);
+        const createdEvent = await createEvent(eventInput)
 
-    res.json(createdEvent);
+        res.status(200).json(createdEvent);
+    } catch (error) {
+        const errorMessage = error instanceof Error ? error.message : ERROR_MESSAGE.UNKNOWN_ERROR
+        res.status(400).json({ message: errorMessage });
+    }
 })
 
 router.put('/:id', async (req, res) => {
-    const event = req.body;
-    const updatedEvent = await eventService.updateEvent(req.params.id, event);
-    if (!updatedEvent) return res.status(404).json({ message: 'Event not updated' });
+    try {
+        const eventInput = validateEvent(req.body);
+        const updatedEvent = await updateEvent(req.params.id, eventInput)
 
-    res.json(updatedEvent);
+        res.status(200).json(updatedEvent);
+    } catch (error) {
+        const errorMessage = error instanceof Error ? error.message : ERROR_MESSAGE.UNKNOWN_ERROR
+        res.status(400).json({ message: errorMessage });
+    }
 })
 
 export default router;

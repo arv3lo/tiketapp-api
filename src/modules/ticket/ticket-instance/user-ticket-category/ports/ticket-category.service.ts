@@ -1,0 +1,30 @@
+import type { ITicketCategoryRepository, TicketCategoryInput } from "@user-ticket-category/ports/ticket-category.port";
+import type { TTicketCategory } from "@user-ticket-category/adapters/mongodb/ticket-category.schema";
+
+export class TicketCategoryService {
+    constructor(private readonly ticketCategoryRepository: ITicketCategoryRepository) { }
+
+    async findCategoryById(id: string): Promise<TTicketCategory | null> {
+        return this.ticketCategoryRepository.findCategoryById(id)
+    }
+
+    async findCategoryByEventId(eventId: string): Promise<TTicketCategory[]> {
+        return this.ticketCategoryRepository.findCategoryByEventId(eventId)
+    }
+
+    async createCategory(category: TicketCategoryInput): Promise<TTicketCategory> {
+        return this.ticketCategoryRepository.createCategory(category)
+    }
+
+    async bulkCreateCategories(categories: TicketCategoryInput[]): Promise<TTicketCategory[]> {
+        return this.ticketCategoryRepository.bulkCreateCategories(categories)
+    }
+
+    async updateCategory(id: string, category: Partial<TicketCategoryInput>): Promise<TTicketCategory | null> {
+        return this.ticketCategoryRepository.updateCategory(id, category)
+    }
+
+    async deleteCategory(id: string): Promise<TTicketCategory | null> {
+        return this.ticketCategoryRepository.deleteCategory(id)
+    }
+}
