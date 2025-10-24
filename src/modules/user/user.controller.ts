@@ -2,7 +2,8 @@ import { Router } from "express";
 import _ from "lodash"
 
 import { isValidID } from "@/middlewares";
-import { ERROR_MESSAGE } from "@/common/enums";
+import { authorize } from "@/middlewares/authorization";
+import { ERROR_MESSAGE, USER_ROLE } from "@/common/enums";
 import { validateUserInput } from "@user/ports/user.port";
 import { getUsers, getUser } from "@user/ports/use-cases/get-users";
 import { createUser } from "@user/ports/use-cases/create-user";
@@ -10,10 +11,9 @@ import { deleteUser, updateUser } from "@user/ports/use-cases/update-user";
 
 const router = Router();
 
-router.get('/', async (req, res) => {
+router.get('/', authorize([USER_ROLE.ADMIN]), async (req, res) => {
     try {
         const users = await getUsers(req.query);
-        
         res.status(200).json(users);
     } catch (error) {
         const errorMessage = error instanceof Error ? error.message : ERROR_MESSAGE.UNKNOWN_ERROR

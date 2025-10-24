@@ -3,13 +3,14 @@ import type { TUser } from "@user/adapters/mongodb/user.schema";
 import type { TCategory } from "@category/adapters/mongodb/category.schema";
 import { z } from "zod";
 import mongoose, { Types } from "mongoose";
+import type { HISTORY_OBJECT } from "./enums";
 
 export type PopulatedTicketSetup = Omit<TTicketSetup, 'organizer' | 'categories'> & {
     organizer: TUser;
     categories: TCategory[];
 }
 
- const ObjectIdSchema = z.custom<Types.ObjectId>(
+const ObjectIdSchema = z.custom<Types.ObjectId>(
     (val: any) => Types.ObjectId.isValid(val),
     {
         message: 'Invalid ObjectId',
@@ -26,3 +27,11 @@ export type MongoChangeStreamPipeline = Array<{
     };
     [key: string]: any;
 }>;
+
+export type THistoryData = {
+    type: string;
+    description: string;
+    user?: TObjectId;
+    obj: TObjectId;
+    model: HISTORY_OBJECT;
+}
