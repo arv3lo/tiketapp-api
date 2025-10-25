@@ -7,3 +7,7 @@ To run this project
   
   bun dev
 ```
+
+## Main goal
+
+The main goal was to learn how to build something from scratch using as few libraries as possible without reinventing the wheel.

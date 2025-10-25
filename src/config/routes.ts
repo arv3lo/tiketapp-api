@@ -9,6 +9,7 @@ import ticketSetupController from '@setup/setup.controller'
 import ticketSetupCategoryController from '@category/category.controller'
 import userTicketController from '@user-ticket/ticket.controller'
 import userTicketCategoryController from '@user-ticket-category/ticket-category.controller'
+import followController from '@follow/follow.controller'
 import { authentication, globalError } from '@/middlewares'
 import seeder from './seeder'
 
@@ -26,6 +27,7 @@ export const routes = (app: Express) => {
     app.use('/ticket-setup-category', ticketSetupCategoryController)
     app.use('/user-ticket', userTicketController)
     app.use('/user-ticket-category', userTicketCategoryController)
+    app.use('/follow', followController)
     app.use('/seed', seeder)
 
     app.use(globalError)
