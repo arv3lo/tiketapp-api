@@ -1,5 +1,6 @@
 import type { ISaveRepository } from "@saves/ports/save.port";
-import type { TSave } from "@saves/adapters/save.schema";
+import type { TSaveInput } from "@saves/ports/save.port";
+import type { TSave } from "@saves/adapters/mongodb/save.schema";
 
 export class SaveService {
     constructor(private readonly saveRepository: ISaveRepository) { }
@@ -12,7 +13,7 @@ export class SaveService {
         return this.saveRepository.findSavesByUserId(id);
     }
 
-    async createSave(save: TSave): Promise<TSave> {
+    async createSave(save: TSaveInput): Promise<TSave> {
         return this.saveRepository.createSave(save);
     }
 

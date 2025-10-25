@@ -1,5 +1,5 @@
-import type { TFollow } from "@follow/adapters/follow.schema";
-import type { IFollowRepository } from "@follow/ports/follow.port";
+import type { TFollow } from "@follow/adapters/mongodb/follow.schema";
+import type { IFollowRepository, TFollowInput } from "@follow/ports/follow.port";
 
 export class FollowService {
     constructor(private readonly followRepository: IFollowRepository) { }
@@ -20,11 +20,13 @@ export class FollowService {
         return this.followRepository.findFollowedCount(id);
     }
 
-    async follow(id: string, followedId: string): Promise<TFollow> {
-        return this.followRepository.follow(id, followedId);
+    async follow(payload: TFollowInput): Promise<TFollow> {
+        const { user, followed } = payload
+        return this.followRepository.follow({ user, followed });
     }
 
-    async unfollow(id: string, followedId: string): Promise<TFollow | null> {
-        return this.followRepository.unfollow(id, followedId);
+    async unfollow(payload: TFollowInput): Promise<TFollow | null> {
+        const { user, followed } = payload
+        return this.followRepository.unfollow({ user, followed });
     }
 }

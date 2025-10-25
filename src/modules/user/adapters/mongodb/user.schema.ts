@@ -1,7 +1,7 @@
 import { model, Schema, type InferSchemaType, type Document } from "mongoose";
 import jwt from "jsonwebtoken"
 
-import History from "@/modules/history/adapters/mongodb/history.schema";
+import History from "@history/adapters/mongodb/history.schema";
 import { USER_ROLE } from "@/common/enums";
 import type { THistoryData } from "@/common/types";
 // TODO: add roles

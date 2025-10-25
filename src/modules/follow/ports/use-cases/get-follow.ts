@@ -1,6 +1,6 @@
-import { MongooseFollowRepo } from "@follow/adapters/follow.repo"
+import { MongooseFollowRepo } from "@follow/adapters/mongodb/follow.repo"
 import { FollowService } from "@follow/ports/follow.service"
-import Follow, { type TFollow } from "@follow/adapters/follow.schema"
+import Follow, { type TFollow } from "@follow/adapters/mongodb/follow.schema"
 import { ERROR_MESSAGE } from "@/common/enums"
 
 const followService = new FollowService(new MongooseFollowRepo(Follow))

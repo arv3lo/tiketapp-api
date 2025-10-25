@@ -1,5 +1,5 @@
-import type { ISaveRepository } from "@saves/ports/save.port";
-import Save, { type TSave } from "@saves/adapters/save.schema";
+import type { ISaveRepository, TSaveInput } from "@saves/ports/save.port";
+import Save, { type TSave } from "@saves/adapters/mongodb/save.schema";
 
 export class MongooseSaveRepo implements ISaveRepository {
     constructor(private readonly saveModel: typeof Save) { }
@@ -12,8 +12,9 @@ export class MongooseSaveRepo implements ISaveRepository {
         return this.saveModel.find({ user: id }).lean()
     }
 
-    async createSave(save: TSave): Promise<TSave> {
-        return this.saveModel.create(save)
+    async createSave(save: TSaveInput): Promise<TSave> {
+        const { user, event } = save
+        return this.saveModel.create({ user, event })
     }
 
     async deleteSave(id: string): Promise<TSave | null> {
