@@ -1,6 +1,5 @@
 import type { IFollowRepository } from "@follow/ports/follow.port";
-import Follow from "@follow/adapters/follow.schema";
-import type { TFollow } from "@follow/adapters/follow.schema";
+import Follow, { type TFollow } from "@follow/adapters/follow.schema";
 
 export class MongooseFollowRepo implements IFollowRepository {
     constructor(private readonly followModel: typeof Follow) { }
