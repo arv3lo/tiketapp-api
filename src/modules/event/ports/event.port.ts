@@ -23,7 +23,7 @@ export interface IEventFilter extends IPaginationFields {
 export const eventInput = z.object({
     name: z.string().min(3).max(100),
     // location: z.string().min(3).max(100),
-    startDate: z.date(),
+    startDate: z.date().optional().default(new Date()),
     endDate: z.date().optional(),
     description: z.string().min(3).max(100),
     status: z.enum(EVENT_STATUS).default(EVENT_STATUS.DRAFT),
