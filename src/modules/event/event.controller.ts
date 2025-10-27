@@ -32,16 +32,10 @@ router.get('/:id', async (req, res) => {
     }
 })
 
-router.post('/', upload.single("file"), async (req, res) => {
+router.post('/', async (req, res) => {
     try {
         const eventInput = validateEvent(req.body);
         const createdEvent = await createEvent(eventInput)
-
-        if (!req.file) {
-            return res.status(400).json({ error: "No file uploaded" });
-        }
-
-        const fileUrl = `/uploads/${req.file.filename}`;
 
         // return res.status(201).json({
         //     message: "File uploaded successfully",
@@ -51,7 +45,22 @@ router.post('/', upload.single("file"), async (req, res) => {
         //     },
         // });
 
-        res.status(200).json({ ...createdEvent, image: fileUrl });
+        res.status(200).json(createdEvent);
+    } catch (error) {
+        const errorMessage = error instanceof Error ? error.message : ERROR_MESSAGE.UNKNOWN_ERROR
+        res.status(400).json({ message: errorMessage });
+    }
+})
+
+router.post('/image', upload.single("image"), async (req, res) => {
+    try {
+        if (!req.file) {
+            return res.status(400).json({ error: "No file uploaded" });
+        }
+
+        const fileUrl = `/uploads/${req.file.filename}`;
+
+        res.status(200).json({ fileUrl });
     } catch (error) {
         const errorMessage = error instanceof Error ? error.message : ERROR_MESSAGE.UNKNOWN_ERROR
         res.status(400).json({ message: errorMessage });
