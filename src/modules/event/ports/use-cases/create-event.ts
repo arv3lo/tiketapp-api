@@ -20,7 +20,7 @@ const ticketCategoryService = new TicketCategoryService(new MongooseTicketCatego
 export const createEvent = async (eventInput: TEventInput): Promise<TEvent> => {
     const createdEvent = await eventService.createEvent(eventInput);
     if (!createdEvent) throw new Error(ERROR_MESSAGE.NOT_CREATED);
-    
+
     if (eventInput.ticketSetup) {
         await handleEventTicketSetups(createdEvent._id.toString(), eventInput.ticketSetup);
     }
@@ -37,6 +37,14 @@ const handleEventTicketSetups = async (eventID: string, setupID: string) => {
     ))
 
     await ticketCategoryService.bulkCreateCategories(
-        currentCategories.map(category => ({ ...category, event: eventID, availableAmount: 0 }))
+        currentCategories.map(category => ({
+            ...category,
+            event: eventID,
+            availableAmount: 0,
+            // TODO: check these default values
+            isAvailable: true,
+            releaseDate: new Date(),
+            refund: false
+        }))
     );
 }

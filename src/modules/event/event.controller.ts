@@ -36,6 +36,20 @@ router.post('/', async (req, res) => {
         const eventInput = validateEvent(req.body);
         const createdEvent = await createEvent(eventInput)
 
+        if (!req.file) {
+            return res.status(400).json({ error: "No file uploaded" });
+        }
+
+        const fileUrl = `/uploads/${req.file.filename}`;
+
+        // return res.status(201).json({
+        //     message: "File uploaded successfully",
+        //     file: {
+        //         name: req.file.originalname,
+        //         url: fileUrl,
+        //     },
+        // });
+
         res.status(200).json(createdEvent);
     } catch (error) {
         const errorMessage = error instanceof Error ? error.message : ERROR_MESSAGE.UNKNOWN_ERROR
