@@ -1,27 +1,38 @@
 version: "3.3"
 services:
   # BACKEND
-  # app:
-  #   image: "oven/bun"
-  #   entrypoint: []
-  #   environment:
-  #     DB_URL: mongodb://mongodb/skool
-  #   command: "/bin/sh -c 'bun install && bun run --watch src/index.ts'"
+  # api:
+  #   build: .
+  #   container_name: ticketapp_api
   #   ports:
-  #     - 5000:5000
-  #   volumes: [ "./:/home/bun/app" ]
-  #   depends_on: 
-  #     - "mongodb"
-  #     - "rabbitmq"
+  #     - "5000:5000"
+  #   volumes:
+  #     - ./uploads:/app/uploads
+  #   depends_on:
+  #     - mongodb
+  #   restart: unless-stopped
+
+  # nginx:
+  #   image: nginx:1.25.2-alpine
+  #   container_name: ticketapp_nginx
+  #   ports:
+  #     - "80:80"
+  #   volumes:
+  #     - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+  #     - ./uploads:/var/www/media
+  #   depends_on:
+  #     - api
+  #   restart: unless-stopped
 
   # DATABASE
   mongodb:
     image: mongo:8.0.5
     ports:
       - 27017:27017
-    container_name: ticketapp
-
-  # MESSAGE BROKER
+    container_name: ticketapp_db
+    # volumes:
+    #   - ./data/db:/data/db
+    restart: unless-stopped
   
 networks:
   default:

@@ -2,10 +2,11 @@ import { Router } from "express";
 import _ from "lodash";
 
 import { validateEvent } from '@event/ports/event.port'
-import { ERROR_MESSAGE } from "@/common/enums";
 import { createEvent } from "@event/ports/use-cases/create-event";
 import { updateEvent } from "@event/ports/use-cases/update-event";
-import { getEvent, getEvents } from "./ports/use-cases/get-event";
+import { getEvent, getEvents } from "@event/ports/use-cases/get-event";
+import { ERROR_MESSAGE } from "@/common/enums";
+import { upload } from "@/middlewares/file-upload";
 
 const router = Router()
 
@@ -37,6 +38,24 @@ router.post('/', async (req, res) => {
         const createdEvent = await createEvent(eventInput)
 
         res.status(200).json(createdEvent);
+    } catch (error) {
+        const errorMessage = error instanceof Error ? error.message : ERROR_MESSAGE.UNKNOWN_ERROR
+        res.status(400).json({ message: errorMessage });
+    }
+})
+
+// the goal is to upload the image first separately
+// then return the file url 
+// then create the event with the image url
+router.post('/image', upload.single("image"), async (req, res) => {
+    try {
+        if (!req.file) {
+            return res.status(400).json({ error: "No file uploaded" });
+        }
+
+        const fileUrl = `/uploads/${req.file.filename}`;
+
+        res.status(200).json({ fileUrl });
     } catch (error) {
         const errorMessage = error instanceof Error ? error.message : ERROR_MESSAGE.UNKNOWN_ERROR
         res.status(400).json({ message: errorMessage });

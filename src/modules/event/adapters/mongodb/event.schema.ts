@@ -47,6 +47,7 @@ const eventSchema = new Schema({
         enum: EVENT_STATUS,
         default: EVENT_STATUS.DRAFT
     },
+    image: String,
     // ticketSetup: Number
 }, {
     timestamps: true
