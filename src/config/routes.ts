@@ -9,6 +9,7 @@ import ticketSetupController from '@setup/setup.controller'
 import ticketSetupCategoryController from '@category/category.controller'
 import userTicketController from '@user-ticket/ticket.controller'
 import userTicketCategoryController from '@user-ticket-category/ticket-category.controller'
+import followController from '@follow/follow.controller'
 import { authentication, globalError } from '@/middlewares'
 import seeder from './seeder'
 
@@ -16,16 +17,17 @@ import seeder from './seeder'
 // and have access to the current user
 export const routes = (app: Express) => {
     // app.use(pinoHttp())
-    app.use(bodyParser.json({ limit: '50mb' }))
-    app.use(bodyParser.urlencoded({ extended: true, limit: '50mb' }))
-
+    app.use(bodyParser.json({ limit: '5mb' }))
+    app.use(bodyParser.urlencoded({ extended: true, limit: '5mb' }))
+    
     app.use('/auth', authController)
-    app.use('/users', [authentication], userController)
     app.use('/events', eventController)
+    app.use('/users', [authentication], userController)
     app.use('/ticket-setup', ticketSetupController)
     app.use('/ticket-setup-category', ticketSetupCategoryController)
     app.use('/user-ticket', userTicketController)
     app.use('/user-ticket-category', userTicketCategoryController)
+    app.use('/follow', followController)
     app.use('/seed', seeder)
 
     app.use(globalError)
