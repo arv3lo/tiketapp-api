@@ -23,7 +23,7 @@ export interface IEventFilter extends IPaginationFields {
 export const eventInput = z.object({
     name: z.string().min(3).max(100),
     // location: z.string().min(3).max(100),
-    startDate: z.date().optional().default(new Date()),
+    startDate: z.date(), // .optional().default(new Date()), // optional for dev purpose only
     endDate: z.date().optional(),
     description: z.string().min(3).max(100),
     status: z.enum(EVENT_STATUS).default(EVENT_STATUS.DRAFT),
@@ -32,7 +32,8 @@ export const eventInput = z.object({
     artists: z.array(z.string()).optional(),
     // sponsors: z.array(z.string()),
     // o: none, 1: existing setup, 2: new setup
-    ticketSetup: z.string().optional()
+    ticketSetup: z.string().optional(),
+    image: z.string().optional()
 });
 
 export type TEventInput = z.infer<typeof eventInput>

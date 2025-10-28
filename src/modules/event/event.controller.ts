@@ -37,14 +37,6 @@ router.post('/', async (req, res) => {
         const eventInput = validateEvent(req.body);
         const createdEvent = await createEvent(eventInput)
 
-        // return res.status(201).json({
-        //     message: "File uploaded successfully",
-        //     file: {
-        //         name: req.file.originalname,
-        //         url: fileUrl,
-        //     },
-        // });
-
         res.status(200).json(createdEvent);
     } catch (error) {
         const errorMessage = error instanceof Error ? error.message : ERROR_MESSAGE.UNKNOWN_ERROR
@@ -52,6 +44,9 @@ router.post('/', async (req, res) => {
     }
 })
 
+// the goal is to upload the image first separately
+// then return the file url 
+// then create the event with the image url
 router.post('/image', upload.single("image"), async (req, res) => {
     try {
         if (!req.file) {
