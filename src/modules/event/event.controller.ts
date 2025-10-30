@@ -6,7 +6,9 @@ import { createEvent } from "@event/ports/use-cases/create-event";
 import { updateEvent } from "@event/ports/use-cases/update-event";
 import { getEvent, getEvents } from "@event/ports/use-cases/get-event";
 import { ERROR_MESSAGE } from "@/common/enums";
-import { upload } from "@/middlewares/file-upload";
+import { upload, authentication, authorize } from "@/middlewares";
+import { USER_ROLE } from "@/common/enums";
+
 
 const router = Router()
 
@@ -32,7 +34,10 @@ router.get('/:id', async (req, res) => {
     }
 })
 
-router.post('/', async (req, res) => {
+router.post('/', 
+    authentication, 
+    authorize([USER_ROLE.ORGANIZER, USER_ROLE.ARTIST, USER_ROLE.ADMIN]), 
+    async (req, res) => {
     try {
         const eventInput = validateEvent(req.body);
         const createdEvent = await createEvent(eventInput)
@@ -47,7 +52,11 @@ router.post('/', async (req, res) => {
 // the goal is to upload the image first separately
 // then return the file url 
 // then create the event with the image url
-router.post('/image', upload.single("image"), async (req, res) => {
+router.post('/image', 
+    authentication, 
+    authorize([USER_ROLE.ORGANIZER, USER_ROLE.ARTIST, USER_ROLE.ADMIN]), 
+    upload.single("image"), 
+    async (req, res) => {
     try {
         if (!req.file) {
             return res.status(400).json({ error: "No file uploaded" });
@@ -62,7 +71,10 @@ router.post('/image', upload.single("image"), async (req, res) => {
     }
 })
 
-router.put('/:id', async (req, res) => {
+router.put('/:id', 
+    authentication, 
+    authorize([USER_ROLE.ORGANIZER, USER_ROLE.ARTIST, USER_ROLE.ADMIN]), 
+    async (req, res) => {
     try {
         const eventInput = validateEvent(req.body);
         const updatedEvent = await updateEvent(req.params.id, eventInput)
