@@ -2,7 +2,7 @@ import { Router } from "express";
 import _ from "lodash"
 
 import { isValidID } from "@/middlewares";
-import { authorize } from "@/middlewares/authorization";
+import { authorize, authentication } from "@/middlewares";
 import { ERROR_MESSAGE, USER_ROLE } from "@/common/enums";
 import { validateUserInput } from "@user/ports/user.port";
 import { getUsers, getUser } from "@user/ports/use-cases/get-users";
@@ -11,7 +11,7 @@ import { deleteUser, updateUser } from "@user/ports/use-cases/update-user";
 
 const router = Router();
 
-router.get('/', authorize([USER_ROLE.ADMIN]), async (req, res) => {
+router.get('/', authentication, authorize([USER_ROLE.ADMIN]), async (req, res) => {
     try {
         const users = await getUsers(req.query);
         res.status(200).json(users);
@@ -32,7 +32,7 @@ router.get('/:id', isValidID, async (req, res) => {
     }
 });
 
-router.post('/', async (req, res) => {
+router.post('/', authentication, async (req, res) => {
     try {
         const userInput = validateUserInput(req.body);
         const createdUser = await createUser(userInput);
@@ -44,7 +44,7 @@ router.post('/', async (req, res) => {
     }
 });
 
-router.put('/:id', isValidID, async (req, res) => {
+router.put('/:id', authentication, isValidID, async (req, res) => {
     try {
         const userInput = validateUserInput(req.body);
         const updatedUser = await updateUser(req.params.id, userInput);
@@ -56,7 +56,7 @@ router.put('/:id', isValidID, async (req, res) => {
     }
 });
 
-router.delete('/:id', isValidID, async (req, res) => {
+router.delete('/:id', authentication, isValidID, async (req, res) => {
     try {
         const deletedUser = await deleteUser(req.params.id);
 

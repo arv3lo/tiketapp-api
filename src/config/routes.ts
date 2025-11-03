@@ -25,8 +25,8 @@ export const routes = (app: Express) => {
     app.use(bodyParser.urlencoded({ extended: true, limit: '2mb' }))
 
     app.use('/auth',                    authController)
-    app.use('/events',                  [authentication],           eventController)
-    app.use('/users',                   [authentication],           userController)
+    app.use('/events',                  eventController)
+    app.use('/users',                   userController)
     app.use('/ticket-setup',            [authentication],           ticketSetupController)
     app.use('/ticket-setup-category',   [authentication],           ticketSetupCategoryController)
     app.use('/user-ticket',             [authentication],           userTicketController)
