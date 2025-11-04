@@ -11,6 +11,26 @@ import { deleteUser, updateUser } from "@user/ports/use-cases/update-user";
 
 const router = Router();
 
+/**
+ * @swagger
+ * tags:
+ *   name: Users
+ *   description: User management API
+ * /users:
+ *   get:
+ *     summary: Lists all the users
+ *     tags: [Users]
+ *     responses:
+ *       200:
+ *         description: The list of users
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: './adapters/mongodb/user.schema'
+ */
+
 router.get('/', authentication, authorize([USER_ROLE.ADMIN]), async (req, res) => {
     try {
         const users = await getUsers(req.query);

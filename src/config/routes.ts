@@ -2,6 +2,7 @@ import { type Express } from 'express'
 import bodyParser from 'body-parser'
 import helmet from 'helmet'
 import compression from 'compression'
+import swaggerUi from 'swagger-ui-express'
 // import pinoHttp from 'pino-http'
 
 import userController from "@user/user.controller"
@@ -14,6 +15,8 @@ import userTicketCategoryController from '@user-ticket-category/ticket-category.
 import followController from '@follow/follow.controller'
 import { authentication, globalError } from '@/middlewares'
 import seeder from './seeder'
+import swaggerSpec from './swagger'
+
 
 // TODO: just add [authentication] to every route that needs to be protected
 // and have access to the current user
@@ -34,6 +37,7 @@ export const routes = (app: Express) => {
     app.use('/follow',                  [authentication],           followController)
     app.use('/seed',                    seeder)
 
+    app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
     app.use(globalError)
     app.disable('x-powered-by')
 }
