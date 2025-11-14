@@ -19,6 +19,7 @@ export enum USER_ROLE {
     ORGANIZER = "organizer", // sponsors and organizers can occupy this role
     ATTENDEE = "attendee",
     ARTIST = "artist",
+    SPONSOR = "sponsor",
 }
 
 export enum TICKET_STATUS {

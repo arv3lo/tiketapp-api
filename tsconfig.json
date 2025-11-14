@@ -26,6 +26,7 @@
     "noPropertyAccessFromIndexSignature": false,
     "paths": {
       "@/*": ["./src/*"],
+      "@lib/*": ["./src/lib/*"],
       "@auth/*": ["./src/modules/auth/*"],
       "@user/*": ["./src/modules/user/*"],
       "@event/*": ["./src/modules/event/*"],
