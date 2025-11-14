@@ -5,7 +5,7 @@ const populateFields = ['fullname', 'email', '_id']
 
 export class MongooseEventRepo implements EventRepository {
     constructor(private readonly event: typeof Event) { }
-
+    
     findEvents(filters?: IEventFilter): Promise<TEvent[]> {
         return this.event.find(formatFilter(filters || {}))
             .skip(((filters?.page || 1) - 1) * (filters?.limit || 10))

@@ -21,11 +21,14 @@ const eventSchema = new Schema({
         ref: "User",
         required: true
     },
-    // sponsors: {
-    //     type: [Schema.Types.ObjectId],
-    //     ref: "User",
-    //     required: true
-    // },
+    sponsors: {
+        type: [Schema.Types.ObjectId],
+        ref: "User",
+        required: true
+    },
+    // set this as a string for now
+    // in the future, we can use geolocation coordinates
+    location: {type: String, required: true},
     // location: {
     //     type: {
     //         type: String, 

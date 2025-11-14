@@ -41,8 +41,9 @@ const createUsers = async (count: number, role?: USER_ROLE) => {
 const createEvents = async (count: number) => {
     const organizers = await userService.findUsers({ role: USER_ROLE.ORGANIZER });
     const artists = await userService.findUsers({ role: USER_ROLE.ARTIST });
+    const sponsors = await userService.findUsers({ role: USER_ROLE.SPONSOR });
 
-    if (!organizers || !artists) return null;
+    if (!organizers || !artists || !sponsors) return null;
     const events = Array.from({ length: count }, (val, idx) => ({
         name: faker.lorem.word(),
         description: faker.lorem.sentence(),
@@ -50,8 +51,9 @@ const createEvents = async (count: number) => {
         startDate: faker.date.soon({ days: 7 }),
         organizers: organizers.map((user) => user._id),
         artists: artists.map((user) => user._id),
+        sponsors: sponsors.map((user) => user._id),
         status: EVENT_STATUS.DRAFT,
-        type: EVENT_TYPE.CONCERT
+        type: EVENT_TYPE.CONCERT,
     }))
 
     return await eventService.bulkCreateEvents(events)
@@ -108,11 +110,12 @@ const resetAll = async () => {
 router.get('/', async (req, res) => {
     await resetAll()
 
-    await createUsers(5, USER_ROLE.ATTENDEE);
-    await createUsers(3, USER_ROLE.ARTIST);
-    await createUsers(2, USER_ROLE.ORGANIZER);
+    await createUsers(10, USER_ROLE.ATTENDEE);
+    await createUsers(6, USER_ROLE.ARTIST);
+    await createUsers(3, USER_ROLE.ORGANIZER);
+    await createUsers(3, USER_ROLE.SPONSOR);
 
-    await createEvents(2)
+    await createEvents(5)
     await createTicketSetupCategory(["General", "VIP", "Backstage", "FanZone"])
     await createTicketSetup()
 
