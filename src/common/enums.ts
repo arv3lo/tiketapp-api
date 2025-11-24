@@ -80,4 +80,9 @@ export enum HISTORY_OBJECT {
     USER_TICKET_CATEGORY = "TicketCategory",
 }
 
+export enum DISCOUNT_TYPE {
+    PERCENTAGE = "percentage",
+    FIXED = "fixed"
+}
+
 

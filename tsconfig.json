@@ -31,6 +31,7 @@
       "@event/*": ["./src/modules/event/*"],
       "@setup/*": ["./src/modules/ticket/ticket-setup/setup/*"],
       "@category/*": ["./src/modules/ticket/ticket-setup/category/*"],
+      "@coupon/*": ["./src/modules/ticket/ticket-instance/coupon/*"],
       "@user-ticket/*": ["./src/modules/ticket/ticket-instance/user-ticket/*"],
       "@user-ticket-category/*": ["./src/modules/ticket/ticket-instance/user-ticket-category/*"],
       "@payment/*": ["./src/modules/payment/*"],

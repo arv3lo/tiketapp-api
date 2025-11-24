@@ -1,12 +1,12 @@
 import Express from 'express';
 
-import initDB from '@/config/db';
+import initMongoDB from '@/config/mongodb';
 import { routes } from '@/config/routes';
 
 const PORT = Bun.env.PORT || 3000;
 const app = Express();
 
-initDB()
+initMongoDB()
 routes(app)
 
 const server = app.listen(PORT, () => {
