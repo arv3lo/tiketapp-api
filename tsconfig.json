@@ -27,6 +27,7 @@
     "paths": {
       "@/*": ["./src/*"],
       "@auth/*": ["./src/modules/auth/*"],
+      "@common/*": ["./src/common/*"],
       "@user/*": ["./src/modules/user/*"],
       "@event/*": ["./src/modules/event/*"],
       "@setup/*": ["./src/modules/ticket/ticket-setup/setup/*"],

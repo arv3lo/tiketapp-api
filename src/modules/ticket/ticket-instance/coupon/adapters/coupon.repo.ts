@@ -11,6 +11,10 @@ export class MongooseCouponRepo implements ICouponRepository {
     createCoupon(coupon: Partial<TCoupon>): Promise<TCoupon> {
         return this.coupon.create(coupon)
     }
+
+    updateCoupon(id: string, coupon: Partial<TCoupon>): Promise<TCoupon | null> {
+        return this.coupon.findByIdAndUpdate(id, coupon).lean()
+    }
 }
 
 // const formatFilters = (filters: ICouponFilter) => {
