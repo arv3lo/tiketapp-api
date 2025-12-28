@@ -3,6 +3,7 @@ import { Router } from "express";
 import { loginUser } from "@auth/ports/use-cases/login-user";
 import { registerUser } from "@auth/ports/use-cases/register-user";
 import { ERROR_MESSAGE } from "@/common/enums";
+import { validateLoginInput, validateRegisterInput } from "@auth/ports/auth.port";
 
 const router = Router()
 
@@ -11,9 +12,9 @@ router.get('/me', (req, res) => {
 })
 
 router.post('/login', async (req, res) => {
-    // TODO: add an input validation function
     try {
-        const { token } = await loginUser(req.body);
+        const loginInput = validateLoginInput(req.body);
+        const { token } = await loginUser(loginInput);
         res.status(200).json({ token });
     } catch (error) {
         const errorMessage = error instanceof Error ? error.message : ERROR_MESSAGE.UNKNOWN_ERROR
@@ -22,9 +23,9 @@ router.post('/login', async (req, res) => {
 })
 
 router.post('/register', async (req, res) => {
-    // TODO: add an input validation function
     try {
-        const user = await registerUser(req.body);
+        const registerInput = validateRegisterInput(req.body);
+        const user = await registerUser(registerInput);
         res.status(200).json({ user });
     } catch (error) {
         const errorMessage = error instanceof Error ? error.message : ERROR_MESSAGE.UNKNOWN_ERROR
