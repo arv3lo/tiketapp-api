@@ -21,11 +21,12 @@ const eventSchema = new Schema({
         ref: "User",
         required: true
     },
-    // sponsors: {
-    //     type: [Schema.Types.ObjectId],
-    //     ref: "User",
-    //     required: true
-    // },
+    sponsors: {
+        type: [Schema.Types.ObjectId],
+        ref: "User",
+        required: true
+    },
+    location: { type: String, required: true, default: "" },
     // location: {
     //     type: {
     //         type: String, 

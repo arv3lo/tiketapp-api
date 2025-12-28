@@ -19,6 +19,7 @@ export enum USER_ROLE {
     ORGANIZER = "organizer", // sponsors and organizers can occupy this role
     ATTENDEE = "attendee",
     ARTIST = "artist",
+    SPONSOR = "sponsor",
 }
 
 export enum TICKET_STATUS {
@@ -50,7 +51,8 @@ export enum ERROR_MESSAGE {
     NOT_UPDATED = "Not updated",
     NOT_DELETED = "Not deleted",
     UNKNOWN_ERROR = "Unknown error occurred",
-    LOGIN_ERROR = "Identifiant et/ou mot de passe invalide."
+    LOGIN_ERROR = "Identifiant et/ou mot de passe invalide.",
+    ALREADY_EXISTS = "Entry already exists"
 }
 
 export enum AUTH_ERROR_MESSAGE {
