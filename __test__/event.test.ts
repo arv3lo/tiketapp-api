@@ -53,9 +53,9 @@ describe('Event Module', () => {
 
     // Create test users
     const [organizerRes, artistRes, sponsorRes] = await Promise.all([
-      request.post('/api/auth/register').send(testOrganizer),
-      request.post('/api/auth/register').send(testArtist),
-      request.post('/api/auth/register').send(testSponsor),
+      request.post('/auth/register').send(testOrganizer),
+      request.post('/auth/register').send(testArtist),
+      request.post('/auth/register').send(testSponsor),
     ]);
 
     organizerId = organizerRes.body.data.user._id;
@@ -64,7 +64,7 @@ describe('Event Module', () => {
 
     // Login as organizer
     const loginRes = await request
-      .post('/api/auth/login')
+      .post('/auth/login')
       .send({ email: testOrganizer.email, password: testOrganizer.password });
     
     authToken = loginRes.body.data.accessToken;

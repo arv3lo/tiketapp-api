@@ -11,14 +11,19 @@ export class MongooseUserRepo implements IUserRepository {
             .sort({ [filters?.sort || 'createdAt']: filters?.order === "asc" ? 1 : -1 })
             .lean()
     }
+
+    async findOneUser(filters: IUserFilter): Promise<TUser | null> {
+        return this.user.findOne(formatFilter(filters)).lean()
+    }
+
     async findUserById(id: string): Promise<TUser | null> {
         return this.user.findById(id).lean()
     }
-    
+
     async createUser(user: TUserInput): Promise<TUser | null> {
         return this.user.create(user);
     }
-    
+
     async bulkCreateUsers(users: TUserInput[]): Promise<TUser[] | null> {
         const createdUsers = await this.user.insertMany(users);
         return createdUsers.map(doc => doc.toObject() as unknown as TUser);
