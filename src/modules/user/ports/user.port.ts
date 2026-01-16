@@ -1,4 +1,5 @@
 import z from "zod";
+import jwt from "jsonwebtoken"
 
 import { USER_ROLE } from "@/common/enums";
 import type { IPaginationFields } from '@/common/interfaces';
@@ -6,6 +7,7 @@ import type { TUser } from '@user/adapters/mongodb/user.schema';
 
 export interface IUserRepository {
   findUsers(filters?: IUserFilter): Promise<TUser[]>;
+  findOneUser(filters: IUserFilter): Promise<TUser | null>;
   findUserById(id: string): Promise<TUser | null>;
   // for dev purposes only
   bulkCreateUsers(users: TUserInput[]): Promise<TUser[] | null>;
@@ -20,15 +22,26 @@ export interface IUserFilter extends IPaginationFields {
 }
 
 export const userInput = z.object({
-    fullname: z.string().min(3).max(100).optional(),
-    email: z.email().optional(),
-    role: z.enum(USER_ROLE, { error: "Must be a string" }).optional(),
-    password: z.string("Must be between 6 and 100 alphanumeric characters").min(6).max(100).optional(),
-    isDeleted: z.boolean().default(false).optional(),
+  fullname: z.string().min(3).max(100).optional(),
+  email: z.email().optional(),
+  role: z.enum(USER_ROLE, { error: "Must be a string" }).optional(),
+  password: z.string("Must be between 6 and 100 alphanumeric characters").min(6).max(100).optional(),
+  isDeleted: z.boolean().default(false).optional(),
 });
 
 export type TUserInput = z.infer<typeof userInput>
 
 export const validateUserInput = (user: TUserInput) => userInput.parse(user);
+
+export const generateAuthToken = (user: TUser) => {
+  const token = jwt.sign({
+    _id: user._id,
+    role: user.role,
+    iat: Math.floor(Date.now() / 1000) - 30,
+    exp: Math.floor(Date.now() / 1000) + (60 * 360)
+  }, Bun.env.AUTH_TOKEN_SECRET || "");
+
+  return token;
+}
 
 

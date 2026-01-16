@@ -5,8 +5,7 @@ import { routes } from '@/config/routes';
 
 const PORT = Bun.env.PORT || 3000;
 const app = Express();
-
-initDB()
+if(Bun.env.NODE_ENV !== "test") initDB()
 routes(app)
 
 const server = app.listen(PORT, () => {

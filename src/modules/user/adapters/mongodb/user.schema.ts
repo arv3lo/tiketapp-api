@@ -22,25 +22,6 @@ const userSchema = new Schema({
     timestamps: true
 });
 
-userSchema.methods.generateAuthToken = function () {
-    const token = jwt.sign({
-        _id: this._id,
-        role: this.role,
-        iat: Math.floor(Date.now() / 1000) - 30,
-        exp: Math.floor(Date.now() / 1000) + (60 * 360)
-    }, Bun.env.AUTH_TOKEN_SECRET || "");
-
-    return token;
-}
-
-userSchema.methods.generateHistory = async function (data: THistoryData): Promise<string> {
-    const newHistory = await History.create({
-        ...data,
-        user: this._id,
-    })
-
-    return `${newHistory._id}`;
-}
 
 // This is only for dev purpose
 userSchema.pre("insertMany", async function (next, docs) {
@@ -80,12 +61,7 @@ userSchema.pre('save', async function (next) {
     next();
 })
 
-interface IUserMethods {
-  generateAuthToken(): string;
-  generateHistory(data: THistoryData): Promise<string>;
-}
-
-type TUser = InferSchemaType<typeof userSchema> & IUserMethods & Document;
+type TUser = InferSchemaType<typeof userSchema> & Document;
 
 const User = model<TUser>('User', userSchema);
 

@@ -1,6 +1,6 @@
 import type { IHistoryFilter, IHistoryRepository } from "@history/ports/history.port";
 import History, { type THistory } from "@history/adapters/mongodb/history.schema";
-
+import type { THistoryData } from "@/common/types";
 // TODO: to be tested
 export class MongooseHistoryRepo implements IHistoryRepository {
     constructor(private readonly history: typeof History) { }
@@ -15,5 +15,9 @@ export class MongooseHistoryRepo implements IHistoryRepository {
 
     async findHistoryById(id: string): Promise<THistory | null> {
         return this.history.findById(id).lean()
+    }
+
+    async createHistory(data: THistoryData): Promise<THistory | null> {
+        return this.history.create(data)
     }
 }

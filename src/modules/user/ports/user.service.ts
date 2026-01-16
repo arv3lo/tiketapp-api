@@ -8,6 +8,10 @@ export class UserService {
         return this.userRepository.findUsers(filters);
     }
 
+    async findOneUser(filters: IUserFilter): Promise<TUser | null> {
+        return this.userRepository.findOneUser(filters);
+    }
+
     async findUserById(id: string): Promise<TUser | null> {
         return this.userRepository.findUserById(id);
     }
