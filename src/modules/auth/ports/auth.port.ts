@@ -1,18 +1,21 @@
-import jwt from "jsonwebtoken"
 import z from "zod";
 
-import type { TUser } from '@user/adapters/mongodb/user.schema';
+import { type TRefreshToken } from "@auth/adapters/mongodb/token-schema";
 import { USER_ROLE } from "@/common/enums";
 
-export const generateAuthToken = (user: TUser) => {
-    const token = jwt.sign({
-        _id: user._id,
-        role: user.role,
-        iat: Math.floor(Date.now() / 1000) - 30,
-        exp: Math.floor(Date.now() / 1000) + (60 * 360)
-    }, Bun.env.AUTH_TOKEN_SECRET || "");
+export interface AuthRepository {
+    loginUser(payload: RefreshTokenInput): Promise<TRefreshToken>
+    logoutUser(payload: RefreshTokenInput): Promise<boolean>
+    // for dev purposes only
+    // registerUser(events: TEventInput[]): Promise<TEvent[] | null>
+    // getAllSessions(event: TEventInput): Promise<TEvent | null>
+    // logoutAllDevices(id: string, event: TEventInput): Promise<TEvent | null>
+}
 
-    return token;
+export type RefreshTokenInput = {
+    userId: string;
+    refreshToken: string;
+    deviceId: string;
 }
 
 // login payload validation

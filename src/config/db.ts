@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const DB_URI = Bun.env.DB_URI || "";
+export const DB_URI = Bun.env.DB_URI || "";
 
 const initDB = (): void => {
   mongoose
