@@ -9,7 +9,6 @@ import { ERROR_MESSAGE } from "@/common/enums";
 import { upload, authentication, authorize } from "@/middlewares";
 import { USER_ROLE } from "@/common/enums";
 
-
 const router = Router()
 
 router.get('/', async (req, res) => {
