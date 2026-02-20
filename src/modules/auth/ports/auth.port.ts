@@ -1,6 +1,22 @@
 import z from "zod";
 
+import { type TRefreshToken } from "@auth/adapters/mongodb/token-schema";
 import { USER_ROLE } from "@/common/enums";
+
+export interface AuthRepository {
+    loginUser(payload: RefreshTokenInput): Promise<TRefreshToken>
+    logoutUser(payload: RefreshTokenInput): Promise<boolean>
+    // for dev purposes only
+    // registerUser(events: TEventInput[]): Promise<TEvent[] | null>
+    // getAllSessions(event: TEventInput): Promise<TEvent | null>
+    // logoutAllDevices(id: string, event: TEventInput): Promise<TEvent | null>
+}
+
+export type RefreshTokenInput = {
+    userId: string;
+    refreshToken: string;
+    deviceId: string;
+}
 
 // login payload validation
 export const loginInput = z.object({

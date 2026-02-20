@@ -1,4 +1,6 @@
-import { Schema, model } from "mongoose"
+import { Schema, model, type InferSchemaType } from "mongoose"
+
+import type { TObjectId } from "@/common/types"
 
 const refreshTokenSchema = new Schema({
     user: { type: Schema.Types.ObjectId, ref: "User", required: true },
@@ -12,4 +14,5 @@ const refreshTokenSchema = new Schema({
 
 refreshTokenSchema.index({ expiresAt: 1 }, { expireAfterSeconds: 0 })
 
-export const RefreshToken = model("RefreshToken", refreshTokenSchema)
+export default model("RefreshToken", refreshTokenSchema)
+export type TRefreshToken = InferSchemaType<typeof refreshTokenSchema> & { _id: TObjectId }

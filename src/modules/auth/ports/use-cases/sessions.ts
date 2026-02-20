@@ -6,11 +6,20 @@ import { MongooseUserRepo } from "@user/adapters/mongodb/user-repo";
 import User from "@user/adapters/mongodb/user.schema";
 import { HISTORY_TYPE, HISTORY_OBJECT, ERROR_MESSAGE } from "@/common/enums";
 import { createHistory } from "@history/ports/use-cases/create-history";
-import { type TLoginInput } from "@auth/ports/auth.port";
-import { RefreshToken } from "@auth/adapters/mongodb/token-schema";
+import { type RefreshTokenInput, type TLoginInput } from "@auth/ports/auth.port";
+// import { RefreshToken } from "@auth/adapters/mongodb/token-schema";
 import { generateAccessToken, hashToken } from "@/config/tokens";
+import { AuthService } from "@auth/ports/auth.service";
+import { MongooseAuthRepo } from "@auth/adapters/mongodb/auth-repo";
+import RefreshToken from '@auth/adapters/mongodb/token-schema'
 
 const userService = new UserService(new MongooseUserRepo(User));
+const authService = new AuthService(new MongooseAuthRepo(RefreshToken))
+
+type SessionParams = {
+    refreshToken: string;
+    deviceId: string;
+}
 
 export const loginUser = async (user: TLoginInput) => {
     const userFound = await userService.findOneUser({ email: user.email });
@@ -22,17 +31,13 @@ export const loginUser = async (user: TLoginInput) => {
     const accessToken = generateAccessToken(`${userFound._id}`)
     const refreshToken = generateAccessToken(`${userFound._id}`)
 
-    // const token = generateAuthToken(userFound);
-
-    // TODO: create a service and a separate repo for this
-    await RefreshToken.create({
-        user: `${userFound._id}`,
-        tokenHash: hashToken(refreshToken),
-        expiresAt: new Date(Date.now() + (7 * 24 * 60 * 60 * 1000)),
-        // deviceId: "",
-        // tokenHash: "",
+    await authService.loginUser({
+        userId: `${userFound._id}`,
+        refreshToken,
+        deviceId: ""
     })
-
+    
+    // TODO: create a service and a separate repo for this
     await createHistory({
         user: userFound._id as unknown as Types.ObjectId,
         obj: userFound._id as unknown as Types.ObjectId,
@@ -45,4 +50,10 @@ export const loginUser = async (user: TLoginInput) => {
         accessToken,
         refreshToken
     }
+}
+
+export const logoutUser = async (userSessionArgs: RefreshTokenInput) => {
+    const userLoggedOut = await authService.logoutUser(userSessionArgs);
+
+    return userLoggedOut
 }
